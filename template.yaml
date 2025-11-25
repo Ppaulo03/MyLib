@@ -1,0 +1,67 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Backend com HTTP API, Lambda e Cognito Auth
+
+Parameters:
+  MyUserPoolId:
+    Type: String
+    Description: sa-east-1_empt41O7b
+  
+  MyAppClientId:
+    Type: String
+    Description: 70bm2apj85tusfcunc4b376bph
+
+Globals:
+  Function:
+    Timeout: 3
+    MemorySize: 128
+    Runtime: python3.13
+    Architectures:
+      - x86_64
+
+Resources:
+  MyHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: prod
+      CorsConfiguration:
+        AllowMethods:
+          - GET
+          - POST
+          - PUT
+        AllowHeaders:
+          - "*"
+        AllowOrigins:
+          - "*"
+      
+      Auth:
+        Authorizers:
+          CognitoAuthorizer:
+            IdentitySource: "$request.header.Authorization"
+            JwtConfiguration:
+              issuer: !Sub "https://cognito-idp.${AWS::Region}.amazonaws.com/${MyUserPoolId}"
+              audience:
+                - !Ref MyAppClientId
+        DefaultAuthorizer: CognitoAuthorizer
+
+  IndexFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/functions/system
+      Handler: heartbeat.lambda_handler
+      Events:
+        RootRoute:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref MyHttpApi
+            Path: /
+            Method: GET
+            Auth:
+              Authorizer: NONE
+
+
+Outputs:
+  ApiEndpoint:
+    Description: "URL da API HTTP"
+    Value: !Sub "https://${MyHttpApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
