@@ -11,6 +11,17 @@ Parameters:
   MyAppClientId:
     Type: String
     Description: ID do client app do Cognito
+  
+  SupabaseUrl:
+    Type: String
+    Description: URL do projeto Supabase
+    NoEcho: true
+  
+  SupabaseKey:
+    Type: String
+    Description: Chave de API do Supabase (Anon ou Service)
+    NoEcho: true
+
 Globals:
   Function:
     Timeout: 3
@@ -18,6 +29,10 @@ Globals:
     Runtime: python3.13
     Architectures:
       - x86_64
+    Environment:
+      Variables:
+        SUPABASE_URL: !Ref SupabaseUrl
+        SUPABASE_KEY: !Ref SupabaseKey
 
 Resources:
   MyHttpApi:
@@ -44,7 +59,7 @@ Resources:
                 - !Ref MyAppClientId
         DefaultAuthorizer: CognitoAuthorizer
 
-  IndexFunction:
+  HeartbeatFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/functions/system
@@ -55,6 +70,21 @@ Resources:
           Properties:
             ApiId: !Ref MyHttpApi
             Path: /
+            Method: GET
+            Auth:
+              Authorizer: NONE
+  
+  SearchFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/functions/system
+      Handler: search.lambda_handler
+      Events:
+        RootRoute:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref MyHttpApi
+            Path: /search
             Method: GET
             Auth:
               Authorizer: NONE
