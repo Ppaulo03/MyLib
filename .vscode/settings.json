@@ -4,8 +4,14 @@
         "editor.formatOnSave": true,
     },
 
-  "python.defaultInterpreterPath": "./venv/Scripts/python.exe",
+  "python.defaultInterpreterPath": "./.venv/Scripts/python.exe",
   "search.exclude": {
     "**/venv": true
-  }
+  },
+  "python.analysis.extraPaths": [
+    "./src/layers/common_layer/python",
+  ],
+  "python.autoComplete.extraPaths": [
+    "./src/layers/common_layer/python",
+  ],
 }
