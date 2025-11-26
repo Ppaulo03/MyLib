@@ -1,21 +1,11 @@
-from supabase import create_client, Client
 import time
 import requests
-import os
-
-SUPABASE_URL = os.getenv("SUPABASE_URL", "https://pwlltrcwgtwzckoirjbq.supabase.co")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY", "sb_secret_sECM5VHspjR4hAR44H_Tkw_PWG-p6qp")
-
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
-
-URL_API = "https://api.jikan.moe/v4/top/anime"
-TIPO_MIDIA = "anime"
-""
+from supabase.utils import save_to_supabase
 
 
 def buscar_animes(pagina):
     try:
-        response = requests.get(f"{URL_API}?page={pagina}")
+        response = requests.get(f"https://api.jikan.moe/v4/top/anime?page={pagina}")
         if response.status_code == 429:
             print("Calma! Atingimos o limite da API. Esperando 5 segundos...")
             time.sleep(5)
@@ -23,15 +13,16 @@ def buscar_animes(pagina):
 
         if response.status_code == 200:
             return response.json()
-        else:
-            print(f"Erro na API: {response.status_code}")
-            return []
+        
+        print(f"Erro na API: {response.status_code}")
+        return []
     except Exception as e:
         print(f"Erro de conexão: {e}")
         return []
 
 
-def buscar_e_salvar():
+
+def buscar_e_salvar_animes():
     pagina_atual = 1
     while True:
         print(f"Página {pagina_atual}")
@@ -49,11 +40,11 @@ def buscar_e_salvar():
             if not ano:
                 try:
                     ano = int(item["aired"]["prop"]["from"]["year"])
-                except:
+                except Exception:
                     ano = None
 
             registro = {
-                "categoria": TIPO_MIDIA,
+                "categoria": "anime",
                 "titulo": item.get("title"),
                 "descricao": item.get("synopsis"),
                 "ano_lancamento": ano,
@@ -66,16 +57,8 @@ def buscar_e_salvar():
                 },
             }
             dados_para_inserir.append(registro)
-        try:
-            supabase.table("medias").upsert(
-                dados_para_inserir,
-                on_conflict="categoria, titulo, ano_lancamento",
-                ignore_duplicates=True,
-            ).execute()
-            print("Sucesso! Dados sincronizados.")
-        except Exception as e:
-            print(f"Ocorreu um erro ao salvar: {e}")
 
+        save_to_supabase(dados_para_inserir)
         pagination = data["pagination"]
         if not pagination["has_next_page"]:
             break
@@ -83,4 +66,4 @@ def buscar_e_salvar():
 
 
 if __name__ == "__main__":
-    buscar_e_salvar()
+    buscar_e_salvar_animes()
