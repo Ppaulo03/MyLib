@@ -1,0 +1,19 @@
+{
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "[python]": {
+        "editor.formatOnSave": true,
+    },
+    "python.defaultInterpreterPath": "./.venv/Scripts/python.exe",
+    "python.analysis.extraPaths": [
+        "./services/layers/database_layer/python",
+        "./services/layers/etl_layer/python",
+        "./services/layers/schemas_layer/python",
+        "./services/layers/utils_layer/python",
+    ],
+    "python.autoComplete.extraPaths": [
+        "./services/layers/database_layer/python",
+        "./services/layers/etl_layer/python",
+        "./services/layers/schemas_layer/python",
+        "./services/layers/utils_layer/python",
+    ],
+}
