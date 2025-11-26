@@ -9,7 +9,7 @@ def lambda_handler(event, context):
     user_id = event.get("user_id")
     query_params = event.get("queryStringParameters") or {}
 
-    limit = int(query_params.get("limit", 20))
+    limit = int(query_params.get("limit", 1000))
     next_token = query_params.get("next_token")
 
     prefix = "item#"
