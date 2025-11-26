@@ -9,17 +9,26 @@ def lambda_wrapper(required_fields=None, required_params=None, require_auth=True
         def wrapper(event, context):
             try:
 
-                claims = (
-                    event.get("requestContext", {})
-                    .get("authorizer", {})
-                    .get("claims", {})
-                )
+                request_context = event.get("requestContext", {})
+                authorizer = request_context.get("authorizer", {})
+                claims = {}
+                if "jwt" in authorizer:
+                    claims = authorizer.get("jwt", {}).get("claims", {})
+                elif "claims" in authorizer:
+                    claims = authorizer.get("claims", {})
+
                 user_id = claims.get("sub")
+                if not user_id:
+                    user_id = claims.get("username")
+
                 if not user_id and require_auth:
+                    print(
+                        f"DEBUG AUTH FALHOU. Evento recebido: {json.dumps(request_context)}"
+                    )
                     raise UnauthorizedError(
                         "Unauthorized: user id not found in authorizer claims"
                     )
-
+                event["user_id"] = str(user_id)
                 body = {}
                 if event.get("body"):
                     try:

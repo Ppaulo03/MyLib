@@ -3,7 +3,7 @@ from common.decorators import lambda_wrapper
 from common.dynamo_client import db_client
 
 
-@lambda_wrapper(required_body=["id", "categoria"])
+@lambda_wrapper(required_fields=["id", "categoria"])
 def lambda_handler(event, context):
     user_id = event.get("user_id")
     body = event["parsed_body"]

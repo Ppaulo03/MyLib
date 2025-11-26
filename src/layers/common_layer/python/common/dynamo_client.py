@@ -49,10 +49,10 @@ class DynamoClient:
 
     def query_items(self, user_id, sk_prefix=None, limit=1000, next_token=None):
         try:
-            key_condition = Key("user_id").eq(user_id)
+            key_condition = Key("user_id").eq(str(user_id))
 
             if sk_prefix:
-                key_condition = key_condition & Key("sk").begins_with(sk_prefix)
+                key_condition = key_condition & Key("sk").begins_with(str(sk_prefix))
 
             query_kwargs = {"KeyConditionExpression": key_condition, "Limit": limit}
             start_key = self._decode_token(next_token)
