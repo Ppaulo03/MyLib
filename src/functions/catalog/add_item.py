@@ -1,12 +1,7 @@
 import json
-import os
-import boto3
 from datetime import datetime, timezone
 from common.decorators import lambda_wrapper
-
-dynamodb = boto3.resource("dynamodb")
-table_name = os.environ.get("TABLE_NAME")
-table = dynamodb.Table(table_name)
+from common.dynamo_client import db_client
 
 
 @lambda_wrapper(required_fields=["id", "categoria", "titulo"])
@@ -29,7 +24,7 @@ def lambda_handler(event, context):
             "progress": body.get("progress", 0),
             "updated_at": datetime.now(timezone.utc).isoformat(),
         }
-        table.put_item(Item=item)
+        db_client.put_item(item)
 
         return {
             "statusCode": 201,

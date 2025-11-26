@@ -27,17 +27,21 @@ mylib-backend/
 |
 ├── src/                     # Código-fonte principal
 │   ├── functions/           # Funções Lambda
-│   │       ├── catalog/      # Renomeado de 'commonLayer' para 'common_layer'
-│   │       │     └── add_item.py 
+│   │       ├── catalog/
+│   │       │     ├── add_item.py 
+│   │       │     ├── delete_item.py 
+│   │       │     ├── list_items.py 
+│   │       │     └── update_item.py 
 │   │       └── system
 │   │             ├── heartbeat.py
 │   │             ├── search.py
-│   │             └── requirementes.txt
-│   └── layers/                # Código compartilhado (Lambda Layers)
+│   │             └── requirements.txt
+│   └── layers/            # Código compartilhado (Lambda Layers)
 │           └── common_layer/
 │                   └── python/
 │                         └── common/
 │                               ├── __init__.py
+│                               ├── dynamo_client.py
 │                               ├── decorators.py
 │                               └── errors.py
 |

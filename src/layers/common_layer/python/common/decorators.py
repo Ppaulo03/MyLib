@@ -3,7 +3,7 @@ import functools
 from common.errors import AppError, BadRequestError, UnauthorizedError
 
 
-def lambda_wrapper(required_fields=None):
+def lambda_wrapper(required_fields=None, required_params=None, require_auth=True):
     def decorator(func):
         @functools.wraps(func)
         def wrapper(event, context):
@@ -15,7 +15,7 @@ def lambda_wrapper(required_fields=None):
                     .get("claims", {})
                 )
                 user_id = claims.get("sub")
-                if not user_id:
+                if not user_id and require_auth:
                     raise UnauthorizedError(
                         "Unauthorized: user id not found in authorizer claims"
                     )
@@ -35,6 +35,18 @@ def lambda_wrapper(required_fields=None):
                         raise BadRequestError(
                             f"Campos obrigatórios faltando: {', '.join(missing)}",
                             "MISSING_FIELDS",
+                        )
+
+                if required_params:
+                    missing_params = [
+                        p
+                        for p in required_params
+                        if p not in (event.get("queryStringParameters") or {})
+                    ]
+                    if missing_params:
+                        raise BadRequestError(
+                            f"Parâmetros obrigatórios faltando: {', '.join(missing_params)}",
+                            "MISSING_PARAMS",
                         )
 
                 return func(event, context)
