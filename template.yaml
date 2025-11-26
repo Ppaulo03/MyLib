@@ -76,6 +76,16 @@ Resources:
               audience:
                 - !Ref MyAppClientId
         DefaultAuthorizer: CognitoAuthorizer
+  
+  CommonLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: mylib-common-layer
+      Description: Utilitarios (Wrappers, Erros, Validadores)
+      ContentUri: src/layers/common_layer/
+      CompatibleRuntimes:
+        - python3.13
+      RetentionPolicy: Retain
 
   HeartbeatFunction:
     Type: AWS::Serverless::Function
@@ -107,6 +117,23 @@ Resources:
             Auth:
               Authorizer: NONE
 
+  CatalogAddItemFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/functions/catalog/
+      Handler: add_item.lambda_handler
+      Layers:
+        - !Ref CommonLayer
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TabelaDados
+      Events:
+        RootRoute:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref MyHttpApi
+            Path: /catalog
+            Method: POST
 
 Outputs:
   ApiEndpoint:

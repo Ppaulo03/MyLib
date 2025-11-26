@@ -8,6 +8,18 @@ def lambda_wrapper(required_fields=None):
         @functools.wraps(func)
         def wrapper(event, context):
             try:
+
+                claims = (
+                    event.get("requestContext", {})
+                    .get("authorizer", {})
+                    .get("claims", {})
+                )
+                user_id = claims.get("sub")
+                if not user_id:
+                    raise UnauthorizedError(
+                        "Unauthorized: user id not found in authorizer claims"
+                    )
+
                 body = {}
                 if event.get("body"):
                     try:
@@ -24,17 +36,6 @@ def lambda_wrapper(required_fields=None):
                             f"Campos obrigatórios faltando: {', '.join(missing)}",
                             "MISSING_FIELDS",
                         )
-                claims = (
-                    event.get("requestContext", {})
-                    .get("authorizer", {})
-                    .get("claims", {})
-                )
-                user_id = claims.get("sub")
-
-                if not user_id:
-                    raise UnauthorizedError(
-                        "Unauthorized: user id not found in authorizer claims"
-                    )
 
                 return func(event, context)
 

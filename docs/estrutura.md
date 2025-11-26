@@ -22,12 +22,24 @@ mylib-backend/
 |
 ├── docs/
 │   ├── backend.md    # Documentação do backend
-├── ├── estrutura.md  # Documentação da estrutura
+│   ├── estrutura.md  # Documentação da estrutura
 │   └── database.md   # Documentação do banco de dados
 |
 ├── src/                     # Código-fonte principal
 │   ├── functions/           # Funções Lambda
+│   │       ├── catalog/      # Renomeado de 'commonLayer' para 'common_layer'
+│   │       │     └── add_item.py 
+│   │       └── system
+│   │             ├── heartbeat.py
+│   │             ├── search.py
+│   │             └── requirementes.txt
 │   └── layers/                # Código compartilhado (Lambda Layers)
+│           └── common_layer/
+│                   └── python/
+│                         └── common/
+│                               ├── __init__.py
+│                               ├── decorators.py
+│                               └── errors.py
 |
 └── ml_server/               # Serviço de ML (separado do SAM)
     ├── Dockerfile
