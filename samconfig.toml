@@ -1,0 +1,12 @@
+version = 0.1
+[default.deploy.parameters]
+profile = "mylib"
+stack_name = "MyLib"
+resolve_s3 = true
+s3_prefix = "MyLib"
+region = "sa-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+parameter_overrides = "MyUserPoolId=\"sa-east-1_empt41O7b\" MyAppClientId=\"70bm2apj85tusfcunc4b376bph\""
+image_repositories = []

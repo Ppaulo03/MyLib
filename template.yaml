@@ -6,12 +6,11 @@ Description: >
 Parameters:
   MyUserPoolId:
     Type: String
-    Description: sa-east-1_empt41O7b
+    Description: ID do user pool do Cognito
   
   MyAppClientId:
     Type: String
-    Description: 70bm2apj85tusfcunc4b376bph
-
+    Description: ID do client app do Cognito
 Globals:
   Function:
     Timeout: 3
