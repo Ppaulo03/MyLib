@@ -2,6 +2,7 @@ GENRE_MAP = {
     "fps": ["Ação & Aventura"],
     "shooter": ["Ação & Aventura"],
     "plataforma": ["Ação & Aventura"],
+    "scifi": ["Sci-Fi & Fantasia"],
     "rpg": ["Sci-Fi & Fantasia", "Estratégia & Puzzle"],
     "jrpg": ["Sci-Fi & Fantasia"],
     "action rpg": ["Ação & Aventura", "Sci-Fi & Fantasia"],
