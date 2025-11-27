@@ -45,13 +45,13 @@ mylib-backend/
 │                               ├── decorators.py
 │                               └── errors.py
 |
-└── ml_server/               # Serviço de ML (separado do SAM)
-    ├── Dockerfile
-    ├── requirements.txt
-    └── src/
-        ├── __init__.py
-        └── main.py
-```
+└── jobs/      
+    ├── main.py           # O orquestrador
+    ├── db_client.py      # Conecta no Supabase e DynamoDB
+    ├── vibes_map.py      # O dicionário de tradução (Gênero -> Vibe)
+    └── algorithms/
+        ├── trending.py   # Lógica das genéricas
+        └── personal.py   # Lógica das pessoais
 
 -----
 

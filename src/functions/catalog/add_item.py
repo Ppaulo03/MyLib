@@ -22,6 +22,9 @@ def lambda_handler(event, context):
             "status": body.get("status", "plan_to_watch"),
             "rating": body.get("rating", None),
             "progress": body.get("progress", 0),
+            "genres": body.get("generos", []),
+            "unified_genres": body.get("generos_unificados", []),
+            "metadata": body.get("metadata", {}),
             "updated_at": datetime.now(timezone.utc).isoformat(),
         }
         db_client.put_item(item)

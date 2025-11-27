@@ -1,6 +1,7 @@
 import time
 import requests
 from utils import save_to_supabase
+from genre_map import GENRE_MAP
 
 URL_BASE = "https://api.jikan.moe/v4/top/anime"
 CATEGORIA = "anime"
@@ -33,7 +34,6 @@ def buscar_e_salvar_animes():
         if data is None:
             continue
         animes_raw = data["data"]
-        print(animes_raw)
         print("2. Formatando dados...")
         dados_para_inserir = []
         for item in animes_raw:
@@ -43,26 +43,34 @@ def buscar_e_salvar_animes():
                     ano = int(item["aired"]["prop"]["from"]["year"])
                 except Exception:
                     ano = None
+            genres = [g["name"].strip().lower() for g in item.get("genres", [])]
+            generos_unificados = set()
+            for g in genres:
+                if g in GENRE_MAP:
+                    generos_unificados.update(GENRE_MAP[g])
 
             registro = {
                 "categoria": CATEGORIA,
-                "titulo": item.get("title_english"),
+                "titulo": item.get("title_english") or item.get("title"),
                 "descricao": item.get("synopsis"),
                 "ano_lancamento": ano,
+                "imagem": item["images"]["jpg"]["image_url"],
+                "generos": genres,
+                "generos_unificados": list(generos_unificados),
                 "metadata": {
                     "id_original": item.get("mal_id"),
                     "episodios": item.get("episodes"),
                     "score": item.get("score"),
-                    "imagem": item["images"]["jpg"]["image_url"],
-                    "generos": [g["name"] for g in item.get("genres", [])],
                 },
             }
             dados_para_inserir.append(registro)
-        # save_to_supabase(dados_para_inserir)
+        save_to_supabase(dados_para_inserir)
         pagination = data["pagination"]
         if not pagination["has_next_page"]:
             break
         pagina_atual += 1
+        if pagina_atual > 1000:
+            break
 
 
 if __name__ == "__main__":

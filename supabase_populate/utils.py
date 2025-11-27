@@ -10,7 +10,7 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 def save_to_supabase(data):
     on_conflict = "categoria, titulo, ano_lancamento"
     try:
-        supabase.table("midias").upsert(
+        supabase.table("midia").upsert(
             data, on_conflict=on_conflict, ignore_duplicates=True
         ).execute()
         print("Sucesso! Dados sincronizados.")

@@ -53,6 +53,14 @@ Resources:
       SSESpecification:
         SSEEnabled: true
 
+  TabelaDadosParam:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: /mylib/prod/tabela_dados
+      Type: String
+      Value: !Ref TabelaDados
+      Description: "Nome dinâmico da tabela gerado pelo CloudFormation"
+
   MyHttpApi:
     Type: AWS::Serverless::HttpApi
     Properties:
