@@ -53,6 +53,9 @@ def get_profile(user_id):
         consumed_ids.append(midia_id)
 
         rating = float(item["rating"]) if item.get("rating") is not None else 0
+        if rating <= 0:
+            continue
+
         genres = item.get("unified_genres", [])
 
         weight = 0
