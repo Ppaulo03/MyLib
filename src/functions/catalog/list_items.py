@@ -23,6 +23,8 @@ def lambda_handler(event, context):
         next_token=next_token,
     )
 
+    items["items"] = [{**it, "id": it["sk"].split("#")[-1]} for it in items["items"]]
+
     return {
         "statusCode": 200,
         "body": json.dumps(
