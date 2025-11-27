@@ -18,14 +18,17 @@ def lambda_handler(event, context):
         item = {
             "user_id": user_id,
             "sk": sk_value,
-            "titulo": body["titulo"],
+            "title": body["titulo"],
             "status": body.get("status", "plan_to_watch"),
             "rating": body.get("rating", None),
             "progress": body.get("progress", 0),
             "genres": body.get("generos", []),
             "unified_genres": body.get("generos_unificados", []),
             "metadata": body.get("metadata", {}),
+            "cover_url": body.get("cover_url", ""),
             "updated_at": datetime.now(timezone.utc).isoformat(),
+            "release_year": body.get("release_year", None),
+            "description": body.get("description", ""),
         }
         db_client.put_item(item)
 

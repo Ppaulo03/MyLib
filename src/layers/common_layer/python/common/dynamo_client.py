@@ -14,7 +14,7 @@ class DynamoClient:
         self.table = self.dynamodb.Table(table_name)
 
     def _replace_decimals(self, obj):
-        if isinstance(obj, list):
+        if isinstance(obj, (list, set)):
             return [self._replace_decimals(i) for i in obj]
         elif isinstance(obj, dict):
             return {k: self._replace_decimals(v) for k, v in obj.items()}
@@ -55,8 +55,7 @@ class DynamoClient:
                 key_condition = key_condition & Key("sk").begins_with(str(sk_prefix))
 
             query_kwargs = {"KeyConditionExpression": key_condition, "Limit": limit}
-            start_key = self._decode_token(next_token)
-            if start_key:
+            if start_key := self._decode_token(next_token):
                 query_kwargs["ExclusiveStartKey"] = start_key
             response = self.table.query(**query_kwargs)
             items = response.get("Items", [])

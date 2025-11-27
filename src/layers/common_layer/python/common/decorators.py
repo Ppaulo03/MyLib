@@ -17,9 +17,7 @@ def lambda_wrapper(required_fields=None, required_params=None, require_auth=True
                 elif "claims" in authorizer:
                     claims = authorizer.get("claims", {})
 
-                user_id = claims.get("sub")
-                if not user_id:
-                    user_id = claims.get("username")
+                user_id = claims.get("sub") or claims.get("username")
 
                 if not user_id and require_auth:
                     print(
