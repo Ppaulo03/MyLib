@@ -1,8 +1,8 @@
 from supabase import create_client, Client
 from os import getenv
 
-SUPABASE_URL = getenv("SUPABASE_URL", "https://pwlltrcwgtwzckoirjbq.supabase.co")
-SUPABASE_KEY = getenv("SUPABASE_KEY", "sb_secret_sECM5VHspjR4hAR44H_Tkw_PWG-p6qp")
+SUPABASE_URL = getenv("SUPABASE_URL")
+SUPABASE_KEY = getenv("SUPABASE_KEY")
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 

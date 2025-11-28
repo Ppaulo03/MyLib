@@ -2,6 +2,7 @@ import json
 import os
 from supabase import create_client, Client
 from get_covers import get_movie_cover, get_game_cover, get_book_cover
+from pydantic import BaseModel, Field
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
@@ -12,6 +13,18 @@ image_handlers = {
     "jogo": get_game_cover,
     "livro": get_book_cover,
 }
+
+
+class ListItemsItem(BaseModel):
+    id: int = Field(..., alias="id")
+    category: str = Field(..., alias="categoria")
+    title: str = Field(..., alias="titulo")
+    description: str = Field("", alias="descricao")
+    release_year: int = Field(None, alias="ano_lancamento")
+    cover_url: str = Field("", alias="imagem")
+    genres: list[str] = Field([], alias="generos")
+    unified_genres: list[str] = Field([], alias="generos_unificados")
+    metadata: dict = Field({}, alias="metadata")
 
 
 def lambda_handler(event, context):
@@ -48,10 +61,11 @@ def lambda_handler(event, context):
         if to_update:
             supabase.table("midia").upsert(to_update).execute()
 
+        data = [ListItemsItem(**item).model_dump() for item in response.data]
         return {
             "statusCode": 200,
             "headers": {"Content-Type": "application/json"},
-            "body": json.dumps(response.data),
+            "body": json.dumps(data),
         }
 
     except Exception as e:

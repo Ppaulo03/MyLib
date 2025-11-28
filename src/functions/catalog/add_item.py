@@ -4,7 +4,7 @@ from common.decorators import lambda_wrapper
 from common.dynamo_client import db_client
 
 
-@lambda_wrapper(required_fields=["id", "categoria", "titulo"])
+@lambda_wrapper(required_fields=["id", "category", "title"])
 def lambda_handler(event, context):
     try:
 
@@ -12,18 +12,18 @@ def lambda_handler(event, context):
         user_id = event["user_id"]
 
         media_id = str(body["id"])
-        category = body["categoria"].lower()
+        category = body["category"].lower()
         sk_value = f"item#{category}#{media_id}"
 
         item = {
             "user_id": user_id,
             "sk": sk_value,
-            "title": body["titulo"],
+            "title": body["title"],
             "status": body.get("status", "plan_to_watch"),
             "rating": body.get("rating", None),
             "progress": body.get("progress", 0),
-            "genres": body.get("generos", []),
-            "unified_genres": body.get("generos_unificados", []),
+            "genres": body.get("genres", []),
+            "unified_genres": body.get("unified_genres", []),
             "metadata": body.get("metadata", {}),
             "cover_url": body.get("cover_url", ""),
             "updated_at": datetime.now(timezone.utc).isoformat(),
