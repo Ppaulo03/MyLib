@@ -31,6 +31,8 @@ def _extracted_and_deploy(env):
         f"MyAppClientId={env['MY_APP_CLIENT_ID']}",
         f"SupabaseUrl={env['SUPABASE_URL']}",
         f"SupabaseKey={env['SUPABASE_KEY']}",
+        f"TmdbApiKey={env['TMDB_API_KEY']}",
+        f"SteamgriddbApiKey={env['STEAMGRIDDB_API_KEY']}",
     ]
 
     overrides_str = " ".join(overrides)

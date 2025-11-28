@@ -19,7 +19,7 @@ def buscar_e_salvar_jogos():
 
         genres = (
             [g.strip() for g in row["Genres"]]
-            if isinstance(row["Genres"], str)
+            if isinstance(row["Genres"], list)
             else [row["Genres"]]
         )
         generos_unificados = set()
@@ -35,18 +35,18 @@ def buscar_e_salvar_jogos():
                 "ano_lancamento": ano_lancamento,
                 "generos": genres,
                 "generos_unificados": list(generos_unificados),
+                "rating": row["Rating"],
                 "metadata": {
                     "plataformas": row["Platforms"],
-                    "rating": row["Rating"],
                 },
             }
         )
 
-        while len(registros) >= 100:
-            lote = registros[:100]
-            save_to_supabase(lote)
-            registros = registros[100:]
-            time.sleep(1)
+    while len(registros) >= 100:
+        lote = registros[:100]
+        save_to_supabase(lote)
+        registros = registros[100:]
+        time.sleep(1)
 
 
 if __name__ == "__main__":

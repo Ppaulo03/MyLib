@@ -27,14 +27,13 @@ def buscar_animes(pagina):
 
 def buscar_e_salvar_animes():
     pagina_atual = 1
+    print()
     while True:
         print(f"Página {pagina_atual}")
-        print("1. Buscando dados da API externa...")
         data = buscar_animes(pagina_atual)
         if data is None:
             continue
         animes_raw = data["data"]
-        print("2. Formatando dados...")
         dados_para_inserir = []
         for item in animes_raw:
             ano = item.get("year")
@@ -57,10 +56,10 @@ def buscar_e_salvar_animes():
                 "imagem": item["images"]["jpg"]["image_url"],
                 "generos": genres,
                 "generos_unificados": list(generos_unificados),
+                "rating": (item.get("score") or 0) / 2,
                 "metadata": {
                     "id_original": item.get("mal_id"),
                     "episodios": item.get("episodes"),
-                    "score": item.get("score"),
                 },
             }
             dados_para_inserir.append(registro)

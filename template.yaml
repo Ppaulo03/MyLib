@@ -22,9 +22,19 @@ Parameters:
     Description: Chave de API do Supabase (Anon ou Service)
     NoEcho: true
 
+  TmdbApiKey:
+    Type: String
+    Description: Chave de API do TMDB
+    NoEcho: true
+
+  SteamgriddbApiKey:
+    Type: String
+    Description: Chave de API do SteamGridDB
+    NoEcho: true
+
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 180
     MemorySize: 128
     Runtime: python3.13
     Architectures:
@@ -34,6 +44,8 @@ Globals:
         SUPABASE_URL: !Ref SupabaseUrl
         SUPABASE_KEY: !Ref SupabaseKey
         TABLE_NAME: !Ref TabelaDados
+        TMDB_API_KEY: !Ref TmdbApiKey
+        STEAMGRIDDB_API_KEY: !Ref SteamgriddbApiKey
 
 Resources:
   TabelaDados:

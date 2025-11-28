@@ -16,6 +16,7 @@ def buscar_e_salvar_livros():
         for g in genres:
             if g in GENRE_MAP:
                 generos_unificados.update(GENRE_MAP[g])
+
         registros.append(
             {
                 "categoria": "livro",
@@ -24,20 +25,20 @@ def buscar_e_salvar_livros():
                 "ano_lancamento": row["ano"],
                 "generos": genres,
                 "generos_unificados": list(generos_unificados),
+                "rating": (row["rating"] or 0) / 2,
                 "metadata": {
                     "autor": row["autor"],
                     "editora": row["editora"],
                     "paginas": int(row["paginas"]),
-                    "rating": row["rating"],
                 },
             }
         )
 
-        while len(registros) >= 100:
-            lote = registros[:100]
-            save_to_supabase(lote)
-            registros = registros[100:]
-            time.sleep(1)
+    while len(registros) >= 100:
+        lote = registros[:100]
+        save_to_supabase(lote)
+        registros = registros[100:]
+        time.sleep(1)
 
 
 if __name__ == "__main__":
