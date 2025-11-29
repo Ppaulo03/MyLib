@@ -95,6 +95,14 @@ GENRE_MAP = {
     "mangá": ["Ação & Aventura", "Sci-Fi & Fantasia"],
     "graphic novel": ["Drama & Narrativo"],
     "webtoon": ["Romance", "Comédia & Slice of Life"],
+    "religião e espiritualidade": ["Documentário & Educacional"],
+    "artes": ["Documentário & Educacional"],
+    "ficção": ["Drama & Narrativo"],
+    "romance policial": ["Terror & Suspense", "Drama & Narrativo"],
+    "poemas, poesias": ["Drama & Narrativo"],
+    "suspense e mistério": ["Terror & Suspense"],
+    "biografia": ["Drama & Narrativo", "Documentário & Educacional"],
+    "humor, comédia": ["Comédia & Slice of Life"],
 }
 
 ENGLISH_MOVIE_GENRE_ADDITIONS = {

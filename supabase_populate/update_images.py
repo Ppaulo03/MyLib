@@ -36,7 +36,7 @@ def main(batch_size=500):
         response = (
             supabase.table("midia")
             .select("*")
-            .in_("categoria", ["filme"])
+            .in_("categoria", ["livro"])
             .order("rating", desc=True)
             .range(start, end)
             .execute()

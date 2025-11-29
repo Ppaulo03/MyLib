@@ -3,6 +3,7 @@ import os
 from supabase import create_client, Client
 from get_covers import get_movie_cover, get_game_cover, get_book_cover
 from pydantic import BaseModel, Field
+from typing import Optional
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
@@ -17,28 +18,30 @@ image_handlers = {
 
 class metadataItem(BaseModel):
     # books
-    author: str = Field("", alias="autor")
-    pages: int = Field(0, alias="paginas")
-    editor: str = Field("", alias="editora")
+    author: Optional[str] = Field("", alias="autor")
+    pages: Optional[int] = Field(0, alias="paginas")
+    editor: Optional[str] = Field("", alias="editora")
 
     # movies
-    duration: str = Field("", alias="duracao")
-    director: str = Field("", alias="diretor")
+    duration: Optional[str] = Field("", alias="duracao")
+    director: Optional[str] = Field("", alias="diretor")
+    star: Optional[str] = Field("", alias="star")
 
     # games
-    platform: str = Field("", alias="plataforma")
+    platform: Optional[str] = Field("", alias="plataforma")
+    developers: Optional[str] = Field("", alias="developers")
 
     # anime
-    episodes: int = Field(0, alias="episodios")
+    episodes: Optional[int] = Field(0, alias="episodios")
 
 
 class ListItemsItem(BaseModel):
     id: int = Field(..., alias="id")
     category: str = Field(..., alias="categoria")
     title: str = Field(..., alias="titulo")
-    description: str = Field("", alias="descricao")
-    release_year: int = Field(None, alias="ano_lancamento")
-    cover_url: str = Field("", alias="imagem")
+    description: Optional[str] = Field("", alias="descricao")
+    release_year: Optional[int] = Field(None, alias="ano_lancamento")
+    cover_url: Optional[str] = Field("", alias="imagem")
     genres: list[str] = Field([], alias="generos")
     unified_genres: list[str] = Field([], alias="generos_unificados")
     metadata: metadataItem = Field(metadataItem(), alias="metadata")
@@ -85,21 +88,6 @@ def lambda_handler(event, context):
                 "filtro_categoria": category,
             },
         ).execute()
-        try:
-            to_update = []
-            for item in response.data:
-                categoria = item.get("categoria")
-                if categoria in image_handlers and not item.get("imagem"):
-                    fetch_function = image_handlers[categoria]
-                    url_imagem = fetch_function(item.get("titulo", ""))
-                    if url_imagem:
-                        item["imagem"] = url_imagem
-                        to_update.append(item)
-
-            if to_update:
-                supabase.table("midia").upsert(to_update).execute()
-        except Exception as e:
-            print(f"Erro ao atualizar imagens: {str(e)}")
 
         data = [json_encode_item(ListItemsItem(**item)) for item in response.data]
         return {
