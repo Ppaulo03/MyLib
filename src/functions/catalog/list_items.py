@@ -23,7 +23,10 @@ def lambda_handler(event, context):
         next_token=next_token,
     )
 
-    items["items"] = [{**it, "id": it["sk"].split("#")[-1]} for it in items["items"]]
+    items["items"] = [
+        {**it, "id": it["sk"].split("#")[-1], "category": it["sk"].split("#")[-2]}
+        for it in items["items"]
+    ]
 
     return {
         "statusCode": 200,

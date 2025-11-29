@@ -15,6 +15,23 @@ image_handlers = {
 }
 
 
+class metadataItem(BaseModel):
+    # books
+    author: str = Field("", alias="autor")
+    pages: int = Field(0, alias="paginas")
+    editor: str = Field("", alias="editora")
+
+    # movies
+    duration: str = Field("", alias="duracao")
+    director: str = Field("", alias="diretor")
+
+    # games
+    platform: str = Field("", alias="plataforma")
+
+    # anime
+    episodes: int = Field(0, alias="episodios")
+
+
 class ListItemsItem(BaseModel):
     id: int = Field(..., alias="id")
     category: str = Field(..., alias="categoria")
@@ -24,7 +41,28 @@ class ListItemsItem(BaseModel):
     cover_url: str = Field("", alias="imagem")
     genres: list[str] = Field([], alias="generos")
     unified_genres: list[str] = Field([], alias="generos_unificados")
-    metadata: dict = Field({}, alias="metadata")
+    metadata: metadataItem = Field(metadataItem(), alias="metadata")
+
+
+def json_encode_item(item: ListItemsItem) -> dict:
+    encoded = item.model_dump()
+    encoded["metadata"] = {}
+    if item.category == "livro":
+        encoded["metadata"]["autor"] = item.metadata.author
+        encoded["metadata"]["paginas"] = item.metadata.pages
+        encoded["metadata"]["editora"] = item.metadata.editor
+
+    elif item.category == "filme":
+        encoded["metadata"]["duracao"] = item.metadata.duration
+        encoded["metadata"]["diretor"] = item.metadata.director
+
+    elif item.category == "jogo":
+        encoded["metadata"]["plataforma"] = item.metadata.platform
+
+    elif item.category == "anime":
+        encoded["metadata"]["episodios"] = item.metadata.episodes
+
+    return encoded
 
 
 def lambda_handler(event, context):
@@ -47,21 +85,23 @@ def lambda_handler(event, context):
                 "filtro_categoria": category,
             },
         ).execute()
+        try:
+            to_update = []
+            for item in response.data:
+                categoria = item.get("categoria")
+                if categoria in image_handlers and not item.get("imagem"):
+                    fetch_function = image_handlers[categoria]
+                    url_imagem = fetch_function(item.get("titulo", ""))
+                    if url_imagem:
+                        item["imagem"] = url_imagem
+                        to_update.append(item)
 
-        to_update = []
-        for item in response.data:
-            categoria = item.get("categoria")
-            if categoria in image_handlers and not item.get("imagem"):
-                fetch_function = image_handlers[categoria]
-                url_imagem = fetch_function(item.get("titulo", ""))
-                if url_imagem:
-                    item["imagem"] = url_imagem
-                    to_update.append(item)
+            if to_update:
+                supabase.table("midia").upsert(to_update).execute()
+        except Exception as e:
+            pass
 
-        if to_update:
-            supabase.table("midia").upsert(to_update).execute()
-
-        data = [ListItemsItem(**item).model_dump() for item in response.data]
+        data = [json_encode_item(ListItemsItem(**item)) for item in response.data]
         return {
             "statusCode": 200,
             "headers": {"Content-Type": "application/json"},

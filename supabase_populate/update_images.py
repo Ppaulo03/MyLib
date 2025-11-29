@@ -19,7 +19,8 @@ def update_item_image(item_id, url):
 
 
 def main(batch_size=500):
-    offset = 5000
+    # offset = 9500
+    offset = 0
     total_processados = 0
     total_sem_capa = 0
 
@@ -35,6 +36,7 @@ def main(batch_size=500):
         response = (
             supabase.table("midia")
             .select("*")
+            .in_("categoria", ["filme"])
             .order("rating", desc=True)
             .range(start, end)
             .execute()
@@ -55,6 +57,7 @@ def main(batch_size=500):
                 continue
 
             print(f"Processando: {titulo} ({categoria})...")
+            print(f"Rating: {item.get("rating")}, ID: {item_id}")
             nova_capa = None
 
             if categoria == "filme":

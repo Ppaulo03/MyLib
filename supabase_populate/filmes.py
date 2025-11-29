@@ -31,7 +31,6 @@ def buscar_e_salvar_filmes():
                 "metadata": {
                     "duracao": row["duration"],
                     "diretor": row["director"],
-                    "duration": row["duration"],
                 },
             }
         )
