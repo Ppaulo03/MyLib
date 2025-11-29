@@ -99,7 +99,7 @@ def lambda_handler(event, context):
             if to_update:
                 supabase.table("midia").upsert(to_update).execute()
         except Exception as e:
-            pass
+            print(f"Erro ao atualizar imagens: {str(e)}")
 
         data = [json_encode_item(ListItemsItem(**item)) for item in response.data]
         return {
