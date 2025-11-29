@@ -51,21 +51,21 @@ def json_encode_item(item: ListItemsItem) -> dict:
     encoded = item.model_dump()
     encoded["metadata"] = {}
     if item.category == "livro":
-        encoded["metadata"]["autor"] = item.metadata.author
-        encoded["metadata"]["paginas"] = item.metadata.pages
-        encoded["metadata"]["editora"] = item.metadata.editor
+        encoded["metadata"]["author"] = item.metadata.author
+        encoded["metadata"]["pages"] = item.metadata.pages
+        encoded["metadata"]["editor"] = item.metadata.editor
 
     elif item.category == "filme":
-        encoded["metadata"]["duracao"] = item.metadata.duration
-        encoded["metadata"]["diretor"] = item.metadata.director
+        encoded["metadata"]["duration"] = item.metadata.duration
+        encoded["metadata"]["director"] = item.metadata.director
         encoded["metadata"]["star"] = item.metadata.star
 
     elif item.category == "jogo":
-        encoded["metadata"]["plataforma"] = item.metadata.platform
+        encoded["metadata"]["platform"] = item.metadata.platform
         encoded["metadata"]["developers"] = item.metadata.developers
 
     elif item.category == "anime":
-        encoded["metadata"]["episodios"] = item.metadata.episodes
+        encoded["metadata"]["episodes"] = item.metadata.episodes
 
     return encoded
 
