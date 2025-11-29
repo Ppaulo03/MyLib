@@ -58,9 +58,11 @@ def json_encode_item(item: ListItemsItem) -> dict:
     elif item.category == "filme":
         encoded["metadata"]["duracao"] = item.metadata.duration
         encoded["metadata"]["diretor"] = item.metadata.director
+        encoded["metadata"]["star"] = item.metadata.star
 
     elif item.category == "jogo":
         encoded["metadata"]["plataforma"] = item.metadata.platform
+        encoded["metadata"]["developers"] = item.metadata.developers
 
     elif item.category == "anime":
         encoded["metadata"]["episodios"] = item.metadata.episodes
