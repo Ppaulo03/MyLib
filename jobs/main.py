@@ -11,7 +11,6 @@ dynamodb = boto3.resource("dynamodb")
 
 
 def get_table_name_from_ssm():
-    """Busca o nome real da tabela no Parameter Store"""
     ssm = boto3.client("ssm")
     response = ssm.get_parameter(Name="/mylib/prod/tabela_dados")
     return response["Parameter"]["Value"]
@@ -53,7 +52,8 @@ def get_profile(user_id):
         consumed_ids.append(midia_id)
 
         rating = float(item["rating"]) if item.get("rating") is not None else 0
-        if rating <= 0:
+        status = str(item["status"]) if item.get("status") else "plan_to_watch"
+        if rating <= 0 or status in ["plan_to_watch", "abandoned"]:
             continue
 
         genres = item.get("unified_genres", [])
@@ -106,7 +106,6 @@ def main():
     for user_id in cognito_users:
         consumed_ids, top_genres_list = get_profile(user_id)
         recomendacoes = get_recomendations(consumed_ids, top_genres_list)
-        print(recomendacoes)
         save_to_dynamo(user_id, recomendacoes)
 
 

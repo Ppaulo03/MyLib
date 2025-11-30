@@ -10,28 +10,33 @@ TMDB_API_KEY = os.getenv("TMDB_API_KEY")
 STEAMGRIDDB_API_KEY = os.getenv("STEAMGRIDDB_API_KEY")
 
 
-def get_game_cover(game_name):
+def get_game_cover(game_name, tries=0):
     headers = {"Authorization": f"Bearer {STEAMGRIDDB_API_KEY}"}
     url_busca = f"https://www.steamgriddb.com/api/v2/search/autocomplete/{game_name}"
-    response = requests.get(url_busca, headers=headers)
-    if response.status_code == 200:
-        dados_busca = response.json()
-        if dados_busca["data"]:
-            game_id = dados_busca["data"][0]["id"]
-            url_grid = f"https://www.steamgriddb.com/api/v2/grids/game/{game_id}?dimensions=600x900&styles=alternate,material"
-            response_grid = requests.get(url_grid, headers=headers)
-            if response_grid.status_code == 200:
-                grids = response_grid.json()["data"]
-                if grids:
-                    capa_url = grids[0]["url"]
-                    return capa_url
+    try:
+        response = requests.get(url_busca, headers=headers)
+        if response.status_code == 200:
+            dados_busca = response.json()
+            if dados_busca["data"]:
+                game_id = dados_busca["data"][0]["id"]
+                url_grid = f"https://www.steamgriddb.com/api/v2/grids/game/{game_id}?dimensions=600x900&styles=alternate,material"
+                response_grid = requests.get(url_grid, headers=headers)
+                if response_grid.status_code == 200:
+                    grids = response_grid.json()["data"]
+                    if grids:
+                        capa_url = grids[0]["url"]
+                        return capa_url
+    except Exception:
+        if tries < 3:
+            sleep(1)
+            get_game_cover(game_name, tries + 1)
     return ""
 
 
 def get_book_cover(book_title, tries=0):
     url_busca = f"https://www.googleapis.com/books/v1/volumes?q={book_title}"
     try:
-        response = requests.get(url_busca, timeout=5)
+        response = requests.get(url_busca)
         if response.status_code == 200:
             dados = response.json()
             if "items" in dados:
@@ -46,28 +51,14 @@ def get_book_cover(book_title, tries=0):
                         .replace("http://", "https://")
                     )
                     return url_hd
-                else:
-                    identifiers = livro.get("industryIdentifiers", [])
-                    isbn13 = None
-                    for id in identifiers:
-                        if id.get("type") == "ISBN_13":
-                            isbn13 = id.get("identifier")
-                            break
-                    if isbn13:
-                        url = f"https://covers.openlibrary.org/b/isbn/{isbn13}-L.jpg"
-                        try:
-                            response = requests.head(f"{url}?default=false", timeout=5)
-                            if response.status_code != 404:
-                                return url
-                            else:
-                                return ""
-                        except requests.RequestException:
-                            return ""
-    except:
-        if tries < 5:
-            sleep(1)
-            return get_book_cover(book_title, tries=tries + 1)
 
+                book_title = livro.get("title", book_title)
+    except:
+        pass
+
+    if tries < 2:
+        sleep(1)
+        return get_book_cover(book_title, tries=tries + 1)
     return ""
 
 
@@ -86,13 +77,14 @@ def get_movie_cover(imdb_id):
             if caminho_poster:
                 url_imagem = f"https://image.tmdb.org/t/p/w500{caminho_poster}"
                 return url_imagem, overview
+
     return "", ""
 
 
 type_map = {
-    "filmes": ["data/filmes_tratados.csv", get_movie_cover, "id", True],
-    "livros": ["data/livros_tratados.csv", get_book_cover, "titulo", False],
-    "jogos": ["data/jogos_tratados.csv", get_game_cover, "titulo", False],
+    "filme": ["data/filme_tratados.csv", get_movie_cover, "id", True],
+    "livro": ["data/livro_tratados.csv", get_book_cover, "titulo", False],
+    "jogo": ["data/jogo_tratados.csv", get_game_cover, "titulo", False],
 }
 
 
@@ -106,6 +98,7 @@ def update_images(type_data, position=0):
         dataset["descricao"] = ""
 
     dataset = dataset.sort_values(by="rating", ascending=False).reset_index(drop=True)
+    dataset.drop_duplicates(subset=["titulo"], inplace=True)
     updated = 0
     dataset.fillna({"imagem": ""}, inplace=True)
     dataset.fillna({id_field: ""}, inplace=True)
@@ -146,7 +139,7 @@ def update_images(type_data, position=0):
 if __name__ == "__main__":
     from concurrent.futures import ThreadPoolExecutor
 
-    categorias = ["filmes", "jogos", "livros"]
+    categorias = ["filme", "jogo", "livro"]
     with ThreadPoolExecutor(max_workers=3) as executor:
         for i, cat in enumerate(categorias):
             executor.submit(update_images, cat, i)
