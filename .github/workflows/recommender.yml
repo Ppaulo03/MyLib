@@ -33,4 +33,4 @@ jobs:
           MY_USER_POOL_ID: ${{ secrets.MY_USER_POOL_ID }}
           SUPABASE_DB_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-        run: python jobs/job_personal_recs.py
+        run: python jobs/recommendation_job.py
