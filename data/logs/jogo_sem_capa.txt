@@ -89,7 +89,6 @@ Little Nightmares: The Hideaway - Little Nightmares: The Hideaway
 Breakout - Breakout
 duplicate Trace Memory - duplicate Trace Memory
 Touch Detective 2 1/2 - Touch Detective 2 1/2
-Swordigo - Swordigo
 Termo - Termo
 The Black Mirror - The Black Mirror
 Tiny Wings - Tiny Wings
@@ -409,7 +408,6 @@ There Swings a Skull - There Swings a Skull
 Rebuild - Rebuild
 Shotgun Witch - Shotgun Witch
 The Temple of No - The Temple of No
-Kinectimals - Kinectimals
 SinoAlice - SinoAlice
 Neotrogla - Neotrogla
 You and I and the Long, Long Drive - You and I and the Long, Long Drive
@@ -460,3 +458,397 @@ Noise1 - Noise1
 Mardek RPG: Chapter 1 - Mardek RPG: Chapter 1
 Under Leaves - Under Leaves
 The Manga Works - The Manga Works
+Nanopesos - Nanopesos
+Eldarya - Eldarya
+Pokédex 3D - Pokédex 3D
+duplicate Akumajou Dracula X: Chi no Rondo - duplicate Akumajou Dracula X: Chi no Rondo
+Grand Fantasia - Grand Fantasia
+Beat Stomper - Beat Stomper
+Libretta - Libretta
+Wolfgirls in Love - Wolfgirls in Love
+The Catacombs of Solaris - The Catacombs of Solaris
+Space/Mech/Pilot - Space/Mech/Pilot
+Please Knock on My Door - Please Knock on My Door
+.Hack//G.U. Vol. 1: Rebirth HD - .Hack//G.U. Vol. 1: Rebirth HD
+Next Door - Next Door
+World's Dawn - World's Dawn
+Aerial_Knight's Never Yield - Aerial_Knight's Never Yield
+Arena of Valor - Arena of Valor
+5 Minutes to Kill Yourself - 5 Minutes to Kill Yourself
+Asteroid - Asteroid
+Spiral Clicker - Spiral Clicker
+NITE Team 4 - NITE Team 4
+P.E. Noire - P.E. Noire
+FeralHeart - FeralHeart
+Pizza Tycoon - Pizza Tycoon
+Monster of the Deep: Final Fantasy XV - Monster of the Deep: Final Fantasy XV
+Rolando - Rolando
+Eternal Home Floristry - Eternal Home Floristry
+Hentai Nazi - Hentai Nazi
+Trespasser - Trespasser
+Sly Spy - Sly Spy
+Star Wars: Tales from the Galaxy's Edge - Star Wars: Tales from the Galaxy's Edge
+Barbie Beauty Boutique - Barbie Beauty Boutique
+Ingress - Ingress
+World End Economica - World End Economica
+Dark Reign: The Future of War - Dark Reign: The Future of War
+Flappy Golf 2 - Flappy Golf 2
+Griptape Backbone - Griptape Backbone
+Stay - Stay
+Our Life: Now & Forever - Our Life: Now & Forever
+Hidden Paws - Hidden Paws
+Rust Bucket - Rust Bucket
+World End Economica: Episode.02 - World End Economica: Episode.02
+Miscrits: Volcano Island - Miscrits: Volcano Island
+Underhand - Underhand
+Choices: Stories You Play - Choices: Stories You Play
+Granny Simulator - Granny Simulator
+Plaque Attack - Plaque Attack
+Mini Healer - Mini Healer
+Duck Season PC - Duck Season PC
+Fish Out of Water! - Fish Out of Water!
+Wild Animal Racing - Wild Animal Racing
+Splatter - Splatter
+Drowning, Drowning - Drowning, Drowning
+Robot Wants It All - Robot Wants It All
+Where Cards Fall - Where Cards Fall
+N.O.V.A. - N.O.V.A.
+Pop Town - Pop Town
+Depict1 - Depict1
+Gohome - Gohome
+Pokonyan! Henpokorin Adventure - Pokonyan! Henpokorin Adventure
+Treasure Cove! - Treasure Cove!
+99 Bricks Wizard Academy - 99 Bricks Wizard Academy
+Q.u.q. - Q.u.q.
+Atma - Atma
+Killer7 Remaster - Killer7 Remaster
+Life After Magic - Life After Magic
+World to the West - World to the West
+Enemy Mind - Enemy Mind
+ACA Neo Geo: The King of Fighters '99 - ACA Neo Geo: The King of Fighters '99
+You Died but a Necromancer Revived You - You Died but a Necromancer Revived You
+Zugzwang - Zugzwang
+Voodoo Garden - Voodoo Garden
+Head Soccer - Head Soccer
+Ballads at Midnight - Ballads at Midnight
+Racket: Nx - Racket: Nx
+PC Fútbol 2001 - PC Fútbol 2001
+The Machine - The Machine
+Ketzal's Corridors - Ketzal's Corridors
+Sono Hanabira ni Kuchizuke o: Itoshisa no Photograph - Sono Hanabira ni Kuchizuke o: Itoshisa no Photograph
+Garden of the Sea - Garden of the Sea
+Xevious 3D/G - Xevious 3D/G
+Inversus - Inversus
+ACA Neo Geo: Waku Waku 7 - ACA Neo Geo: Waku Waku 7
+The Most Desperate Angel - The Most Desperate Angel
+Yuki Onna - Yuki Onna
+One Hour One Life - One Hour One Life
+Security Booth: Director's Cut - Security Booth: Director's Cut
+Exponential Idle - Exponential Idle
+Cricket 19 - Cricket 19
+Last Command - Last Command
+Mr. Massagy - Mr. Massagy
+Major Havoc - Major Havoc
+Monster Hunter Online - Monster Hunter Online
+Demonheart - Demonheart
+Marvel Future Revolution - Marvel Future Revolution
+Gothic Murder: Adventure That Changes Destiny - Gothic Murder: Adventure That Changes Destiny
+\\\//\\/\\\/// - \\\//\\/\\\///
+Girlish Grimoire Littlewitch Romanesque - Girlish Grimoire Littlewitch Romanesque
+Obakeidoro! - Obakeidoro!
+Zynga Poker – Texas Holdem - Zynga Poker – Texas Holdem
+Gambling Apocalypse Kaiji - Gambling Apocalypse Kaiji
+Here and There Along the Echo - Here and There Along the Echo
+Sumatra: Fate of Yandi - Sumatra: Fate of Yandi
+Castle of the Winds - Castle of the Winds
+Planet Harriers - Planet Harriers
+The Shopping List - The Shopping List
+Swords and Sandals 2 Redux: Maximus Edition - Swords and Sandals 2 Redux: Maximus Edition
+Lily's Night Off - Lily's Night Off
+Swords & Soldiers II - Swords & Soldiers II
+Grand Cross Renovation - Grand Cross Renovation
+Mr. Saitou - Mr. Saitou
+Marginalia - Marginalia
+Last Day on Earth: Survival - Last Day on Earth: Survival
+Eat Beat: Dead Spike-san - Eat Beat: Dead Spike-san
+Obama Boss Fight - Obama Boss Fight
+Dawngate - Dawngate
+Lapse 2: Before Zero - Lapse 2: Before Zero
+Paletta - Paletta
+SimPark - SimPark
+Ben and Ed: Blood Party - Ben and Ed: Blood Party
+Slender-Man - Slender-Man
+Travian: Legends - Travian: Legends
+Chess Evolved Online - Chess Evolved Online
+Waven - Waven
+Guitar Girl - Guitar Girl
+Helix - Helix
+Segare Ijiri - Segare Ijiri
+Pub Encounter - Pub Encounter
+B-Cubed - B-Cubed
+The Maid of Fairewell Heights - The Maid of Fairewell Heights
+Antiyoy - Antiyoy
+Jettomero: Hero of the Universe - Jettomero: Hero of the Universe
+Dictators:No Peace Countryballs - Dictators:No Peace Countryballs
+Copper Odyssey - Copper Odyssey
+Red Embrace - Red Embrace
+Dan-Ku-Ga - Dan-Ku-Ga
+Windlands 2 - Windlands 2
+Dominique Pamplemousse & Dominique Pamplemousse in "Combinatorial Explosion" - Dominique Pamplemousse & Dominique Pamplemousse in "Combinatorial Explosion"
+Pyramida - Pyramida
+Kissed by the Baddest Bidder - Kissed by the Baddest Bidder
+Tangled: The Video Game - Tangled: The Video Game
+School Girl/Zombie Hunter - School Girl/Zombie Hunter
+0h h1 - 0h h1
+Hasbro's Battleship - Hasbro's Battleship
+Crazy Penguin Catapult - Crazy Penguin Catapult
+World Conqueror 3 - World Conqueror 3
+The Last Stand: Dead Zone - The Last Stand: Dead Zone
+Recoil - Recoil
+Bike Baron - Bike Baron
+I Love You! - I Love You!
+Evil Factory - Evil Factory
+Bravery Network Online - Bravery Network Online
+Creme de la Creme - Creme de la Creme
+I Love Katamari - I Love Katamari
+Academia: School Simulator - Academia: School Simulator
+The Grim Reaper Who Reaped My Heart - The Grim Reaper Who Reaped My Heart
+Ninja Saga - Ninja Saga
+America's Army - America's Army
+Gunhouse - Gunhouse
+Ef: The First Tale. - Ef: The First Tale.
+Battletoads / Double Dragon: The Ultimate Team - Battletoads / Double Dragon: The Ultimate Team
+Adventure Bar Story - Adventure Bar Story
+Record of Agarest War 2 - Record of Agarest War 2
+Backyard Hockey - Backyard Hockey
+Golf Battle - Golf Battle
+Cooking Simulator VR - Cooking Simulator VR
+Indecision. - Indecision.
+Toripon - Toripon
+Super Star Path - Super Star Path
+Tasokare Hotel - Tasokare Hotel
+Shadowmatic - Shadowmatic
+10mg: You are such a Soft and Round Kitten. - 10mg: You are such a Soft and Round Kitten.
+Domino's App feat. Hatsune Miku - Domino's App feat. Hatsune Miku
+Just One Boss - Just One Boss
+Andromeda Six - Andromeda Six
+Socrates Jones: Pro Philosopher - Socrates Jones: Pro Philosopher
+Chessformer - Chessformer
+The Elder Scrolls Online: Dragonhold - The Elder Scrolls Online: Dragonhold
+Kitty Powers' Love Life - Kitty Powers' Love Life
+Loek - Loek
+Intralism - Intralism
+Poker Smash - Poker Smash
+Blendoku 2 - Blendoku 2
+Hand Simulator: Survival - Hand Simulator: Survival
+.Hack//Frägment - .Hack//Frägment
+Fighting Mania: Fist of the North Star - Fighting Mania: Fist of the North Star
+KKnD2: Krossfire - KKnD2: Krossfire
+We Met in May - We Met in May
+Asphyxia - Asphyxia
+Skate City - Skate City
+Twin Saga - Twin Saga
+Crash Drive 2 - Crash Drive 2
+Tax Heaven 3000 - Tax Heaven 3000
+The Fish Market - The Fish Market
+Heroes of Might and Magic IV: Winds of War - Heroes of Might and Magic IV: Winds of War
+Lady Bug - Lady Bug
+Crazy Planets - Crazy Planets
+Population: Tire - Population: Tire
+Father and Son - Father and Son
+Octordle - Octordle
+duplicate RISK: Global Domination - duplicate RISK: Global Domination
+Crimson Dragon - Crimson Dragon
+Has-Been Heroes - Has-Been Heroes
+Little Party - Little Party
+He Beat Her. - He Beat Her.
+Qbasic Gorillas - Qbasic Gorillas
+Warlords III: Darklords Rising - Warlords III: Darklords Rising
+I Am Jesus Christ - I Am Jesus Christ
+Duplicate Silent Hill 2: Director's Cut - Duplicate Silent Hill 2: Director's Cut
+Midnight Protocol - Midnight Protocol
+Taisho x Alice: Heads & Tails! - Taisho x Alice: Heads & Tails!
+The 9th Annual Vanilla Level Design Contest: Collaboration Hack - The 9th Annual Vanilla Level Design Contest: Collaboration Hack
+Summer Paws - Summer Paws
+TransBot - TransBot
+Filthbreed - Filthbreed
+The Block - The Block
+Spellcorked! - Spellcorked!
+Super Impossible Road - Super Impossible Road
+Birdsong - Birdsong
+Ghosts of Miami - Ghosts of Miami
+GaiaSeed: Project Seed Trap - GaiaSeed: Project Seed Trap
+SM64 Sapphire - SM64 Sapphire
+TerraGenesis - Space Settlers - TerraGenesis - Space Settlers
+Timing Hero - Timing Hero
+Table Tennis - Table Tennis
+Bomb It - Bomb It
+Super Monsters Ate My Condo - Super Monsters Ate My Condo
+Goalkeeper Training VR - Goalkeeper Training VR
+Find Yourself - Find Yourself
+Her New Memory - Her New Memory
+Ashes Cricket - Ashes Cricket
+Evo\Wave - Evo\Wave
+Tokyo Crash Mobs - Tokyo Crash Mobs
+Endeavor - Endeavor
+Gilbert Goodmate and the Mushroom of Phungoria - Gilbert Goodmate and the Mushroom of Phungoria
+EarthWorms - EarthWorms
+StrongBadZone - StrongBadZone
+Pendragon - Pendragon
+Extreme Warfare Revenge - Extreme Warfare Revenge
+The Signal State - The Signal State
+Pocket League Story - Pocket League Story
+Feed the Head - Feed the Head
+Idle Apocalypse - Idle Apocalypse
+Kana: Little Sister - Kana: Little Sister
+Super Mario World Randomizer - Super Mario World Randomizer
+Metal Gear Solid Touch - Metal Gear Solid Touch
+ACA Neo Geo: Samurai Shodown - ACA Neo Geo: Samurai Shodown
+O2Jam - O2Jam
+Where the Goats Are - Where the Goats Are
+Draw Something Classic - Draw Something Classic
+MinuteQues‪t‬ - MinuteQues‪t‬
+Who Has the Biggest Brain? - Who Has the Biggest Brain?
+Library - Library
+Alter Ego Complex - Alter Ego Complex
+The Divine Speaker - The Divine Speaker
+Scars of Summer - Scars of Summer
+Ef: The Latter Tale. - Ef: The Latter Tale.
+Infernium - Infernium
+Raimais - Raimais
+Horse Master - Horse Master
+Gary Grigsby's War in the East - Gary Grigsby's War in the East
+Times Infinity - Times Infinity
+Wipeout In the Zone - Wipeout In the Zone
+Anna - Anna
+Jumper - Jumper
+Ordia - Ordia
+SuperEpic: The Entertainment War - SuperEpic: The Entertainment War
+Neo Aquarium: The King of Crustaceans - Neo Aquarium: The King of Crustaceans
+You Must be 18 or Older to Enter - You Must be 18 or Older to Enter
+Roommates - Roommates
+NecroMerger - NecroMerger
+Superhotline Miami Deluxe - Superhotline Miami Deluxe
+SCP-087 - SCP-087
+Sedecordle - Sedecordle
+The Alchemist Code - The Alchemist Code
+Cat Game! - Cat Game!
+Dear My Cat - Dear My Cat
+Mr Crab - Mr Crab
+Evil Apples: Dirty as ____. - Evil Apples: Dirty as ____.
+That Level Again 4 - That Level Again 4
+Cellular Harvest - Cellular Harvest
+Scooby-Doo and The Creepy Castle - Scooby-Doo and The Creepy Castle
+Without Within - Without Within
+Anteater - Anteater
+Will Die Alone - Will Die Alone
+FixFox - FixFox
+Sensible World of Soccer '96/'97 - Sensible World of Soccer '96/'97
+Hikeback - Hikeback
+KKnD - KKnD
+Fault: Stp - Lightkravte - Fault: Stp - Lightkravte
+Katekyo Hitman Reborn! DS Flame Rumble XX - Kessen! Real 6 Chouka - Katekyo Hitman Reborn! DS Flame Rumble XX - Kessen! Real 6 Chouka
+Ganbare! Daiku no Gensan - Ganbare! Daiku no Gensan
+I See You - I See You
+Blaster - Blaster
+House of Detention - House of Detention
+Super Mario Bros. / Tetris / Nintendo World Cup - Super Mario Bros. / Tetris / Nintendo World Cup
+A Gay Love Story About Gay Love - A Gay Love Story About Gay Love
+Uneven Dream - Uneven Dream
+RymdResa - RymdResa
+Dab on Darkness! - Dab on Darkness!
+Ghost Case - Ghost Case
+Crystal Caves HD - Crystal Caves HD
+Narcissu Sumire - Narcissu Sumire
+Homescapes - Homescapes
+Gimme Money! Neverquaker - Gimme Money! Neverquaker
+The Adventure of Hourai High School - The Adventure of Hourai High School
+Karakara - Karakara
+Entropoly - Entropoly
+Pepper's Puzzles - Pepper's Puzzles
+Johnny's Payday Panic - Johnny's Payday Panic
+Walking Simulator A Month Club (Complete Edition) - Walking Simulator A Month Club (Complete Edition)
+ACA Neo Geo: The King of Fighters '94 - ACA Neo Geo: The King of Fighters '94
+Il Filo Conduttore - Il Filo Conduttore
+Scarlett Mysteries: Cursed Child - Scarlett Mysteries: Cursed Child
+Small Soldiers: Squad Commander - Small Soldiers: Squad Commander
+Marble Skies - Marble Skies
+Sheriff - Sheriff
+Shaiya - Shaiya
+Quake: The Offering - Quake: The Offering
+Ultrawings - Ultrawings
+Epiphany City - Epiphany City
+Spl-t - Spl-t
+ZigZag - ZigZag
+SoniPro - SoniPro
+Alphabet - Alphabet
+Knights College - Knights College
+Brain Dots - Brain Dots
+Leftovers - Leftovers
+Florensia - Florensia
+The Last Days of Our Castle - The Last Days of Our Castle
+D/Generation - D/Generation
+EyeToy: AntiGrav - EyeToy: AntiGrav
+Nostalgic Train - Nostalgic Train
+Just King - Just King
+Miserere - Miserere
+The Perfect Tower II - The Perfect Tower II
+In the Rural Village of Nagoro - In the Rural Village of Nagoro
+Beastie Bay - Beastie Bay
+Lies Beneath - Lies Beneath
+Winter Polaris - Winter Polaris
+Dr. Lunatic Supreme with Cheese - Dr. Lunatic Supreme with Cheese
+Fun Run 3: Arena Running Game - Fun Run 3: Arena Running Game
+The Banner Saga: Factions - The Banner Saga: Factions
+Cladun Returns: This is Sengoku! - Cladun Returns: This is Sengoku!
+Destroy the Porn - Destroy the Porn
+Peace, Death! 2 - Peace, Death! 2
+Postknight 2 - Postknight 2
+Jogo Satanista para Praticar o Mal - Jogo Satanista para Praticar o Mal
+The Endless Express - The Endless Express
+Keen - Keen
+The Tartarus Key - The Tartarus Key
+Mable and the Wood - Mable and the Wood
+Furcadia - Furcadia
+Alpine Racer 2 - Alpine Racer 2
+Liberal Crime Squad - Liberal Crime Squad
+Magic Vigilante - Magic Vigilante
+The Ensign - The Ensign
+Maptroid - Maptroid
+Gakuen Club - Gakuen Club
+Treasure Adventure World - Treasure Adventure World
+Meeblings - Meeblings
+Deleveled - Deleveled
+Juurru - Juurru
+Doggy Dinner Time - Doggy Dinner Time
+Ending - Ending
+Rupupu Cube: Lup Salad - Rupupu Cube: Lup Salad
+Need to Know - Need to Know
+Touhoumon Purple - Touhoumon Purple
+Postbird in Provence - Postbird in Provence
+Arthur's Camping Adventure - Arthur's Camping Adventure
+Bid For Power - Bid For Power
+Nemesis 2 - Nemesis 2
+That Which Gave Chase - That Which Gave Chase
+Demonpact: Clarice - Demonpact: Clarice
+Anne Frank House VR - Anne Frank House VR
+Radical Rabbit Stew - Radical Rabbit Stew
+Lost Pig (And Place Under Ground) - Lost Pig (And Place Under Ground)
+Nyakori's Rabbit Doll - Nyakori's Rabbit Doll
+Hades' Star - Hades' Star
+Radiohammer - Radiohammer
+Rising World - Rising World
+Aquales - Aquales
+Harmony: The Fall of Reverie - Harmony: The Fall of Reverie
+Big Tiddy Goth GF Simulator - Big Tiddy Goth GF Simulator
+PopSauce - PopSauce
+Exo One: Prologue - Exo One: Prologue
+United Heist - United Heist
+Feedvid Live - Feedvid Live
+Trash Horror Collection - Trash Horror Collection
+Murder on the Marine Express - Murder on the Marine Express
+Inked - Inked
+Tone Sphere - Tone Sphere
+Cosmic Break - Cosmic Break
+Hotel Giant - Hotel Giant
+The Yukon Trail - The Yukon Trail

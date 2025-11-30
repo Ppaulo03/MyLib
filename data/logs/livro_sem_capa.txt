@@ -16,12 +16,10 @@ Boteco dos Deuses - Boteco dos Deuses
 Colecionadores de Histórias - Colecionadores de Histórias
 Flor da Neve e o Leque Secreto - Flor da Neve e o Leque Secreto
 A vida secreta de Marilyn Monroe - A vida secreta de Marilyn Monroe
-E.T. - O extraterrestre - E.T. - O extraterrestre
 As Cordas Mágicas - As Cordas Mágicas
 Guerra e Spray - Guerra e Spray
 Como partir o coração de um dragão - Como partir o coração de um dragão
 Frankenstein; O Médico e o Monstro; Drácula - Frankenstein; O Médico e o Monstro; Drácula
-Terceiro Reich no Poder - Terceiro Reich no Poder
 Eu, Elton John - Eu, Elton John
 Três Semanas Com Meu Irmão - Três Semanas Com Meu Irmão
 Encantada por Você - Encantada por Você
@@ -380,7 +378,6 @@ Sob as Cinzas de Stalingrado  - Sob as Cinzas de Stalingrado
 A síndrome de Ulisses - A síndrome de Ulisses
 A Vida secreta De Marilyn Moroe - A Vida secreta De Marilyn Moroe
 O Quarto do Barba-Azul - O Quarto do Barba-Azul
-Eu Maior - Eu Maior
 Da Bauhaus ao Nosso Caos - Da Bauhaus ao Nosso Caos
 Dançando o Sonho - Dançando o Sonho
 As Extraordinárias Cores do Amanhã - As Extraordinárias Cores do Amanhã
@@ -509,7 +506,6 @@ O Sonho do Café - O Sonho do Café
 Teque, Teque, Muu - Teque, Teque, Muu
 Três Caminhos para a Gravidade Quântica - Três Caminhos para a Gravidade Quântica
 Sonhos de uma teoria final - Sonhos de uma teoria final
-A importância da escolha - A importância da escolha
 Ligando Os 1000 Pontos: Obras de Arte - Ligando Os 1000 Pontos: Obras de Arte
 Star Wars: Uma Nova Esperança. A Vida de Luke Skywalker - Star Wars: Uma Nova Esperança. A Vida de Luke Skywalker
 A Descoberta da Tumba de Tutankhamon - A Descoberta da Tumba de Tutankhamon
@@ -658,212 +654,3 @@ Nada para vestir - Nada para vestir
 Eu Sou Um Gênio de Maldade Inenarrável e Quero Ser Seu Presidente de Turma - Eu Sou Um Gênio de Maldade Inenarrável e Quero Ser Seu Presidente de Turma
 O Pior Emprego Do Mundo - O Pior Emprego Do Mundo
 O homem ideal - O homem ideal
-Tendência à Distração - Tendência à Distração
-Alice Salazar - Alice Salazar
-O livro de colorir do Gravity Falls: - O livro de colorir do Gravity Falls:
-Em harmonia com a natureza - Em harmonia com a natureza
-A Arte de Lidar com Pessoas - A Arte de Lidar com Pessoas
-Os Lobos da Invernia - Os Lobos da Invernia
-Luta Pela Liberdade - Luta Pela Liberdade
-Egitomania: o fascinante mundo do antigo Egito, vol. 4 - Egitomania: o fascinante mundo do antigo Egito, vol. 4
-Egitomania: o fascinante mundo do antigo Egito, vol. 3 - Egitomania: o fascinante mundo do antigo Egito, vol. 3
-Um Diário Russo - Um Diário Russo
-Curso prático de redação - Curso prático de redação
-Esqueceram de Mim - Esqueceram de Mim
-A Família Urso comendo bobagens demais - A Família Urso comendo bobagens demais
-O Grande Roubo do Trem - O Grande Roubo do Trem
-Yakov e Os Sete Ladrões - Yakov e Os Sete Ladrões
-A Vista Infinita - A Vista Infinita
-Sempre Clara Rosa - Sempre Clara Rosa
-CORAÇÃO: MANUAL DO PROPRIETÁRIO - CORAÇÃO: MANUAL DO PROPRIETÁRIO
-A Jogadora de Go - A Jogadora de Go
-A guardiã do portal - A guardiã do portal
-Fabricando chocolate - Fabricando chocolate
-Dançando Sobre Cacos de Vidro - Dançando Sobre Cacos de Vidro
-Água Para Elefantes - Água Para Elefantes
-Água para Elefantes - Água para Elefantes
-O mistério do coelho pensante e outros contos - O mistério do coelho pensante e outros contos
-O Tapete do Rei Salomão - O Tapete do Rei Salomão
-O Guia Definitivo Do Mochileiro Das Galáxias + Marcadores Imantados - O Guia Definitivo Do Mochileiro Das Galáxias + Marcadores Imantados
-A vida vai dar certo pra mim - A vida vai dar certo pra mim
-A Compacta História da Segunda Guerra - A Compacta História da Segunda Guerra
-A linguagem das roupas - A linguagem das roupas
-Dieta dos Casais - Dieta dos Casais
-Reino Animal para colorir e destacar - Reino Animal para colorir e destacar
-Quando Nietzsche Chorou - Quando Nietzsche Chorou
-O Monge no Jardim - O Monge no Jardim
-A Morte é Contagiosa - A Morte é Contagiosa
-Egitomania: o fascinante mundo do antigo Egito, vol. 7 - Egitomania: o fascinante mundo do antigo Egito, vol. 7
-Egitomania: o fascinante mundo do antigo Egito, vol. 22  - Egitomania: o fascinante mundo do antigo Egito, vol. 22 
-Princesa Para Sempre - Princesa Para Sempre
-A Lista de Brett - A Lista de Brett
-Egitomania: o fascinante mundo do antigo Egito, vol. 6 - Egitomania: o fascinante mundo do antigo Egito, vol. 6
-Manhã de Núpcias - Manhã de Núpcias
-Egitomania: o fascinante mundo do antigo Egito, vol. 14 - Egitomania: o fascinante mundo do antigo Egito, vol. 14
-Egitomania: o fascinante mundo do antigo Egito, vol. 10 - Egitomania: o fascinante mundo do antigo Egito, vol. 10
-Egitomania: o fascinante mundo do antigo Egito, vol. 12 - Egitomania: o fascinante mundo do antigo Egito, vol. 12
-Egitomania: o fascinante mundo do antigo Egito, vol. 11 - Egitomania: o fascinante mundo do antigo Egito, vol. 11
-Egitomania: o fascinante mundo do antigo Egito, vol. 5 - Egitomania: o fascinante mundo do antigo Egito, vol. 5
- As Estratégias Fatais -  As Estratégias Fatais
-A Bruxa de Kepler - A Bruxa de Kepler
-Star Wars: A Velha República - Revan - Star Wars: A Velha República - Revan
-Atenção plena para iniciantes - Atenção plena para iniciantes
-Atenção Plena Para Iniciantes - Atenção Plena Para Iniciantes
-Atlas dos Lugares Sagrados - Atlas dos Lugares Sagrados
-O Espelho Enterrado - O Espelho Enterrado
-Egitomania: o fascinante mundo do antigo Egito, vol. 8 - Egitomania: o fascinante mundo do antigo Egito, vol. 8
-O ABSURDO E A GRAÇA - O ABSURDO E A GRAÇA
-Monte da Alegria - Monte da Alegria
-Marte e Vênus Apaixonados - Marte e Vênus Apaixonados
-365 Dias Que Mudaram O Mundo - 365 Dias Que Mudaram O Mundo
-Olha para o céu, Frederico! - Olha para o céu, Frederico!
-Ao Seu Comando - Ao Seu Comando
-A Dama e o Unicornio. - A Dama e o Unicornio.
-Amante Vingado - Amante Vingado
-Obras De Arte Para Colorir - Obras De Arte Para Colorir
-Como me tornei freira - Como me tornei freira
-Treine seu cérebro para ser feliz - Treine seu cérebro para ser feliz
-Deixe a Neve Cair - Deixe a Neve Cair
-Deixe a neve cair - Deixe a neve cair
-Magia Nossa de Cada Dia - Magia Nossa de Cada Dia
-Felipe Bronze: Cozinha brasileira de vanguarda - Felipe Bronze: Cozinha brasileira de vanguarda
-A Razão Gulosa - A Razão Gulosa
-A flor do Taiti - A flor do Taiti
-50 GRANDES MESTRES DO SUCESSO - 50 GRANDES MESTRES DO SUCESSO
-Apenas seis números - Apenas seis números
-Os sete pecados da memória - Os sete pecados da memória
-O PESSIMISMO E SUAS VONTADES - O PESSIMISMO E SUAS VONTADES
-Coração de Diamante - Coração de Diamante
-O Príncipe dos Canalhas - O Príncipe dos Canalhas
-50 ideias de história do mundo que você precisa conhecer - 50 ideias de história do mundo que você precisa conhecer
-Nate Bota Pra Quebrar - Nate Bota Pra Quebrar
-Minas do Ouro - Minas do Ouro
-Histórias e Ensinamentos da Vida de Buda - Histórias e Ensinamentos da Vida de Buda
-Roube como um artista: O Diário - Roube como um artista: O Diário
-O Pacto Cassandra - O Pacto Cassandra
-Romilda e Margarida  - Romilda e Margarida 
-A maratona mais louca do mundo! - A maratona mais louca do mundo!
-SEU BALDE ESTÁ CHEIO? - SEU BALDE ESTÁ CHEIO?
-Encontre Deus Na Cabana - Encontre Deus Na Cabana
-Cobra Kai - A Saga Karatê Kid Continua - Cobra Kai - A Saga Karatê Kid Continua
-Star Wars - Figuras de Chumbo - 15 - Star Wars - Figuras de Chumbo - 15
-Eliminando o estresse - Eliminando o estresse
-O Anjo Exterminador - O Anjo Exterminador
-As Novas Doenças da Alma - As Novas Doenças da Alma
-Star Wars - Figuras de Chumbo - 57 - Star Wars - Figuras de Chumbo - 57
-Star Wars - Figuras de Chumbo - 36 - Star Wars - Figuras de Chumbo - 36
-Criatividade e Grupos Criativos: Fantasia e Concretude - Vol. 2 - Criatividade e Grupos Criativos: Fantasia e Concretude - Vol. 2
-Star Wars - Figuras de Chumbo - 05 - Star Wars - Figuras de Chumbo - 05
-A Tentação da Inocência - A Tentação da Inocência
-100 promessas para o meu bebê - 100 promessas para o meu bebê
-Vire o jogo! - Vire o jogo!
-Uma Breve História do Tempo  - Uma Breve História do Tempo 
-Uma breve história do tempo - Uma breve história do tempo
-Pensar bem, sentir-se bem - Pensar bem, sentir-se bem
-Cinquenta Tons Mais Escuros - Cinquenta Tons Mais Escuros
-Diário do Subsolo - Diário do Subsolo
-Era Uma Vez No Outono - Era Uma Vez No Outono
-As Maçãs do Sr. Peabody - As Maçãs do Sr. Peabody
-Porque Lulu Bergantim não Atravessou o Rubicon - Porque Lulu Bergantim não Atravessou o Rubicon
-BELA MATERNIDADE - BELA MATERNIDADE
-Simplesmente o Paraíso - Simplesmente o Paraíso
-Contos de Terror do Tio Montague - Contos de Terror do Tio Montague
-A Noiva Ladra - A Noiva Ladra
-A Ética Romântica e o Espírito do Consumismo Moderno - A Ética Romântica e o Espírito do Consumismo Moderno
-Ateliê Fashion: Estampas Para Colorir - Ateliê Fashion: Estampas Para Colorir
-A Maré Rebelde - A Maré Rebelde
-A História Em Discursos - A História Em Discursos
-O novo poder - O novo poder
-O Parque dos Dinossauros - O Parque dos Dinossauros
-A Terceira Medida do Sucesso - A Terceira Medida do Sucesso
-O torcedor acidental - O torcedor acidental
-Guadalupe e as bruxas - Guadalupe e as bruxas
-João Paulo II  Estou Nas Mãos de Deus - João Paulo II  Estou Nas Mãos de Deus
-A Gênese Africana - A Gênese Africana
-O executivo sincero - O executivo sincero
-Tina - Livro de colorir - Tina - Livro de colorir
-A Imbatível Garota-Esquilo - A Imbatível Garota-Esquilo
-O Funeral de Chopin - O Funeral de Chopin
-O Ônibus Mágico - O Ônibus Mágico
-A Estrela Que Nunca Vai Se Apagar - A Estrela Que Nunca Vai Se Apagar
-Playboy irresistível - Playboy irresistível
-violetas e caracóis - violetas e caracóis
-Egitomania: o fascinante mundo do antigo Egito, vol. 29 - Egitomania: o fascinante mundo do antigo Egito, vol. 29
-As Batidas Perdidas do Coração - As Batidas Perdidas do Coração
-Egitomania: o fascinante mundo do antigo Egito, vol. 28 - Egitomania: o fascinante mundo do antigo Egito, vol. 28
-Egitomania: o fascinante mundo do antigo Egito, vol. 21 - Egitomania: o fascinante mundo do antigo Egito, vol. 21
-Livro dos Provérbios de Salomão - Livro dos Provérbios de Salomão
-A Casa Torta - A Casa Torta
-A Máquina Performática - A Máquina Performática
-A Lei em Randado - A Lei em Randado
-Coraline (Graphic Novel) + O Livro do Cemitério - Coraline (Graphic Novel) + O Livro do Cemitério
-Playboy Irresistível - Playboy Irresistível
-Baile de máscaras  - Baile de máscaras 
-Augusto Cury. O Colecionador de Lágrimas e em Busca do Sentido da Vida - Caixa - Augusto Cury. O Colecionador de Lágrimas e em Busca do Sentido da Vida - Caixa
-A escultura de si - A escultura de si
-Egitomania: o fascinante mundo do antigo Egito, vol. 27 - Egitomania: o fascinante mundo do antigo Egito, vol. 27
-Egitomania: o fascinante mundo do antigo Egito, vol. 18 - Egitomania: o fascinante mundo do antigo Egito, vol. 18
-O Despertar do Príncipe - O Despertar do Príncipe
-O Julgamento de Gabriel - O Julgamento de Gabriel
-O Menino Invisível - O Menino Invisível
-Como Treinar o Seu Dragão - Como Treinar o Seu Dragão
-Como Treinar O Seu Dragão - Como Treinar O Seu Dragão
-O Amor Secreto - O Amor Secreto
-Livro de colorir - Mauricio de Sousa 80 anos - Livro de colorir - Mauricio de Sousa 80 anos
-Chitty Chitty Bang Bang: o carro mágico - Chitty Chitty Bang Bang: o carro mágico
-Egitomania: o fascinante mundo do antigo Egito, vol. 13 - Egitomania: o fascinante mundo do antigo Egito, vol. 13
-Você Sempre Jovem - Você Sempre Jovem
-Aprendendo a Seduzir - Aprendendo a Seduzir
-As Cinco Estações do Corpo - As Cinco Estações do Corpo
-A Redenção de Gabriel - A Redenção de Gabriel
-21 grandes batalhas que mudaram o Brasil - 21 grandes batalhas que mudaram o Brasil
-A Dieta de South Beach Aditivada - A Dieta de South Beach Aditivada
-O Inferno de Gabriel - O Inferno de Gabriel
-1924 - O Ano Que Criou Hitler - 1924 - O Ano Que Criou Hitler
-O cachorro que jogava na ponta esquerda - O cachorro que jogava na ponta esquerda
-Amante Meu - Amante Meu
-Histórias da América Latina - Histórias da América Latina
-Paisagem da Alma - Paisagem da Alma
-A Arte da Criatividade - A Arte da Criatividade
-Coração de Pedra - Coração de Pedra
-Eclipse - Guia Oficial Ilustrado Do Filme - Eclipse - Guia Oficial Ilustrado Do Filme
-O código do vestir - O código do vestir
-A Tragédia de Macbeth - A Tragédia de Macbeth
-Seis Anos Depois - Seis Anos Depois
-Um ratástico dia de campeão - Um ratástico dia de campeão
-Fizemos bem em resistir - Fizemos bem em resistir
-Como Se Livrar de Um Vampiro Apaixonado - Como Se Livrar de Um Vampiro Apaixonado
-Novelário de Donga Novais - Novelário de Donga Novais
-Tudo o que você precisa saber sobre ciência - Tudo o que você precisa saber sobre ciência
-Os hungareses - Os hungareses
-O MBA da vida real - O MBA da vida real
-Todo Garoto Tem - Todo Garoto Tem
-Suíte de silêncios - Suíte de silêncios
-Casamento à prova de bebês - Casamento à prova de bebês
-Cantando na chuva - Cantando na chuva
-Três Coisas Sobre Você - Três Coisas Sobre Você
-GARIMPO ou GESTÃO - GARIMPO ou GESTÃO
-Máximas do Dirceu - Máximas do Dirceu
-Saindo da Depressão - Saindo da Depressão
-Aquidauana - Aquidauana
-O Triunfo da Vida - O Triunfo da Vida
-Pinte Seu Próprio Van Gogh - Pinte Seu Próprio Van Gogh
-Aprendendo a dizer adeus: - Aprendendo a dizer adeus:
-O livro quadrado  - O livro quadrado 
-Os 27 Desafios Que Todo Chefe Deve Enfrentar - Os 27 Desafios Que Todo Chefe Deve Enfrentar
-A Primavera da Srta. Jean Brodie - A Primavera da Srta. Jean Brodie
-História das Prisões no Brasil - História das Prisões no Brasil
-A Sombra de Heidegger - A Sombra de Heidegger
-A Rainha da Fofoca - A Rainha da Fofoca
-Diário de um bárbaro covarde - Diário de um bárbaro covarde
-Bora enriquecer - Bora enriquecer
-Histórias populares da Língua Portuguesa - Histórias populares da Língua Portuguesa
-Culture Smart! Alemanha - Culture Smart! Alemanha
-Rodolfo e o Encanto de Natal - Rodolfo e o Encanto de Natal
-Cambada de Arruaceiros - Cambada de Arruaceiros
-Nossa Senhora Aparecida e o Papa Francisco - Nossa Senhora Aparecida e o Papa Francisco
-Mulheres que Correm com os Lobos - Mulheres que Correm com os Lobos
-As Aventuras de Dona Friz - Egito Antigo - As Aventuras de Dona Friz - Egito Antigo
-Claude Troisgros: histórias, dicas e receitas - Claude Troisgros: histórias, dicas e receitas
-365 Tweets de Deus - 365 Tweets de Deus
-Eu Posso Fazer Você Feliz - Eu Posso Fazer Você Feliz

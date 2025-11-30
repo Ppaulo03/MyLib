@@ -52,8 +52,8 @@ def get_profile(user_id):
         consumed_ids.append(midia_id)
 
         rating = float(item["rating"]) if item.get("rating") is not None else 0
-        status = str(item["status"]) if item.get("status") else "plan_to_watch"
-        if rating <= 0 or status in ["plan_to_watch", "abandoned"]:
+        status = str(item["status"]) if item.get("status") else "planned"
+        if rating <= 0 or status in ["planned", "abandoned"]:
             continue
 
         genres = item.get("unified_genres", [])
