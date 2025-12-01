@@ -2,8 +2,9 @@ import json
 import os
 from supabase import create_client, Client
 from get_covers import get_movie_cover, get_game_cover, get_book_cover
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional
+import ast
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
@@ -14,6 +15,22 @@ image_handlers = {
     "jogo": get_game_cover,
     "livro": get_book_cover,
 }
+
+
+def parse_stringified_list(v):
+
+    if v is None:
+        return None
+
+    if isinstance(v, list):
+        return v
+
+    if isinstance(v, str):
+        try:
+            return ast.literal_eval(v)
+        except (ValueError, SyntaxError):
+            return [v]
+    return v
 
 
 class metadataItem(BaseModel):
@@ -28,11 +45,31 @@ class metadataItem(BaseModel):
     star: Optional[str] = Field("", alias="star")
 
     # games
-    platform: Optional[str] = Field("", alias="plataforma")
-    developers: Optional[str] = Field("", alias="developers")
+    platform: Optional[str] = Field("", alias="plataformas")
+    developers: Optional[str] = Field("", alias="desenvlovedores")
 
     # anime
     episodes: Optional[int] = Field(0, alias="episodios")
+
+    @field_validator("platform", "developers", mode="before")
+    @classmethod
+    def parse_stringified_list(cls, v):
+        if v is None:
+            return ""
+        if isinstance(v, list):
+            return ",".join(v)
+
+        if isinstance(v, str):
+            v = v.strip()  # Remove espaços extras
+            try:
+                parsed = ast.literal_eval(v)
+                if isinstance(parsed, list):
+                    return ",".join(parsed)
+                else:
+                    return ",".join([parsed])
+            except (ValueError, SyntaxError):
+                return ",".join([v])
+        return v
 
 
 class ListItemsItem(BaseModel):
