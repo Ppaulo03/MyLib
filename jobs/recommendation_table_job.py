@@ -136,7 +136,15 @@ def upload_to_supabase(data_list, batch_size=1000):
     for i in range(0, total, batch_size):
         batch = data_list[i : i + batch_size]
         try:
-            response = supabase.table("recommendations").upsert(batch).execute()
+            response = (
+                supabase.table("recommendations")
+                .upsert(
+                    batch,
+                    on_conflict="origem_id, origem_categoria, alvo_id, alvo_categoria",
+                    ignore_duplicates=False,
+                )
+                .execute()
+            )
             print(f"Lote {i} a {i+len(batch)} enviado com sucesso!")
         except Exception as e:
             print(f"Erro no lote {i}: {e}")
