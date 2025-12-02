@@ -25,6 +25,7 @@ class MetadataItem(BaseModel):
 
     # anime
     episodes: Optional[int] = Field(0, alias="episodios")
+    mal_id: Optional[str | int] = Field("", alias="id_original")
 
     @field_validator("platform", "developers", mode="before")
     @classmethod
@@ -85,6 +86,7 @@ def json_encode_item(item: ListItemsItem) -> dict:
 
     elif item.category == "anime":
         encoded["metadata"]["episodes"] = item.metadata.episodes
+        encoded["metadata"]["mal_id"] = item.metadata.mal_id
 
     return encoded
 

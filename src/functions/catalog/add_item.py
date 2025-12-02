@@ -23,6 +23,7 @@ def lambda_handler(event, context):
             "rating": body.get("rating", None),
             "progress": body.get("progress", 0),
             "review": body.get("review", ""),
+            "created_at": datetime.now(timezone.utc).isoformat(),
             "updated_at": datetime.now(timezone.utc).isoformat(),
         }
         db_client.put_item(item)

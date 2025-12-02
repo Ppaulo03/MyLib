@@ -33,6 +33,8 @@ def _extracted_and_deploy(env):
         f"SupabaseKey={env['SUPABASE_KEY']}",
         f"TmdbApiKey={env['TMDB_API_KEY']}",
         f"SteamgriddbApiKey={env['STEAMGRIDDB_API_KEY']}",
+        f"MALClientId={env['MAL_CLIENT_ID']}",
+        f"MALClientSecret={env['MAL_CLIENT_SECRET']}",
     ]
 
     overrides_str = " ".join(overrides)

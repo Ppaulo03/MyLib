@@ -39,9 +39,19 @@ class DynamoClient:
         except Exception:
             return None
 
+    def _convert_float_to_decimal(self, obj):
+        if isinstance(obj, float):
+            return Decimal(str(obj))
+        elif isinstance(obj, dict):
+            return {k: self._convert_float_to_decimal(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [self._convert_float_to_decimal(i) for i in obj]
+        return obj
+
     def put_item(self, item):
         try:
-            self.table.put_item(Item=item)
+            clean_item = self._convert_float_to_decimal(item)
+            self.table.put_item(Item=clean_item)
             return True
         except Exception as e:
             print(f"Erro ao salvar no DynamoDB: {str(e)}")
@@ -95,7 +105,7 @@ class DynamoClient:
 
             if not data:
                 return False
-
+            data = self._convert_float_to_decimal(data)
             data["updated_at"] = datetime.now(timezone.utc).isoformat()
 
             update_expr = []

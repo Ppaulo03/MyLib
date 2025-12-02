@@ -31,6 +31,17 @@ Parameters:
     Type: String
     Description: Chave de API do SteamGridDB
     NoEcho: true
+  
+  MALClientId:
+    Type: String
+    Description: ClientID do MyAnimeList
+    NoEcho: true
+  
+  MALClientSecret:
+    Type: String
+    Description: Client Secret do MyAnimeList
+    NoEcho: true
+  
 
 Globals:
   Function:
@@ -46,6 +57,8 @@ Globals:
         TABLE_NAME: !Ref TabelaDados
         TMDB_API_KEY: !Ref TmdbApiKey
         STEAMGRIDDB_API_KEY: !Ref SteamgriddbApiKey
+        MAL_CLIENT_ID: !Ref MALClientId
+        MAL_CLIENT_SECRET: !Ref MALClientSecret
 
 Resources:
   TabelaDados:
@@ -213,6 +226,24 @@ Resources:
             Path: /catalog
             Method: PATCH
   
+  CatalogSyncMALFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/functions/catalog/
+      Handler: sync_mal.lambda_handler
+      Layers:
+        - !Ref CommonLayer
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TabelaDados
+      Events:
+        RootRoute:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref MyHttpApi
+            Path: /catalog/sync-mal
+            Method: POST
+
   RecommendationsGetItemFunction:
     Type: AWS::Serverless::Function
     Properties:
