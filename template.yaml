@@ -129,6 +129,8 @@ Resources:
     Properties:
       CodeUri: src/functions/system
       Handler: search.lambda_handler
+      Layers:
+        - !Ref CommonLayer
       Events:
         RootRoute:
           Type: HttpApi
@@ -210,6 +212,42 @@ Resources:
             ApiId: !Ref MyHttpApi
             Path: /catalog
             Method: PATCH
+  
+  RecommendationsGetItemFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/functions/recommendations/
+      Handler: get_item_recommendations.lambda_handler
+      Layers:
+        - !Ref CommonLayer
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TabelaDados
+      Events:
+        RootRoute:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref MyHttpApi
+            Path: /recommendations/item
+            Method: GET
+  
+  RecommendationsGetUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/functions/recommendations/
+      Handler: get_user_recommendations.lambda_handler
+      Layers:
+        - !Ref CommonLayer
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TabelaDados
+      Events:
+        RootRoute:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref MyHttpApi
+            Path: /recommendations/user
+            Method: GET
 
 
 Outputs:
