@@ -126,7 +126,7 @@ def get_fallback_recommendations(consumed_ids, top_genres, limit=5):
             "p_limit": limit,
         },
     ).execute()
-    return rpc_response.data
+    return [json_encode_item(ListItemsItem(**item)) for item in rpc_response.data]
 
 
 def get_item_recommendation(source_id, source_category, target_category=None):

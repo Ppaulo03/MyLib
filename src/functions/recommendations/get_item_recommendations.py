@@ -39,7 +39,7 @@ def lambda_handler(event, context):
 
             rec_ids = [r["id"] for r in v]
             recomendations[k].extend(
-                [f for f in fallback if f["categoria"] == k and f["id"] not in rec_ids]
+                [f for f in fallback if f["category"] == k and f["id"] not in rec_ids]
             )
 
     if target_category:

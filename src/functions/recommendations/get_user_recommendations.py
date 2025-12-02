@@ -1,5 +1,9 @@
 from common.decorators import lambda_wrapper
-from common.supabase_funcs import supabase, get_midia_info, get_fallback_recommendations
+from common.supabase_funcs import (
+    supabase,
+    get_midia_info,
+    get_fallback_recommendations,
+)
 from utils import get_user_history, get_user_top_genres
 import json
 
@@ -96,11 +100,7 @@ def lambda_handler(event, context):
 
             rec_ids = [r["id"] for r in grouped_recs[cat]]
             grouped_recs[cat].extend(
-                [
-                    f
-                    for f in fallback
-                    if f["categoria"] == cat and f["id"] not in rec_ids
-                ]
+                [f for f in fallback if f["category"] == cat and f["id"] not in rec_ids]
             )
 
     return {
