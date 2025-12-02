@@ -8,6 +8,14 @@ import time
 import json
 import os
 
+status_list = {
+    "watching": "in_progress",
+    "completed": "completed",
+    "on_hold": "on_hold",
+    "dropped": "abandoned",
+    "plan_to_watch": "planned",
+}
+
 
 def get_user_animelist(username):
     url = f"https://api.myanimelist.net/v2/users/{username}/animelist"
@@ -34,7 +42,9 @@ def get_user_animelist(username):
                 "title": node["node"]["alternative_titles"].get("en")
                 or node["node"]["title"],
                 "main_picture": node["node"]["main_picture"]["medium"],
-                "user_status": node["list_status"]["status"],
+                "user_status": status_list.get(
+                    node["list_status"]["status"], "planned"
+                ),
                 "user_score": node["list_status"]["score"] / 2,
                 "watched_episodes": node["list_status"]["num_episodes_watched"],
                 "comments": node["list_status"]["comments"],
