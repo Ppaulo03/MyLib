@@ -103,7 +103,7 @@ def lambda_handler(event, context):
                                     category: False,
                                 }
                             )
-                        elif rating <= 5 and old_item > 5:
+                        elif rating <= 5 and old_rating > 5:
                             db_client.put_item(
                                 {"user_id": user_id, "sk": "can_6_star", category: True}
                             )

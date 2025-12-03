@@ -2,6 +2,7 @@ import json
 from datetime import datetime, timezone
 from common.decorators import lambda_wrapper
 from common.dynamo_client import db_client
+from utils import get_6_star_dict
 
 
 @lambda_wrapper(required_fields=["id", "category", "title"])
@@ -16,6 +17,19 @@ def lambda_handler(event, context):
         sk_value = f"item#{category}#{media_id}"
         rating = body.get("rating", None)
         rating = float(rating) if rating else None
+
+        if rating and rating > 5:
+            can_6_star_dict = get_6_star_dict(user_id).model_dump()
+            if not can_6_star_dict.get(category):
+                return {
+                    "statusCode": 406,
+                    "body": json.dumps(
+                        {
+                            "message": "Não foi possivel usar superlike",
+                            "item_sk": sk_value,
+                        }
+                    ),
+                }
         item = {
             "user_id": user_id,
             "sk": sk_value,
