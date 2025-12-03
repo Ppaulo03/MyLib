@@ -1,5 +1,6 @@
 from common.dynamo_client import DynamoClient
 from collections import defaultdict
+from common.supabase_funcs import get_midia_info
 
 
 def get_user_history(user_id):
@@ -17,7 +18,6 @@ def get_user_history(user_id):
 
 
 def get_user_top_genres(user_history):
-
     consumed_ids = []
     genre_scores = defaultdict(float)
 
@@ -27,10 +27,14 @@ def get_user_top_genres(user_history):
 
         rating = float(item["rating"]) if item.get("rating") is not None else 0
         status = str(item["status"]) if item.get("status") else "planned"
+
         if rating <= 0 or status in ["planned", "abandoned"]:
             continue
 
-        genres = item.get("unified_genres", [])
+        midia_info = get_midia_info(midia_id)
+        if not midia_info:
+            continue
+        genres = midia_info.get("unified_genres", [])
 
         weight = 0
         if rating >= 4:

@@ -11,7 +11,25 @@ def lambda_handler(event, context):
     media_id = str(body["id"])
     category = body["category"]
     sk_value = f"item#{category.lower()}#{media_id}"
+
+    old_item = db_client.query_items(user_id, sk_value)
     db_client.update_item(user_id, sk_value, body)
+
+    old_rating = None
+    if old_item["items"]:
+        old_rating = old_item["items"][0].get("rating", 0)
+        old_rating = float(old_rating) if old_rating else None
+
+    rating = body.get("rating", None)
+    rating = float(rating) if rating else None
+
+    if rating:
+        if rating > 5 and old_rating <= 5:
+            db_client.put_item(
+                {"user_id": user_id, "sk": "can_6_star", category: False}
+            )
+        elif rating <= 5 and old_item > 5:
+            db_client.put_item({"user_id": user_id, "sk": "can_6_star", category: True})
 
     return {
         "statusCode": 200,

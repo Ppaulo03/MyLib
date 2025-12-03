@@ -54,7 +54,7 @@ def get_user_animelist(username):
         if "paging" in data and "next" in data["paging"]:
             url = data["paging"]["next"]
             params = {}
-            time.sleep(1)  # Respeitar rate limit
+            time.sleep(1)
         else:
             break
 
@@ -77,18 +77,37 @@ def lambda_handler(event, context):
                 continue
 
             sk_value = f"item#{category}#{item[0]['id']}"
-
+            rating = anime.get("user_score", None)
             item = {
                 "status": anime.get("user_status", "planned"),
-                "rating": anime.get("user_score", None),
+                "rating": rating,
                 "progress": anime.get("watched_episodes", 0),
                 "review": anime.get("comments", ""),
             }
 
             if db_client.query_items(user_id, sk_value)["items"]:
                 if override:
+                    old_item = db_client.query_items(user_id, sk_value)
+                    old_rating = None
+                    if old_item["items"]:
+                        old_rating = old_item["items"][0].get("rating", 0)
+                        old_rating = float(old_rating) if old_rating else None
                     db_client.update_item(user_id, sk_value, item)
-                continue
+
+                    if rating and old_rating:
+                        if rating > 5 and old_rating <= 5:
+                            db_client.put_item(
+                                {
+                                    "user_id": user_id,
+                                    "sk": "can_6_star",
+                                    category: False,
+                                }
+                            )
+                        elif rating <= 5 and old_item > 5:
+                            db_client.put_item(
+                                {"user_id": user_id, "sk": "can_6_star", category: True}
+                            )
+                    continue
 
             item |= {
                 "user_id": user_id,

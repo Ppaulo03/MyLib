@@ -46,7 +46,7 @@ Parameters:
 Globals:
   Function:
     Timeout: 180
-    MemorySize: 128
+    MemorySize: 1024
     Runtime: python3.13
     Architectures:
       - x86_64

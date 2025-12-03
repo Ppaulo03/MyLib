@@ -2,6 +2,22 @@ import json
 from common.decorators import lambda_wrapper
 from common.dynamo_client import db_client
 from common.supabase_funcs import get_midia_info
+from pydantic import BaseModel, Field
+
+
+class Can6Star(BaseModel):
+    filme: bool = Field(True)
+    anime: bool = Field(True)
+    jogo: bool = Field(True)
+    livro: bool = Field(True)
+
+
+def get_6_star_dict(user_id):
+    items = db_client.query_items(
+        user_id=user_id,
+        sk_prefix="can_6_star",
+    )
+    return Can6Star(**items["items"][0]) if items["items"] else Can6Star()
 
 
 @lambda_wrapper()
@@ -35,6 +51,7 @@ def lambda_handler(event, context):
                 "items": items["items"],
                 "count": items["count"],
                 "next_token": items["next_token"],
+                "6star": get_6_star_dict(user_id),
             }
         ),
     }
