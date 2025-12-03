@@ -51,7 +51,7 @@ def lambda_handler(event, context):
                 "items": items["items"],
                 "count": items["count"],
                 "next_token": items["next_token"],
-                "6star": get_6_star_dict(user_id),
+                "6star": get_6_star_dict(user_id).model_dump(),
             }
         ),
     }
