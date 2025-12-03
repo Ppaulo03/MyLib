@@ -82,14 +82,27 @@ def lambda_handler(event, context):
 
         grouped_recs[cat].append(item)
 
-    LIMIT_PER_CATEGORY = 5
+    LIMIT_PER_CATEGORY = 24
     fallback = None
     for cat in grouped_recs:
+
         grouped_recs[cat].sort(key=lambda x: x["score"], reverse=True)
-        grouped_recs[cat] = [
-            get_midia_info(item["item_id"])
-            for item in grouped_recs[cat][:LIMIT_PER_CATEGORY]
-        ]
+        if cat == "anime":
+            grouped_recs[cat] = [
+                it for it in grouped_recs[cat] if "season" not in it["title"].lower()
+            ]
+
+        flitered_recs = []
+        for item in grouped_recs[cat]:
+            midia = get_midia_info(item["item_id"])
+            if cat == "anime":
+                if "season" in midia["title"].lower():
+                    continue
+            flitered_recs.append(midia)
+            if len(flitered_recs) >= LIMIT_PER_CATEGORY:
+                break
+
+        grouped_recs[cat] = flitered_recs
 
         if len(grouped_recs[cat]) < LIMIT_PER_CATEGORY:
             if fallback == None:
@@ -102,7 +115,7 @@ def lambda_handler(event, context):
             grouped_recs[cat].extend(
                 [f for f in fallback if f["category"] == cat and f["id"] not in rec_ids]
             )
-
+            grouped_recs[cat] = grouped_recs[cat][:LIMIT_PER_CATEGORY]
     return {
         "statusCode": 200,
         "body": json.dumps({"recommendations": grouped_recs}),

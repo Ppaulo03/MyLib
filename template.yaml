@@ -49,7 +49,7 @@ Globals:
     MemorySize: 1024
     Runtime: python3.13
     Architectures:
-      - x86_64
+      - arm64
     Environment:
       Variables:
         SUPABASE_URL: !Ref SupabaseUrl
