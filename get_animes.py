@@ -3,9 +3,11 @@ import time
 import csv
 import os
 from supabase_populate.genre_map import GENRE_MAP
+from dotenv import load_dotenv
 
+load_dotenv(override=True)
 URL_BASE = "https://api.jikan.moe/v4"
-NOME_ARQUIVO = "animes.csv"
+NOME_ARQUIVO = "animes_validated.csv"
 MAX_PAGINAS = 2000
 
 
@@ -63,12 +65,12 @@ def salvar_anime_individual(anime_dict):
         print(f"Erro ao salvar no disco: {e}")
 
 
-def try_request(url):
+def try_request(url, headers=None):
     try:
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
         if response.status_code == 429:
             time.sleep(2)
-            return try_request(url)
+            return try_request(url, headers=headers)
 
         if response.status_code != 200:
             print(response.text)
@@ -102,38 +104,40 @@ def check_antecedents(mal_id):
     return False
 
 
-def get_dets(anime_id):
-    url = f"{URL_BASE}/anime/{anime_id}/full"
-    try:
-        response = try_request(url)
-        dados = response["data"]
-        if dados["type"] != "TV":
-            return False
+TMDB_API_KEY = os.getenv("TMDB_API_KEY")
 
-        for relation in dados["relations"]:
-            if relation.get("relation").lower() in ["prequel", "parent story"]:
-                for entry in relation.get("entry", []):
-                    time.sleep(0.2)
-                    if check_antecedents(entry["mal_id"]):
-                        continue
-                    return False
-        return True
+
+def get_dets(title, year):
+    url = f"https://api.themoviedb.org/3/search/tv?query={title}&language=pt-BR&year={year}"
+    header = {
+        "Authorization": f"Bearer {TMDB_API_KEY}",
+    }
+    try:
+        response = try_request(url, headers=header)
+        dados = response["results"]
+        if not dados:
+            return None
+        item = dados[0]
+        first_year_date = item.get("first_air_date", "").split("-")[0]
+        if year and first_year_date and int(first_year_date) != int(year):
+            return None
+        print(item["name"])
+        return item.get("overview", None) if dados else None
     except Exception as e:
         print(e)
-
-    return False
+    return None
 
 
 def buscar_animes():
 
     ids_processados = carregar_ids_ja_salvos()
-    pagina = 49
+    pagina = 404
     while True:
         print(f"--- Lendo Página {pagina} ---")
         try:
             resp = requests.get(
-                f"{URL_BASE}/anime",
-                params={"page": pagina, "filter": "bypopularity"},
+                f"{URL_BASE}/top/anime",
+                params={"page": pagina},
             )
 
             if resp.status_code == 429:
@@ -151,17 +155,23 @@ def buscar_animes():
                 break
 
             for item in items:
+
                 mal_id = item.get("mal_id")
                 titulo = item.get("title_english") or item.get("title")
+                ano = (
+                    str(item.get("year") or item.get("aired", {}).get("from") or "")
+                    .split("-")[0]
+                    .strip()
+                )
+
+                if not ano:
+                    continue
 
                 if mal_id in ids_processados:
                     continue
 
-                if "Season" in titulo:
-                    continue
-
-                time.sleep(0.5)
-                if not get_dets(mal_id):
+                dets = get_dets(titulo, ano)
+                if not dets:
                     continue
 
                 genres = [g["name"] for g in item.get("genres", [])]
@@ -175,13 +185,15 @@ def buscar_animes():
                 anime_data = {
                     "id": mal_id,
                     "titulo": titulo,
-                    "ano_lancamento": item.get("year"),
+                    "ano_lancamento": ano,
                     "generos": genres,
                     "generos_unificados": list(generes_unificados),
                     "rating": item.get("score"),
-                    "num_avaliacoes": item.get("scored_by"),
+                    "num_avaliacoes": (
+                        item.get("scored_by") / 2 if item.get("scored_by") else 0
+                    ),
                     "imagem": item["images"]["jpg"]["image_url"],
-                    "descricao": (item.get("synopsis") or "").replace("\n", " "),
+                    "descricao": (dets or "").replace("\n", " "),
                     "metadados": {
                         "id_original": mal_id,
                         "episodios": item.get("episodes"),
