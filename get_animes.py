@@ -127,7 +127,7 @@ def get_dets(anime_id):
 def buscar_animes():
 
     ids_processados = carregar_ids_ja_salvos()
-    pagina = 5
+    pagina = 8
     while True:
         print(f"--- Lendo Página {pagina} ---")
         try:
