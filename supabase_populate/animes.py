@@ -1,7 +1,11 @@
+from dotenv import load_dotenv
+
+load_dotenv(override=True)
 import time
 import requests
 from utils import save_to_supabase
 from genre_map import GENRE_MAP
+
 
 URL_BASE = "https://api.jikan.moe/v4/top/anime"
 CATEGORIA = "anime"
@@ -36,6 +40,7 @@ def buscar_e_salvar_animes():
         animes_raw = data["data"]
         dados_para_inserir = []
         for item in animes_raw:
+
             ano = item.get("year")
             if not ano:
                 try:
@@ -63,12 +68,12 @@ def buscar_e_salvar_animes():
                 },
             }
             dados_para_inserir.append(registro)
-        save_to_supabase(dados_para_inserir)
+        # save_to_supabase(dados_para_inserir)
         pagination = data["pagination"]
         if not pagination["has_next_page"]:
             break
         pagina_atual += 1
-        if pagina_atual > 1000:
+        if pagina_atual > 100:
             break
 
 

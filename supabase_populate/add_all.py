@@ -6,6 +6,7 @@ from utils import save_to_supabase
 import time
 import pandas as pd
 import ast
+from tqdm import tqdm
 
 
 def buscar_e_salvar_dataset(path, cateoria):
@@ -17,11 +18,7 @@ def buscar_e_salvar_dataset(path, cateoria):
     )
     dataset["metadata"] = dataset["metadata"].apply(ast.literal_eval)
     dataset.fillna(
-        {
-            "ano_lancamento": 0,
-            "descricao": "",
-            "rating": 0,
-        },
+        {"ano_lancamento": 0, "descricao": "", "rating": 0, "imagem": ""},
         inplace=True,
     )
     for index, row in dataset.iterrows():
@@ -30,27 +27,30 @@ def buscar_e_salvar_dataset(path, cateoria):
                 "categoria": cateoria,
                 "titulo": row["titulo"],
                 "descricao": row["descricao"],
-                "ano_lancamento": row["ano_lancamento"],
+                "ano_lancamento": int(row["ano_lancamento"]),
                 "generos": row["generos"],
-                "generos_unificados": row["generos_unificados"],
+                "generos_unificados": list(row["generos_unificados"]),
                 "rating": row["rating"],
                 "metadata": row["metadata"],
+                "imagem": row["imagem"],
             }
         )
 
-    while len(registros) >= 100:
-        lote = registros[:100]
-        save_to_supabase(lote)
-        registros = registros[100:]
-        time.sleep(1)
+    with tqdm(total=len(registros)) as pbar:
+        while registros:
+            lote = registros[:100]
+            save_to_supabase(lote)
+            pbar.update(len(lote))
+            registros = registros[100:]
+            time.sleep(1)
 
 
 if __name__ == "__main__":
-    pahts = ["livro", "jogo", "filme"]
+    pahts = ["filme", "jogo", "livro"]
     print("Iniciando a população do banco de dados Supabase...")
     for p in pahts:
         print(f"Populando {p}...")
-        buscar_e_salvar_dataset(f"data/{p}_tratados.csv", p)
+        buscar_e_salvar_dataset(f"data/{p}.csv", p)
     print("Populando animes...")
     buscar_e_salvar_animes()
     print("População concluída.")
