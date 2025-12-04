@@ -7,7 +7,7 @@ from utils import save_to_supabase
 from genre_map import GENRE_MAP
 
 
-URL_BASE = "https://api.jikan.moe/v4/top/anime"
+URL_BASE = "https://api.jikan.moe/v4/"
 CATEGORIA = "anime"
 
 

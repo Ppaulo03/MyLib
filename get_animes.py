@@ -127,16 +127,13 @@ def get_dets(anime_id):
 def buscar_animes():
 
     ids_processados = carregar_ids_ja_salvos()
-    pagina = 341
+    pagina = 49
     while True:
         print(f"--- Lendo Página {pagina} ---")
         try:
             resp = requests.get(
-                f"{URL_BASE}/top/anime",
-                params={
-                    "page": pagina,
-                    "type": "tv",
-                },
+                f"{URL_BASE}/anime",
+                params={"page": pagina, "filter": "bypopularity"},
             )
 
             if resp.status_code == 429:
