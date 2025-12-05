@@ -11,7 +11,6 @@ from tqdm import tqdm
 
 def buscar_e_salvar_dataset(path, cateoria):
     dataset = pd.read_csv(path, date_format={"generos": list})
-    registros = []
     dataset["generos"] = dataset["generos"].apply(ast.literal_eval)
     dataset["generos_unificados"] = dataset["generos_unificados"].apply(
         ast.literal_eval
@@ -21,21 +20,20 @@ def buscar_e_salvar_dataset(path, cateoria):
         {"ano_lancamento": 0, "descricao": "", "rating": 0, "imagem": ""},
         inplace=True,
     )
-    for index, row in dataset.iterrows():
-        registros.append(
-            {
-                "categoria": cateoria,
-                "titulo": row["titulo"],
-                "descricao": row["descricao"],
-                "ano_lancamento": int(row["ano_lancamento"]),
-                "generos": row["generos"],
-                "generos_unificados": list(row["generos_unificados"]),
-                "rating": row["rating"],
-                "metadata": row["metadata"],
-                "imagem": row["imagem"],
-            }
-        )
-
+    registros = [
+        {
+            "categoria": cateoria,
+            "titulo": row["titulo"],
+            "descricao": row["descricao"],
+            "ano_lancamento": int(row["ano_lancamento"]),
+            "generos": row["generos"],
+            "generos_unificados": list(row["generos_unificados"]),
+            "rating": row["rating"],
+            "metadata": row["metadata"],
+            "imagem": row["imagem"],
+        }
+        for index, row in dataset.iterrows()
+    ]
     with tqdm(total=len(registros)) as pbar:
         while registros:
             lote = registros[:100]
@@ -46,11 +44,12 @@ def buscar_e_salvar_dataset(path, cateoria):
 
 
 if __name__ == "__main__":
-    pahts = ["filme", "jogo", "livro"]
+    # pahts = ["filme", "jogo", "livro"]
+    pahts = ["anime"]
     print("Iniciando a população do banco de dados Supabase...")
     for p in pahts:
         print(f"Populando {p}...")
         buscar_e_salvar_dataset(f"data/{p}.csv", p)
-    print("Populando animes...")
-    buscar_e_salvar_animes()
-    print("População concluída.")
+    # print("Populando animes...")
+    # buscar_e_salvar_animes()
+    # print("População concluída.")
