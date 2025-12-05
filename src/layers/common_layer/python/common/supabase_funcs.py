@@ -143,5 +143,7 @@ def get_item_recommendation(source_id, source_category, target_category=None):
     for item in response.data:
         if target_category and target_category != item["alvo_categoria"]:
             continue
-        recommendations[item["alvo_categoria"]].append(get_midia_info(item["alvo_id"]))
+        m = get_midia_info(item["alvo_id"])
+        if m:
+            recommendations[item["alvo_categoria"]].append(m)
     return recommendations

@@ -72,8 +72,6 @@ def lambda_handler(event, context):
             }
 
     grouped_recs = {"anime": [], "filme": [], "jogo": [], "livro": []}
-    if target_category:
-        grouped_recs = {target_category: grouped_recs[target_category]}
 
     for item in candidates.values():
         cat = item["categoria"]
@@ -82,23 +80,20 @@ def lambda_handler(event, context):
 
         grouped_recs[cat].append(item)
 
+    if target_category:
+        grouped_recs = {target_category: grouped_recs[target_category]}
+
     LIMIT_PER_CATEGORY = 24
     fallback = None
     for cat in grouped_recs:
 
         grouped_recs[cat].sort(key=lambda x: x["score"], reverse=True)
-        if cat == "anime":
-            grouped_recs[cat] = [
-                it for it in grouped_recs[cat] if "season" not in it["title"].lower()
-            ]
 
         flitered_recs = []
         for item in grouped_recs[cat]:
             midia = get_midia_info(item["item_id"])
-            if cat == "anime":
-                if "season" in midia["title"].lower():
-                    continue
-            flitered_recs.append(midia)
+            if midia:
+                flitered_recs.append(midia)
             if len(flitered_recs) >= LIMIT_PER_CATEGORY:
                 break
 

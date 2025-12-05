@@ -1,0 +1,71 @@
+[
+  {
+    "nome_genero": "Arcade"
+  },
+  {
+    "nome_genero": "Aventura"
+  },
+  {
+    "nome_genero": "Beat 'em up"
+  },
+  {
+    "nome_genero": "Cartas e Tabuleiro"
+  },
+  {
+    "nome_genero": "Corrida"
+  },
+  {
+    "nome_genero": "Esporte"
+  },
+  {
+    "nome_genero": "Estratégia"
+  },
+  {
+    "nome_genero": "Estratégia em Tempo Real"
+  },
+  {
+    "nome_genero": "Estratégia por Turnos"
+  },
+  {
+    "nome_genero": "Indie"
+  },
+  {
+    "nome_genero": "Luta"
+  },
+  {
+    "nome_genero": "MOBA"
+  },
+  {
+    "nome_genero": "Música"
+  },
+  {
+    "nome_genero": "Pinball"
+  },
+  {
+    "nome_genero": "Plataforma"
+  },
+  {
+    "nome_genero": "Point-and-Click"
+  },
+  {
+    "nome_genero": "Quebra-Cabeça"
+  },
+  {
+    "nome_genero": "Quiz/Trivia"
+  },
+  {
+    "nome_genero": "RPG"
+  },
+  {
+    "nome_genero": "Simulador"
+  },
+  {
+    "nome_genero": "Tático"
+  },
+  {
+    "nome_genero": "Tiro"
+  },
+  {
+    "nome_genero": "Visual Novel"
+  }
+]
