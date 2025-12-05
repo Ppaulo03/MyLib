@@ -37,7 +37,7 @@ def lambda_handler(event, context):
                 }
 
     db_client.update_item(user_id, sk_value, body)
-
+    old_rating = old_rating or 0
     if rating:
         if rating > 5 and old_rating <= 5:
             db_client.put_item(
