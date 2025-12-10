@@ -48,7 +48,7 @@ def get_user_top_genres(user_history):
             genre_scores[genre] += weight
 
     sorted_genres = sorted(genre_scores.items(), key=lambda x: x[1], reverse=True)
-    top_genres_list = [g[0] for g in sorted_genres]
+    top_genres_list = {g[0]: g[1] for g in sorted_genres}
     return consumed_ids, top_genres_list
 
 
