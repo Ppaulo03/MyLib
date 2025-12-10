@@ -34,7 +34,7 @@ def lambda_handler(event, context):
             if fallback == None:
                 midia = get_midia_info(source_id)
                 fallback = get_fallback_recommendations(
-                    consumed_ids, midia["unified_genres"]
+                    consumed_ids, {g: 10 for g in midia["unified_genres"]}
                 )
 
             rec_ids = [r["id"] for r in v]
