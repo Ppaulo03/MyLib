@@ -39,10 +39,9 @@ class MetadataItem(BaseModel):
             v = v.strip()  # Remove espaços extras
             try:
                 parsed = ast.literal_eval(v)
-                if isinstance(parsed, list):
-                    return ",".join(parsed)
-                else:
-                    return ",".join([parsed])
+                return (
+                    ",".join(parsed) if isinstance(parsed, list) else ",".join([parsed])
+                )
             except (ValueError, SyntaxError):
                 return ",".join([v])
         return v
@@ -62,9 +61,7 @@ class ListItemsItem(BaseModel):
     @field_validator("id", mode="before")
     @classmethod
     def parse_stringified_list(cls, v):
-        if v is None:
-            return ""
-        return str(v)
+        return "" if v is None else str(v)
 
 
 def json_encode_item(item: ListItemsItem) -> dict:
@@ -93,11 +90,17 @@ def json_encode_item(item: ListItemsItem) -> dict:
 
 def get_midia_info(media_id):
     response = supabase.table("midia").select("*").eq("id", media_id).execute()
-    if response.data:
-        db_item = response.data[0]
-    else:
-        db_item = {}
+    db_item = response.data[0] if response.data else {}
     return json_encode_item(ListItemsItem(**db_item)) if db_item else {}
+
+
+def get_bulk_midia_info(media_ids):
+    response = supabase.table("midia").select("*").in_("id", media_ids).execute()
+    midia_dict = {}
+    for db_item in response.data:
+        processed_item = json_encode_item(ListItemsItem(**db_item))
+        midia_dict[processed_item["id"]] = processed_item
+    return midia_dict
 
 
 def search_midia(search_term, year=None, category=None):
@@ -143,7 +146,6 @@ def get_item_recommendation(source_id, source_category, target_category=None):
     for item in response.data:
         if target_category and target_category != item["alvo_categoria"]:
             continue
-        m = get_midia_info(item["alvo_id"])
-        if m:
+        if m := get_midia_info(item["alvo_id"]):
             recommendations[item["alvo_categoria"]].append(m)
     return recommendations

@@ -73,7 +73,9 @@ def lambda_handler(event, context):
 
         for anime in animes:
             item = search_midia(search_term=anime["title"], category="anime")
-            if str(item[0]["metadata"].get("mal_id", "")) != str(anime["mal_id"]):
+            if not item or str(item[0]["metadata"].get("mal_id", "")) != str(
+                anime["mal_id"]
+            ):
                 continue
 
             sk_value = f"item#{category}#{item[0]['id']}"

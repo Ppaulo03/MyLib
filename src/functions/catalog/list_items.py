@@ -1,6 +1,6 @@
 import json
 from common.decorators import lambda_wrapper
-from common.supabase_funcs import get_midia_info
+from common.supabase_funcs import get_bulk_midia_info
 from common.dynamo_client import db_client
 from utils import get_6_star_dict
 
@@ -24,9 +24,10 @@ def lambda_handler(event, context):
         limit=limit,
         next_token=next_token,
     )
-
+    ids_para_buscar = [it["sk"].split("#")[-1] for it in items["items"]]
+    infos_bulk = get_bulk_midia_info(ids_para_buscar)
     items["items"] = [
-        {**it, **get_midia_info(it["sk"].split("#")[-1])} for it in items["items"]
+        {**it, **infos_bulk.get(it["sk"].split("#")[-1], {})} for it in items["items"]
     ]
 
     return {
