@@ -9,8 +9,22 @@ CLIENT_ID = ""
 CLIENT_SECRET = ""
 
 BATCH_SIZE = 500
-MIN_VOTES = 20
+MIN_VOTES = 1
 FILENAME_CSV = "dataset_completo_igdb.csv"
+
+
+def safe_get_year(timestamp):
+    """Converte timestamp de forma segura, ignorando erros de datas antigas."""
+    if not timestamp:
+        return None
+    try:
+        return (
+            datetime.fromtimestamp(timestamp, timezone.utc).year
+            if timestamp > 0
+            else None
+        )
+    except (OSError, ValueError):
+        return 0
 
 
 def get_access_token(client_id, client_secret):
@@ -79,8 +93,8 @@ def build_dataset_loop():
     while keep_running:
         # Query Dinâmica com Offset
         body = f"""
-            fields name, first_release_date, summary, genres.name, themes.name, total_rating, total_rating_count, cover.url, slug, url, platforms.name;
-            where game_type = 0;
+            fields name, first_release_date, summary, genres.name, themes.name, total_rating, total_rating_count, cover.url, slug, url, platforms.name, involved_companies.company.name, involved_companies.developer;
+            where game_type = (0, 8, 9) & total_rating_count >= {MIN_VOTES};
             sort total_rating_count desc;
             limit {BATCH_SIZE};
             offset {offset};
@@ -107,17 +121,30 @@ def build_dataset_loop():
             processed_batch = []
 
             for game in games:
-                ts = game.get("first_release_date")
-                ano = datetime.fromtimestamp(ts, timezone.utc).year if ts else None
+                ano = safe_get_year(game.get("first_release_date"))
                 genres_list = [g["name"] for g in game.get("genres", [])]
                 themes_list = [t["name"] for t in game.get("themes", [])]
                 genres_list = list(set(genres_list + themes_list))
 
+                rating = game.get("total_rating", 0)
+
+                # transform rating para escala 0-5
+                rating = rating / 20 if rating else 0
+
+                devs_list = []
+                involved = game.get("involved_companies", [])
+
+                if involved:
+                    for item in involved:
+                        if item.get("developer") is True:
+                            if comp_name := item.get("company", {}).get("name"):
+                                devs_list.append(comp_name)
+
                 metadata = {
-                    "slug": game.get("slug"),
                     "igdb_url": game.get("url"),
+                    "igdb_id": game.get("id"),
                     "plataformas": [p["name"] for p in game.get("platforms", [])],
-                    "raw_genres": genres_list,
+                    "desenvolvedores": devs_list,
                 }
 
                 entry = {
@@ -128,12 +155,8 @@ def build_dataset_loop():
                     .replace("\n", " ")
                     .replace("\r", ""),
                     "generos": ", ".join(genres_list),
-                    "rating": (
-                        round(game.get("total_rating", 0), 2)
-                        if game.get("total_rating")
-                        else None
-                    ),
-                    "num_avaliacoes": game.get("total_rating_count"),
+                    "rating": rating,
+                    "num_avaliacoes": game.get("total_rating_count", 0),
                     "metadata": json.dumps(metadata, ensure_ascii=False),
                     "imagem": process_image_url(game.get("cover", {}).get("url")),
                 }
