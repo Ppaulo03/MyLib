@@ -1,7 +1,6 @@
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
-from animes import buscar_e_salvar_animes
 from utils import save_to_supabase
 import time
 import pandas as pd
@@ -44,12 +43,9 @@ def buscar_e_salvar_dataset(path, cateoria):
 
 
 if __name__ == "__main__":
-    # pahts = ["filme", "jogo", "livro"]
-    pahts = ["anime"]
+    pahts = ["filme", "jogo", "livro", "anime"]
+    paths = []
     print("Iniciando a população do banco de dados Supabase...")
     for p in pahts:
         print(f"Populando {p}...")
         buscar_e_salvar_dataset(f"data/{p}.csv", p)
-    # print("Populando animes...")
-    # buscar_e_salvar_animes()
-    # print("População concluída.")

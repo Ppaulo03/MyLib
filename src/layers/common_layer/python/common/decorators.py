@@ -1,6 +1,7 @@
 import json
 import functools
 from common.errors import AppError, BadRequestError, UnauthorizedError
+from loguru import logger
 
 
 def lambda_wrapper(required_fields=None, required_params=None, require_auth=True):
@@ -67,7 +68,7 @@ def lambda_wrapper(required_fields=None, required_params=None, require_auth=True
                 }
 
             except Exception as e:
-                print(f"ERRO CRÍTICO: {str(e)}")
+                logger.exception("Unhandled exception in lambda_wrapper")
                 return {
                     "statusCode": 500,
                     "body": json.dumps(

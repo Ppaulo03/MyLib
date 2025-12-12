@@ -1,6 +1,6 @@
 from common.dynamo_client import DynamoClient
 from collections import defaultdict
-from common.supabase_funcs import get_midia_info
+from common.supabase_funcs import get_bulk_midia_info
 
 
 def get_user_history(user_id):
@@ -21,35 +21,49 @@ def get_user_top_genres(user_history):
     consumed_ids = []
     genre_scores = defaultdict(float)
 
-    for item in user_history:
-        midia_id = int(item["sk"].split("#")[-1])
-        consumed_ids.append(midia_id)
+    items_to_process = []
+    ids_to_fetch = set()
 
-        rating = float(item["rating"]) if item.get("rating") is not None else 0
-        status = str(item["status"]) if item.get("status") else "planned"
+    for item in user_history:
+        try:
+            midia_id = int(item["sk"].split("#")[-1])
+        except (ValueError, IndexError):
+            continue
+
+        consumed_ids.append(midia_id)
+        rating = float(item.get("rating", 0) or 0)
+        status = str(item.get("status") or "planned")
 
         if rating <= 0 or status in ["planned", "abandoned"]:
             continue
 
-        midia_info = get_midia_info(midia_id)
+        items_to_process.append((midia_id, rating))
+        ids_to_fetch.add(midia_id)
+
+    midia_info_map = get_bulk_midia_info(list(ids_to_fetch))
+    genre_scores = defaultdict(float)
+
+    for midia_id, rating in items_to_process:
+        midia_info = midia_info_map.get(midia_id)
+
         if not midia_info:
             continue
+
         genres = midia_info.get("unified_genres", [])
 
-        weight = 0
         if rating >= 4:
             weight = rating
         elif rating == 3:
             weight = 1
         else:
-            weight = 0.1
+            weight = rating - 10
 
         for genre in genres:
             genre_scores[genre] += weight
 
-    sorted_genres = sorted(genre_scores.items(), key=lambda x: x[1], reverse=True)
-    top_genres_list = {g[0]: g[1] for g in sorted_genres}
-    return consumed_ids, top_genres_list
+    sorted_genres = dict(sorted(genre_scores.items(), key=lambda x: x[1], reverse=True))
+
+    return consumed_ids, sorted_genres
 
 
 def get_user_consumed_ids(user_history):

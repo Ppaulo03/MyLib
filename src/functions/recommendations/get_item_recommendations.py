@@ -33,6 +33,8 @@ def lambda_handler(event, context):
         if len(v) < CAT_LIMIT:
             if fallback == None:
                 midia = get_midia_info(source_id)
+                if not midia:
+                    return {"statusCode": 404}
                 fallback = get_fallback_recommendations(
                     consumed_ids, {g: 10 for g in midia["unified_genres"]}
                 )

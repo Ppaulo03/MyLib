@@ -1,3 +1,4 @@
 supabase
 pydantic
 requests
+loguru

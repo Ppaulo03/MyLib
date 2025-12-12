@@ -4,41 +4,68 @@ SET generos_unificados = ARRAY(
   FROM (
     SELECT
       CASE TRIM(g)
-        -- AÇÃO PURA
-        WHEN 'Ação' THEN ARRAY['Ação']
+        -- AÇÃO
+        WHEN 'Action' THEN ARRAY['Ação']
         WHEN 'Arcade' THEN ARRAY['Ação']
-        WHEN 'Beat ''em up' THEN ARRAY['Ação']
-        WHEN 'Luta' THEN ARRAY['Ação', 'Esportes / Competitivo']
-        WHEN 'Tiro' THEN ARRAY['Ação']
+        WHEN 'Hack and slash/Beat ''em up' THEN ARRAY['Ação']
+        WHEN 'Fighting' THEN ARRAY['Ação', 'Esportes / Competitivo']
+        WHEN 'Shooter' THEN ARRAY['Ação']
         WHEN 'Pinball' THEN ARRAY['Ação']
         
-        -- AVENTURA E MUNDOS
-        WHEN 'Aventura' THEN ARRAY['Aventura']
-        WHEN 'Plataforma' THEN ARRAY['Ação', 'Aventura', 'Infantil / Família']
-        WHEN 'Point-and-Click' THEN ARRAY['Aventura', 'Estratégia / Raciocínio']
-        WHEN 'Indie' THEN ARRAY['Aventura'] 
+        -- AVENTURA
+        WHEN 'Adventure' THEN ARRAY['Aventura']
+        WHEN 'Platform' THEN ARRAY['Ação', 'Aventura', 'Infantil / Família']
+        WHEN 'Point-and-click' THEN ARRAY['Aventura', 'Estratégia / Raciocínio']
+        WHEN 'Indie' THEN ARRAY['Aventura']
+        WHEN 'Open world' THEN ARRAY['Aventura', 'Ação']
+        WHEN 'Sandbox' THEN ARRAY['Aventura', 'Estratégia / Raciocínio']
+        WHEN 'Survival' THEN ARRAY['Ação', 'Aventura', 'Terror / Suspense']
         
-        -- RPG
-        WHEN 'RPG' THEN ARRAY['Aventura', 'Fantasia', 'Estratégia / Raciocínio']
+        -- RPG E FANTASIA
+        WHEN 'Role-playing (RPG)' THEN ARRAY['Aventura', 'Fantasia', 'Estratégia / Raciocínio']
+        WHEN 'Fantasy' THEN ARRAY['Fantasia']
+        WHEN 'Science fiction' THEN ARRAY['Ficção Científica']
         
         -- ESTRATÉGIA
-        WHEN 'Estratégia' THEN ARRAY['Estratégia / Raciocínio']
-        WHEN 'Estratégia em Tempo Real' THEN ARRAY['Estratégia / Raciocínio', 'Ação']
-        WHEN 'Estratégia por Turnos' THEN ARRAY['Estratégia / Raciocínio']
-        WHEN 'Tático' THEN ARRAY['Estratégia / Raciocínio']
-        WHEN 'Cartas e Tabuleiro' THEN ARRAY['Estratégia / Raciocínio']
-        WHEN 'Quebra-Cabeça' THEN ARRAY['Estratégia / Raciocínio']
+        WHEN 'Strategy' THEN ARRAY['Estratégia / Raciocínio']
+        WHEN 'Real Time Strategy (RTS)' THEN ARRAY['Estratégia / Raciocínio', 'Ação']
+        WHEN 'Turn-based strategy (TBS)' THEN ARRAY['Estratégia / Raciocínio']
+        WHEN 'Tactical' THEN ARRAY['Estratégia / Raciocínio', 'Ação']
+        WHEN '4X (explore, expand, exploit, and exterminate)' THEN ARRAY['Estratégia / Raciocínio']
+        WHEN 'Card & Board Game' THEN ARRAY['Estratégia / Raciocínio']
+        WHEN 'Puzzle' THEN ARRAY['Estratégia / Raciocínio']
         WHEN 'Quiz/Trivia' THEN ARRAY['Estratégia / Raciocínio', 'Realidade / Educação']
+        WHEN 'Warfare' THEN ARRAY['Ação', 'Estratégia / Raciocínio']
+        WHEN 'Stealth' THEN ARRAY['Ação', 'Estratégia / Raciocínio']
         
-        -- COMPETITIVO
+        -- COMPETITIVO E ESPORTES
         WHEN 'MOBA' THEN ARRAY['Esportes / Competitivo', 'Ação', 'Estratégia / Raciocínio']
-        WHEN 'Esporte' THEN ARRAY['Esportes / Competitivo']
-        WHEN 'Corrida' THEN ARRAY['Esportes / Competitivo', 'Ação']
+        WHEN 'Sport' THEN ARRAY['Esportes / Competitivo']
+        WHEN 'Racing' THEN ARRAY['Esportes / Competitivo', 'Ação']
         
-        -- NARRATIVA
+        -- SIMULAÇÃO E REALIDADE
+        WHEN 'Simulator' THEN ARRAY['Realidade / Educação', 'Estratégia / Raciocínio']
+        WHEN 'Business' THEN ARRAY['Estratégia / Raciocínio', 'Realidade / Educação']
+        WHEN 'Educational' THEN ARRAY['Realidade / Educação']
+        WHEN 'Non-fiction' THEN ARRAY['Realidade / Educação']
+        WHEN 'Historical' THEN ARRAY['Realidade / Educação', 'Drama']
+        
+        -- NARRATIVA E EMOÇÃO
         WHEN 'Visual Novel' THEN ARRAY['Drama', 'Romance', 'Aventura']
-        WHEN 'Simulador' THEN ARRAY['Realidade / Educação', 'Estratégia / Raciocínio']
-        WHEN 'Música' THEN ARRAY['Música', 'Ação']
+        WHEN 'Drama' THEN ARRAY['Drama']
+        WHEN 'Romance' THEN ARRAY['Romance']
+        WHEN 'Comedy' THEN ARRAY['Comédia']
+        WHEN 'Music' THEN ARRAY['Música']
+        
+        -- TENSÃO
+        WHEN 'Horror' THEN ARRAY['Terror / Suspense']
+        WHEN 'Thriller' THEN ARRAY['Terror / Suspense']
+        WHEN 'Mystery' THEN ARRAY['Terror / Suspense', 'Estratégia / Raciocínio']
+        
+        -- PÚBLICO ESPECÍFICO
+        WHEN 'Kids' THEN ARRAY['Infantil / Família']
+        WHEN 'Party' THEN ARRAY['Infantil / Família', 'Esportes / Competitivo']
+        WHEN 'Erotic' THEN ARRAY['Adulto']
         
         ELSE ARRAY[]::text[]
       END as mapped_array

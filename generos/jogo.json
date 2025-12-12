@@ -1,71 +1,137 @@
 [
   {
-    "nome_genero": "Arcade"
+    "genero_unico": "4X (explore, expand, exploit, and exterminate)"
   },
   {
-    "nome_genero": "Aventura"
+    "genero_unico": "Action"
   },
   {
-    "nome_genero": "Beat 'em up"
+    "genero_unico": "Adventure"
   },
   {
-    "nome_genero": "Cartas e Tabuleiro"
+    "genero_unico": "Arcade"
   },
   {
-    "nome_genero": "Corrida"
+    "genero_unico": "Business"
   },
   {
-    "nome_genero": "Esporte"
+    "genero_unico": "Card & Board Game"
   },
   {
-    "nome_genero": "Estratégia"
+    "genero_unico": "Comedy"
   },
   {
-    "nome_genero": "Estratégia em Tempo Real"
+    "genero_unico": "Drama"
   },
   {
-    "nome_genero": "Estratégia por Turnos"
+    "genero_unico": "Educational"
   },
   {
-    "nome_genero": "Indie"
+    "genero_unico": "Erotic"
   },
   {
-    "nome_genero": "Luta"
+    "genero_unico": "Fantasy"
   },
   {
-    "nome_genero": "MOBA"
+    "genero_unico": "Fighting"
   },
   {
-    "nome_genero": "Música"
+    "genero_unico": "Hack and slash/Beat 'em up"
   },
   {
-    "nome_genero": "Pinball"
+    "genero_unico": "Historical"
   },
   {
-    "nome_genero": "Plataforma"
+    "genero_unico": "Horror"
   },
   {
-    "nome_genero": "Point-and-Click"
+    "genero_unico": "Indie"
   },
   {
-    "nome_genero": "Quebra-Cabeça"
+    "genero_unico": "Kids"
   },
   {
-    "nome_genero": "Quiz/Trivia"
+    "genero_unico": "MOBA"
   },
   {
-    "nome_genero": "RPG"
+    "genero_unico": "Music"
   },
   {
-    "nome_genero": "Simulador"
+    "genero_unico": "Mystery"
   },
   {
-    "nome_genero": "Tático"
+    "genero_unico": "Non-fiction"
   },
   {
-    "nome_genero": "Tiro"
+    "genero_unico": "Open world"
   },
   {
-    "nome_genero": "Visual Novel"
+    "genero_unico": "Party"
+  },
+  {
+    "genero_unico": "Pinball"
+  },
+  {
+    "genero_unico": "Platform"
+  },
+  {
+    "genero_unico": "Point-and-click"
+  },
+  {
+    "genero_unico": "Puzzle"
+  },
+  {
+    "genero_unico": "Quiz/Trivia"
+  },
+  {
+    "genero_unico": "Racing"
+  },
+  {
+    "genero_unico": "Real Time Strategy (RTS)"
+  },
+  {
+    "genero_unico": "Role-playing (RPG)"
+  },
+  {
+    "genero_unico": "Romance"
+  },
+  {
+    "genero_unico": "Sandbox"
+  },
+  {
+    "genero_unico": "Science fiction"
+  },
+  {
+    "genero_unico": "Shooter"
+  },
+  {
+    "genero_unico": "Simulator"
+  },
+  {
+    "genero_unico": "Sport"
+  },
+  {
+    "genero_unico": "Stealth"
+  },
+  {
+    "genero_unico": "Strategy"
+  },
+  {
+    "genero_unico": "Survival"
+  },
+  {
+    "genero_unico": "Tactical"
+  },
+  {
+    "genero_unico": "Thriller"
+  },
+  {
+    "genero_unico": "Turn-based strategy (TBS)"
+  },
+  {
+    "genero_unico": "Visual Novel"
+  },
+  {
+    "genero_unico": "Warfare"
   }
 ]

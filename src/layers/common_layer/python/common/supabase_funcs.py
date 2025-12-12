@@ -21,7 +21,7 @@ class MetadataItem(BaseModel):
 
     # Games
     platform: Optional[str] = Field("", alias="plataformas")
-    developers: Optional[str] = Field("", alias="desenvlovedores")
+    developers: Optional[str] = Field("", alias="desenvolvedores")
 
     # anime
     episodes: Optional[int] = Field(0, alias="episodios")
@@ -94,12 +94,25 @@ def get_midia_info(media_id):
     return json_encode_item(ListItemsItem(**db_item)) if db_item else {}
 
 
-def get_bulk_midia_info(media_ids):
-    response = supabase.table("midia").select("*").in_("id", media_ids).execute()
+def get_bulk_midia_info(media_ids, batch_size=200):
     midia_dict = {}
-    for db_item in response.data:
-        processed_item = json_encode_item(ListItemsItem(**db_item))
-        midia_dict[processed_item["id"]] = processed_item
+    if not media_ids:
+        return midia_dict
+
+    def chunk_list(lst, n):
+        for i in range(0, len(lst), n):
+            yield lst[i : i + n]
+
+    for batch_ids in chunk_list(media_ids, batch_size):
+        try:
+            response = (
+                supabase.table("midia").select("*").in_("id", batch_ids).execute()
+            )
+            for db_item in response.data:
+                processed_item = json_encode_item(ListItemsItem(**db_item))
+                midia_dict[processed_item["id"]] = processed_item
+        except Exception as e:
+            print(f"Erro ao processar lote: {e}")
     return midia_dict
 
 
@@ -142,10 +155,17 @@ def get_item_recommendation(source_id, source_category, target_category=None):
         .execute()
     )
 
-    recommendations = {"filme": [], "jogo": [], "anime": [], "livro": []}
+    target_ids = []
     for item in response.data:
         if target_category and target_category != item["alvo_categoria"]:
             continue
-        if m := get_midia_info(item["alvo_id"]):
-            recommendations[item["alvo_categoria"]].append(m)
+        target_ids.append(item["alvo_id"])
+
+    all_media_records = get_bulk_midia_info(target_ids)
+    recommendations = {"filme": [], "jogo": [], "anime": [], "livro": []}
+
+    for midia in all_media_records.values():
+        cat = midia.get("categoria")
+        if cat in recommendations:
+            recommendations[cat].append(midia)
     return recommendations

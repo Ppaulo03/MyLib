@@ -1,7 +1,7 @@
 from common.decorators import lambda_wrapper
 from common.supabase_funcs import (
     supabase,
-    get_midia_info,
+    get_bulk_midia_info,
     get_fallback_recommendations,
 )
 from utils import get_user_history, get_user_top_genres
@@ -90,10 +90,11 @@ def lambda_handler(event, context):
         grouped_recs[cat].sort(key=lambda x: x["score"], reverse=True)
 
         flitered_recs = []
-        for item in grouped_recs[cat]:
-            midia = get_midia_info(item["item_id"])
-            if midia:
-                flitered_recs.append(midia)
+        midia_ids = [item["item_id"] for item in grouped_recs[cat]]
+        midia_info = get_bulk_midia_info(midia_ids)
+        for item in midia_info.values():
+            if item:
+                flitered_recs.append(item)
             if len(flitered_recs) >= LIMIT_PER_CATEGORY:
                 break
 
@@ -111,6 +112,7 @@ def lambda_handler(event, context):
                 [f for f in fallback if f["category"] == cat and f["id"] not in rec_ids]
             )
             grouped_recs[cat] = grouped_recs[cat][:LIMIT_PER_CATEGORY]
+
     return {
         "statusCode": 200,
         "body": json.dumps({"recommendations": grouped_recs}),
