@@ -130,7 +130,13 @@ def search_midia(search_term, year=None, category=None):
             "filtro_categoria": category,
         },
     ).execute()
-    return [json_encode_item(ListItemsItem(**item)) for item in response.data]
+
+    score_max = 0.0
+    if response.data:
+        score_max = response.data[0].get("score_similaridade", 0.0)
+    return [
+        json_encode_item(ListItemsItem(**item)) for item in response.data
+    ], score_max
 
 
 def get_fallback_recommendations(consumed_ids, top_genres, limit=5):

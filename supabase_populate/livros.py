@@ -1,7 +1,6 @@
 import time
 from utils import save_to_supabase
 import pandas as pd
-from genre_map import GENRE_MAP
 
 
 def buscar_e_salvar_livros():
@@ -12,10 +11,7 @@ def buscar_e_salvar_livros():
     registros = []
     for index, row in dataset.iterrows():
         genres = [g.strip().lower() for g in row["genero"].split("/")]
-        generos_unificados = set()
-        for g in genres:
-            if g in GENRE_MAP:
-                generos_unificados.update(GENRE_MAP[g])
+        generos_unificados = []
 
         registros.append(
             {

@@ -1,12 +1,5 @@
-from get_covers import get_movie_cover, get_game_cover, get_book_cover
 from common.supabase_funcs import search_midia
 import json
-
-image_handlers = {
-    "filme": get_movie_cover,
-    "jogo": get_game_cover,
-    "livro": get_book_cover,
-}
 
 
 def lambda_handler(event, context):
@@ -16,10 +9,17 @@ def lambda_handler(event, context):
         year = params.get("year")
         category = params.get("category")
 
+        SIMILARIDADE_MINIMA = 0.6
+        match_encontrado = False
+        resultados, score_max = search_midia(search_term, year, category)
+        if score_max >= SIMILARIDADE_MINIMA:
+            match_encontrado = True
+            print(f"Match encontrado com score {score_max}")
+
         return {
             "statusCode": 200,
             "headers": {"Content-Type": "application/json"},
-            "body": json.dumps(search_midia(search_term, year, category)),
+            "body": json.dumps(resultados),
         }
 
     except Exception as e:
