@@ -195,8 +195,14 @@ def get_item_recommendation(source_id, source_category, target_category=None):
         target_ids.append(item["alvo_id"])
 
     all_media_records = get_bulk_midia_info(target_ids)
-    recommendations = {}
-
+    recommendations = {
+        "anime": [],
+        "filme": [],
+        "jogo": [],
+        "livro": [],
+        "serie": [],
+        "manga": [],
+    }
     for midia in all_media_records.values():
         cat = midia.get("categoria")
         if cat not in recommendations:
