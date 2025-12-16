@@ -151,8 +151,6 @@ Resources:
             ApiId: !Ref MyHttpApi
             Path: /search
             Method: GET
-            Auth:
-              Authorizer: NONE
 
   CatalogAddItemFunction:
     Type: AWS::Serverless::Function

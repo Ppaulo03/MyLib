@@ -2,6 +2,20 @@ import json
 import functools
 from common.errors import AppError, BadRequestError, UnauthorizedError
 from loguru import logger
+from datetime import datetime, date
+
+
+def calculate_age(birthdate_str):
+    try:
+        birth_date = datetime.strptime(birthdate_str, "%Y-%m-%d").date()
+        today = date.today()
+        return (
+            today.year
+            - birth_date.year
+            - ((today.month, today.day) < (birth_date.month, birth_date.day))
+        )
+    except ValueError:
+        return 0
 
 
 def lambda_wrapper(required_fields=None, required_params=None, require_auth=True):
@@ -17,7 +31,7 @@ def lambda_wrapper(required_fields=None, required_params=None, require_auth=True
                     claims = authorizer.get("jwt", {}).get("claims", {})
                 elif "claims" in authorizer:
                     claims = authorizer.get("claims", {})
-
+                print(claims)
                 user_id = claims.get("sub") or claims.get("username")
 
                 if not user_id and require_auth:
@@ -28,6 +42,10 @@ def lambda_wrapper(required_fields=None, required_params=None, require_auth=True
                         "Unauthorized: user id not found in authorizer claims"
                     )
                 event["user_id"] = str(user_id)
+
+                if birthdate_str := claims.get("birthdate"):
+                    event["user_age"] = calculate_age(birthdate_str)
+
                 body = {}
                 if event.get("body"):
                     try:

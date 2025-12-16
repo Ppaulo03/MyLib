@@ -27,6 +27,20 @@ class MetadataItem(BaseModel):
     episodes: Optional[int] = Field(0, alias="episodios")
     mal_id: Optional[str | int] = Field("", alias="id_original")
 
+    # manga
+    type: Optional[str] = Field(None, alias="type")
+    status: Optional[str] = Field(None, alias="status")
+    volumes: Optional[int] = Field(None, alias="volumes")
+    chapters: Optional[int] = Field(None, alias="chapters")
+    authors: Optional[list[str]] = Field([], alias="authors")
+    serializations: Optional[list[str]] = Field([], alias="serializations")
+
+    # serie
+    mean_runtime: Optional[int] = Field(0, alias="duracao_media")
+    creators: Optional[str] = Field("", alias="criadores")
+    main_cast: Optional[str] = Field("", alias="elenco_principal")
+    total_seasons: Optional[int] = Field(0, alias="total_temporadas")
+
     @field_validator("platform", "developers", mode="before")
     @classmethod
     def parse_stringified_list(cls, v):
@@ -57,6 +71,7 @@ class ListItemsItem(BaseModel):
     cover_url: Optional[str] = Field("", alias="imagem")
     release_year: Optional[int] = Field(None, alias="ano_lancamento")
     description: Optional[str] = Field("", alias="descricao")
+    age_rating: Optional[int] = Field(None, alias="classificacao")
 
     @field_validator("id", mode="before")
     @classmethod
@@ -85,6 +100,18 @@ def json_encode_item(item: ListItemsItem) -> dict:
         encoded["metadata"]["episodes"] = item.metadata.episodes
         encoded["metadata"]["mal_id"] = item.metadata.mal_id
 
+    elif item.category == "manga":
+        encoded["metadata"]["type"] = item.metadata.type
+        encoded["metadata"]["status"] = item.metadata.status
+        encoded["metadata"]["volumes"] = item.metadata.volumes
+        encoded["metadata"]["chapters"] = item.metadata.chapters
+        encoded["metadata"]["authors"] = item.metadata.authors
+        encoded["metadata"]["serializations"] = item.metadata.serializations
+    elif item.category == "serie":
+        encoded["metadata"]["mean_runtime"] = item.metadata.mean_runtime
+        encoded["metadata"]["creators"] = item.metadata.creators
+        encoded["metadata"]["main_cast"] = item.metadata.main_cast
+        encoded["metadata"]["total_seasons"] = item.metadata.total_seasons
     return encoded
 
 
