@@ -24,7 +24,7 @@ def lambda_handler(event, context):
     )
 
     if target_category:
-        recomendations = {target_category: recomendations[target_category]}
+        recomendations = {target_category: recomendations.get(target_category, [])}
 
     fallback = None
     CAT_LIMIT = 5

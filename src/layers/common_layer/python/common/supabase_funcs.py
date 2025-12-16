@@ -195,10 +195,11 @@ def get_item_recommendation(source_id, source_category, target_category=None):
         target_ids.append(item["alvo_id"])
 
     all_media_records = get_bulk_midia_info(target_ids)
-    recommendations = {"filme": [], "jogo": [], "anime": [], "livro": []}
+    recommendations = {}
 
     for midia in all_media_records.values():
         cat = midia.get("categoria")
-        if cat in recommendations:
-            recommendations[cat].append(midia)
+        if cat not in recommendations:
+            recommendations[cat] = []
+        recommendations[cat].append(midia)
     return recommendations
