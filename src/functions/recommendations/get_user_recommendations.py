@@ -71,17 +71,16 @@ def lambda_handler(event, context):
                 "sources_count": 1,
             }
 
-    grouped_recs = {"anime": [], "filme": [], "jogo": [], "livro": []}
+    grouped_recs = {}
 
     for item in candidates.values():
         cat = item["categoria"]
         if cat not in grouped_recs:
             grouped_recs[cat] = []
-
         grouped_recs[cat].append(item)
 
     if target_category:
-        grouped_recs = {target_category: grouped_recs[target_category]}
+        grouped_recs = {target_category: grouped_recs.get(target_category, [])}
 
     LIMIT_PER_CATEGORY = 24
     fallback = None
