@@ -5,18 +5,20 @@ import json
 import os
 
 BASE_URL = "https://api.jikan.moe/v4/manga"
-CSV_FILENAME = "data_raw/manga_raw.csv"
+CSV_FILENAME = "ETL/data/raw/manga_raw.csv"
 
-# Adicionei 'mal_id' como a primeira coluna
+
 CSV_COLUMNS = [
     "mal_id",
     "titulo",
+    "titulos_alternativos",
     "ano_lancamento",
     "generos",
     "rating",
     "num_avaliacoes",
     "imagem",
     "descricao",
+    "classificacao",
     "metadata",
 ]
 
@@ -46,13 +48,56 @@ def init_csv():
             writer.writeheader()
 
 
+def get_manga_rating(data):
+
+    try:
+
+        if data.get("rating") == "Rx":
+            return 18
+
+        all_tags = set()
+        for g in data.get("genres", []):
+            all_tags.add(g["name"])
+        for t in data.get("themes", []):
+            all_tags.add(t["name"])
+        for e in data.get("explicit_genres", []):
+            all_tags.add(e["name"])
+
+        genres = [g["name"] for g in data.get("genres", [])]
+        if "Hentai" in genres or "Erotica" in genres:
+            return 18
+
+        if "Ecchi" in all_tags:
+            return 16
+
+        if "Gore" in all_tags:
+            return 18
+
+        if "Horror" in all_tags:
+            return 16
+
+        demographics = [d["name"] for d in data.get("demographics", [])]
+
+        if "Seinen" in demographics or "Josei" in demographics:
+            return 16
+        elif "Shounen" in demographics or "Shoujo" in demographics:
+            return 12
+        elif "Kids" in demographics:
+            return 0
+
+        return None
+
+    except Exception as e:
+        return None
+
+
 def fetch_and_save_mangas(limit=25, max_pages=500):
     init_csv()
 
     # Carrega os IDs existentes na memória para verificação rápida (O(1))
     existing_ids = get_existing_ids()
 
-    for page in range(50, max_pages + 1):
+    for page in range(1, max_pages + 1):
         try:
             print(f"Buscando página {page}...", end=" ")
             response = requests.get(
@@ -89,8 +134,6 @@ def fetch_and_save_mangas(limit=25, max_pages=500):
                     # 2. Metadata
                     meta_obj = {
                         "mal_id": current_id,
-                        "title_english": item.get("title_english"),
-                        "title_japanese": item.get("title_japanese"),
                         "type": item.get("type"),
                         "status": item.get("status"),
                         "volumes": item.get("volumes"),
@@ -101,11 +144,14 @@ def fetch_and_save_mangas(limit=25, max_pages=500):
                         ],
                         "url": item.get("url"),
                     }
-
+                    classificacao = get_manga_rating(item)
                     # 3. Linha do CSV
                     manga_row = {
                         "mal_id": current_id,  # Coluna explicita
-                        "titulo": item.get("title"),
+                        "titulo": item.get("title_english") or item.get("title"),
+                        "titulos_alternativos": [
+                            i["title"] for i in item.get("titles", [])
+                        ],
                         "ano_lancamento": ano,
                         "generos": json.dumps(
                             [g["name"] for g in item.get("genres", [])],
@@ -120,6 +166,7 @@ def fetch_and_save_mangas(limit=25, max_pages=500):
                         .replace("\n", " ")
                         .replace("\r", "")
                         .strip(),
+                        "classificacao": classificacao,
                         "metadata": json.dumps(meta_obj, ensure_ascii=False),
                     }
 

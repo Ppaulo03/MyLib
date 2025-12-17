@@ -3,6 +3,7 @@ from common.decorators import lambda_wrapper
 from common.supabase_funcs import get_bulk_midia_info
 from common.dynamo_client import db_client
 from utils import get_6_star_dict
+from collections import defaultdict
 
 
 @lambda_wrapper()
@@ -13,9 +14,9 @@ def lambda_handler(event, context):
 
     limit = int(query_params.get("limit", 1000))
     next_token = query_params.get("next_token")
-
+    categoria = query_params.get("categoria", "")
     prefix = "item#"
-    if categoria := query_params.get("categoria", ""):
+    if categoria:
         prefix += f"{str(categoria).lower()}#"
 
     items = db_client.query_items(
@@ -29,7 +30,14 @@ def lambda_handler(event, context):
     items["items"] = [
         {**it, **infos_bulk.get(it["sk"].split("#")[-1], {})} for it in items["items"]
     ]
+    if not categoria:
+        grouped_items = defaultdict(list)
 
+        for it in items["items"]:
+            key = it["sk"].split("#")[-2]
+            grouped_items[key].append(it)
+
+        items["items"] = dict(grouped_items)
     return {
         "statusCode": 200,
         "body": json.dumps(

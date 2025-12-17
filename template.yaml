@@ -4,6 +4,14 @@ Description: >
   Backend com HTTP API, Lambda e Cognito Auth
 
 Parameters:
+  Env:
+    Type: String
+    Description: O ambiente de deploy (devel, prod, staging)
+    Default: devel
+    AllowedValues:
+      - devel
+      - prod
+
   MyUserPoolId:
     Type: String
     Description: ID do user pool do Cognito
@@ -63,6 +71,8 @@ Globals:
 Resources:
   TabelaDados:
     Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       AttributeDefinitions:
         - AttributeName: user_id
@@ -81,7 +91,7 @@ Resources:
   TabelaDadosParam:
     Type: AWS::SSM::Parameter
     Properties:
-      Name: /mylib/prod/tabela_dados
+      Name: !Sub "/mylib/${Env}/tabela_dados"
       Type: String
       Value: !Ref TabelaDados
       Description: "Nome dinâmico da tabela gerado pelo CloudFormation"
@@ -89,7 +99,7 @@ Resources:
   MyHttpApi:
     Type: AWS::Serverless::HttpApi
     Properties:
-      StageName: prod
+      StageName: !Sub "${Env}"
       CorsConfiguration:
         AllowMethods:
           - GET
@@ -125,6 +135,7 @@ Resources:
   HeartbeatFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: !Sub "mylib-${Env}-heartbeat"
       CodeUri: src/functions/system
       Handler: heartbeat.lambda_handler
       Events:
@@ -140,6 +151,7 @@ Resources:
   SearchFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: !Sub "mylib-${Env}-search"
       CodeUri: src/functions/system
       Handler: search.lambda_handler
       Layers:
@@ -155,6 +167,7 @@ Resources:
   CatalogAddItemFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: !Sub "mylib-${Env}-add-item-catalog"
       CodeUri: src/functions/catalog/
       Handler: add_item.lambda_handler
       Layers:
@@ -173,6 +186,7 @@ Resources:
   CatalogListItemsFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: !Sub "mylib-${Env}-list-catalog-items"
       CodeUri: src/functions/catalog/
       Handler: list_items.lambda_handler
       Layers:
@@ -191,6 +205,7 @@ Resources:
   CatalogDeleteItemFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: !Sub "mylib-${Env}-delete-catalog-item"
       CodeUri: src/functions/catalog/
       Handler: delete_item.lambda_handler
       Layers:
@@ -209,6 +224,7 @@ Resources:
   CatalogUpdateItemFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: !Sub "mylib-${Env}-update-catalog-item"
       CodeUri: src/functions/catalog/
       Handler: update_item.lambda_handler
       Layers:
@@ -227,6 +243,7 @@ Resources:
   CatalogSyncMALFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: !Sub "mylib-${Env}-sync-mal"  
       CodeUri: src/functions/catalog/
       Handler: sync_mal.lambda_handler
       Layers:
@@ -245,6 +262,7 @@ Resources:
   RecommendationsGetItemFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: !Sub "mylib-${Env}-get-item-recommendations"
       CodeUri: src/functions/recommendations/
       Handler: get_item_recommendations.lambda_handler
       Layers:
@@ -263,6 +281,7 @@ Resources:
   RecommendationsGetUserFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: !Sub "mylib-${Env}-get-user-recommendations"
       CodeUri: src/functions/recommendations/
       Handler: get_user_recommendations.lambda_handler
       Layers:
@@ -278,8 +297,7 @@ Resources:
             Path: /recommendations/user
             Method: GET
 
-
 Outputs:
   ApiEndpoint:
     Description: "URL da API HTTP"
-    Value: !Sub "https://${MyHttpApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
+    Value: !Sub "https://${MyHttpApi}.execute-api.${AWS::Region}.amazonaws.com/${Env}"

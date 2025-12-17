@@ -1,7 +1,7 @@
 from supabase import Client, create_client
 from pydantic import BaseModel, Field, field_validator
 from typing import Optional
-import os, ast
+import os, ast, json
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
@@ -34,6 +34,7 @@ class MetadataItem(BaseModel):
     chapters: Optional[int] = Field(None, alias="chapters")
     authors: Optional[list[str]] = Field([], alias="authors")
     serializations: Optional[list[str]] = Field([], alias="serializations")
+    mal_id_manga: Optional[str | int] = Field("", alias="mal_id")
 
     # serie
     mean_runtime: Optional[int] = Field(0, alias="duracao_media")
@@ -78,6 +79,17 @@ class ListItemsItem(BaseModel):
     def parse_stringified_list(cls, v):
         return "" if v is None else str(v)
 
+    @field_validator("metadata", mode="before")
+    @classmethod
+    def parse_metadata(cls, v):
+        if isinstance(v, str):
+            try:
+                v_dict = json.loads(v)
+                return v_dict
+            except json.JSONDecodeError:
+                return v
+        return v
+
 
 def json_encode_item(item: ListItemsItem) -> dict:
     encoded = item.model_dump()
@@ -107,11 +119,14 @@ def json_encode_item(item: ListItemsItem) -> dict:
         encoded["metadata"]["chapters"] = item.metadata.chapters
         encoded["metadata"]["authors"] = item.metadata.authors
         encoded["metadata"]["serializations"] = item.metadata.serializations
+        encoded["metadata"]["mal_id"] = item.metadata.mal_id_manga
+
     elif item.category == "serie":
         encoded["metadata"]["mean_runtime"] = item.metadata.mean_runtime
         encoded["metadata"]["creators"] = item.metadata.creators
         encoded["metadata"]["main_cast"] = item.metadata.main_cast
         encoded["metadata"]["total_seasons"] = item.metadata.total_seasons
+
     return encoded
 
 

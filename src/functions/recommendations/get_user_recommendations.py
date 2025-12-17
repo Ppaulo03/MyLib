@@ -15,7 +15,9 @@ def lambda_handler(event, context):
 
     user_id = event.get("user_id")
     user_history = get_user_history(user_id)
-    liked_items = [item for item in user_history if float(item.get("rating", 0)) >= 4.0]
+    liked_items = [
+        item for item in user_history if float(item.get("rating", 0) or 0) >= 4.0
+    ]
     if not liked_items:
         return {
             "statusCode": 200,
@@ -33,7 +35,7 @@ def lambda_handler(event, context):
 
         seen_set.add(f"{i_type}_{i_id}")
 
-        if float(item.get("rating", 0)) >= 4.0:
+        if float(item.get("rating", 0) or 0) >= 4.0:
             source_ids.append(i_id)
             source_types.append(i_type)
 
