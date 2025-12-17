@@ -16,4 +16,4 @@ df["rating"] = ((df["rating"] * df["num_avaliacoes"]) + (C * m)) / (
 )
 
 df.drop_duplicates(subset=["id"], inplace=True)
-df.to_csv("data/anime.csv", index=False)
+df.to_csv("ETL/data/anime.csv", index=False)

@@ -14,20 +14,24 @@ def get_series_metadata(tmdb_id):
     url = f"https://api.themoviedb.org/3/tv/{tmdb_id}?language=pt-BR&append_to_response=credits"
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
-        data = response.json()
-        runtimes = data.get("episode_run_time", [])
-        avg_runtime = sum(runtimes) / len(runtimes) if runtimes else 0
-        creators = [c["name"] for c in data.get("created_by", [])]
-        cast = [actor["name"] for actor in data.get("credits", {}).get("cast", [])[:3]]
-        return {
-            "tmdb_id": tmdb_id,
-            "duracao_media": int(avg_runtime),
-            "criadores": ", ".join(creators),
-            "elenco_principal": ", ".join(cast),
-            "total_temporadas": data.get("number_of_seasons"),
-        }
+        return _extracted_from_get_series_metadata(response, tmdb_id)
     else:
         return {}
+
+
+def _extracted_from_get_series_metadata(response, tmdb_id):
+    data = response.json()
+    runtimes = data.get("episode_run_time", [])
+    avg_runtime = sum(runtimes) / len(runtimes) if runtimes else 0
+    creators = [c["name"] for c in data.get("created_by", [])]
+    cast = [actor["name"] for actor in data.get("credits", {}).get("cast", [])[:3]]
+    return {
+        "tmdb_id": tmdb_id,
+        "duracao_media": int(avg_runtime),
+        "criadores": ", ".join(creators),
+        "elenco_principal": ", ".join(cast),
+        "total_temporadas": data.get("number_of_seasons"),
+    }
 
 
 csv_output = "data_raw/series_metadata.csv"

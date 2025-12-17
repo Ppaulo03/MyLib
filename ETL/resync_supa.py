@@ -103,7 +103,7 @@ def preview_upsert(dataset_local, amostra_qtd=5):
             item_existente = dados_banco[0]
             print(f"STATUS: UPDATE (Já existe no ID: {item_existente['id']})")
         else:
-            print(f"STATUS: CREATE (Será criado um novo registro)")
+            print("STATUS: CREATE (Será criado um novo registro)")
 
 
 def excluir_itens_em_lotes(lista_de_ids):
@@ -153,15 +153,14 @@ def sync_and_check_references():
     records = df.to_dict(orient="records")
 
     dados_completos = []
-    for item in records:
-        dados_completos.append(
-            {
-                **item,
-                "categoria": ITEM_CATEGORY,
-                "updated_at": sync_time,
-            }
-        )
-
+    dados_completos.extend(
+        {
+            **item,
+            "categoria": ITEM_CATEGORY,
+            "updated_at": sync_time,
+        }
+        for item in records
+    )
     total_items = len(dados_completos)
 
     print(f"Total de itens para processar: {total_items}")
