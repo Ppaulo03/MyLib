@@ -4,6 +4,7 @@ from common.supabase_funcs import (
     get_fallback_recommendations,
     get_midia_info,
 )
+from common.responses import success, not_found
 from utils import get_user_history, get_user_consumed_ids
 import json
 
@@ -34,7 +35,8 @@ def lambda_handler(event, context):
             if fallback == None:
                 midia = get_midia_info(source_id)
                 if not midia:
-                    return {"statusCode": 404}
+                    return not_found()
+
                 fallback = get_fallback_recommendations(
                     consumed_ids, {g: 10 for g in midia["unified_genres"]}
                 )
@@ -48,7 +50,4 @@ def lambda_handler(event, context):
 
     if target_category:
         recomendations = recomendations[target_category]
-    return {
-        "statusCode": 200,
-        "body": json.dumps({"recommendations": recomendations}),
-    }
+    return success({"recommendations": recomendations})

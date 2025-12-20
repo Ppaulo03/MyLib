@@ -9,9 +9,9 @@
     "**/venv": true
   },
   "python.analysis.extraPaths": [
-    "./src/layers/common_layer/python",
+    "./src/layers/common_layer/",
   ],
   "python.autoComplete.extraPaths": [
-    "./src/layers/common_layer/python",
+    "./src/layers/common_layer/",
   ],
 }

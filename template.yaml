@@ -131,6 +131,8 @@ Resources:
       CompatibleRuntimes:
         - python3.13
       RetentionPolicy: Retain
+    Metadata:
+      BuildMethod: makefile
 
   HeartbeatFunction:
     Type: AWS::Serverless::Function
@@ -187,8 +189,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub "mylib-${Env}-list-catalog-items"
-      CodeUri: src/functions/catalog/
-      Handler: list_items.lambda_handler
+      CodeUri: src/functions/catalog/list_items
+      Handler: handler.lambda_handler
       Layers:
         - !Ref CommonLayer
       Policies:

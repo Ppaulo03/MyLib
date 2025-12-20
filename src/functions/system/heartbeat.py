@@ -1,13 +1,5 @@
-import json
+from common.responses import success
 
 
 def lambda_handler(event, context):
-    return {
-        "statusCode": 200,
-        "headers": {"Content-Type": "application/json"},
-        "body": json.dumps(
-            {
-                "status": "OK",
-            }
-        ),
-    }
+    return success({"status": "OK"})

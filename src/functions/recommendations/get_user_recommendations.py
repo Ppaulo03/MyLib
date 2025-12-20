@@ -4,8 +4,8 @@ from common.supabase_funcs import (
     get_bulk_midia_info,
     get_fallback_recommendations,
 )
+from common.responses import success
 from utils import get_user_history, get_user_top_genres
-import json
 
 
 @lambda_wrapper()
@@ -19,10 +19,7 @@ def lambda_handler(event, context):
         item for item in user_history if float(item.get("rating", 0) or 0) >= 4.0
     ]
     if not liked_items:
-        return {
-            "statusCode": 200,
-            "body": json.dumps({"recommendations": []}),
-        }
+        return success({"recommendations": []})
 
     source_ids = []
     source_types = []
@@ -40,10 +37,7 @@ def lambda_handler(event, context):
             source_types.append(i_type)
 
     if not source_ids:
-        return {
-            "statusCode": 200,
-            "body": json.dumps({"recommendations": []}),
-        }
+        return success({"recommendations": []})
 
     rpc_response = supabase.rpc(
         "get_batch_recommendations",
@@ -122,7 +116,4 @@ def lambda_handler(event, context):
             )
             grouped_recs[cat] = grouped_recs[cat][:LIMIT_PER_CATEGORY]
 
-    return {
-        "statusCode": 200,
-        "body": json.dumps({"recommendations": grouped_recs}),
-    }
+    return success({"recommendations": grouped_recs})

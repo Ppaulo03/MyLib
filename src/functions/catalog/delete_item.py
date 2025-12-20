@@ -1,7 +1,6 @@
-import json
 from common.decorators import lambda_wrapper
-from common.errors import BadRequestError
 from common.dynamo_client import db_client
+from common.responses import success
 
 
 @lambda_wrapper(required_params=["id", "category"])
@@ -15,9 +14,4 @@ def lambda_handler(event, context):
     sk_value = f"item#{category.lower()}#{media_id}"
     db_client.delete_item(user_id, sk_value)
 
-    return {
-        "statusCode": 200,
-        "body": json.dumps(
-            {"message": "Item removido com sucesso", "deleted_id": media_id}
-        ),
-    }
+    return success({"message": "Item removido com sucesso", "deleted_id": media_id})

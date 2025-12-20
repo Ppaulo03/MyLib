@@ -1,6 +1,7 @@
 from common.dynamo_client import db_client
 from common.decorators import lambda_wrapper
 from common.supabase_funcs import search_midia
+from common.responses import success
 from datetime import datetime, timezone
 import html
 
@@ -131,4 +132,4 @@ def lambda_handler(event, context):
 
     items = my_anime_list_getter(body.get("username"), category)
     sync_supabase_mal(items, category, user_id, override)
-    return {"statusCode": 200}
+    return success({"message": "Sync completed successfully"})

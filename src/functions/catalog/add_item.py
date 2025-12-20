@@ -1,6 +1,6 @@
-import json
 from datetime import datetime, timezone
 from common.decorators import lambda_wrapper
+from common.responses import created, not_acceptable
 from common.dynamo_client import db_client
 from utils import get_6_star_dict
 
@@ -19,15 +19,8 @@ def lambda_handler(event, context):
     if rating and rating > 5:
         can_6_star_dict = get_6_star_dict(user_id).model_dump()
         if not can_6_star_dict.get(category):
-            return {
-                "statusCode": 406,
-                "body": json.dumps(
-                    {
-                        "message": "Não foi possivel usar superlike",
-                        "item_sk": sk_value,
-                    }
-                ),
-            }
+            return not_acceptable("Não foi possivel usar superlike")
+
     item = {
         "user_id": user_id,
         "sk": sk_value,
@@ -44,9 +37,4 @@ def lambda_handler(event, context):
     if rating and rating > 5:
         db_client.put_item({"user_id": user_id, "sk": "can_6_star", category: False})
 
-    return {
-        "statusCode": 201,
-        "body": json.dumps(
-            {"message": "Item adicionado com sucesso", "item_sk": sk_value}
-        ),
-    }
+    return created({"message": "Item adicionado com sucesso", "item_sk": sk_value})

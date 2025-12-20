@@ -1,6 +1,6 @@
-import json
 from common.decorators import lambda_wrapper
 from common.dynamo_client import db_client
+from common.responses import success, not_acceptable
 from utils import get_6_star_dict
 
 
@@ -26,15 +26,7 @@ def lambda_handler(event, context):
         if rating > 5 and (old_rating <= 5 or not rating):
             can_6_star_dict = get_6_star_dict(user_id).model_dump()
             if not can_6_star_dict.get(category):
-                return {
-                    "statusCode": 406,
-                    "body": json.dumps(
-                        {
-                            "message": "Não foi possivel usar superlike",
-                            "item_sk": sk_value,
-                        }
-                    ),
-                }
+                return not_acceptable("Não foi possivel usar superlike")
 
     db_client.update_item(user_id, sk_value, body)
     old_rating = old_rating or 0
@@ -46,12 +38,9 @@ def lambda_handler(event, context):
         elif rating <= 5 and old_rating > 5:
             db_client.put_item({"user_id": user_id, "sk": "can_6_star", category: True})
 
-    return {
-        "statusCode": 200,
-        "body": json.dumps(
-            {
-                "message": "Item atualizado com sucesso",
-                "updated_fields": list(body.keys()),
-            }
-        ),
-    }
+    return success(
+        {
+            "message": "Item atualizado com sucesso",
+            "updated_fields": list(body.keys()),
+        }
+    )
