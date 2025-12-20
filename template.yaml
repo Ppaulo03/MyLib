@@ -134,6 +134,16 @@ Resources:
     Metadata:
       BuildMethod: makefile
   
+  RecommendationLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: mylib-recommendation-layer
+      Description: Utilitarios (Wrappers, Erros, Validadores)
+      ContentUri: src/layers/recommendation_layer/
+      CompatibleRuntimes:
+        - python3.13
+      RetentionPolicy: Retain
+
   SearchFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -249,10 +259,11 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub "mylib-${Env}-get-item-recommendations"
-      CodeUri: src/functions/recommendations/
-      Handler: get_item_recommendations.lambda_handler
+      CodeUri: src/functions/recommendations/by_item/
+      Handler: handler.lambda_handler
       Layers:
         - !Ref CommonLayer
+        - !Ref RecommendationLayer
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref TabelaDados
@@ -268,10 +279,11 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub "mylib-${Env}-get-user-recommendations"
-      CodeUri: src/functions/recommendations/
-      Handler: get_user_recommendations.lambda_handler
+      CodeUri: src/functions/recommendations/by_user/
+      Handler: handler.lambda_handler
       Layers:
         - !Ref CommonLayer
+        - !Ref RecommendationLayer
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref TabelaDados

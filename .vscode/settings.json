@@ -10,8 +10,10 @@
   },
   "python.analysis.extraPaths": [
     "./src/layers/common_layer/",
+    "./src/layers/recommendation_layer/python/",
   ],
   "python.autoComplete.extraPaths": [
     "./src/layers/common_layer/",
+    "./src/layers/recommendation_layer/python/",
   ],
 }

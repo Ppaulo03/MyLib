@@ -6,18 +6,18 @@ from common.supabase_funcs import (
 )
 from common.responses import success, not_found
 from utils import get_user_history, get_user_consumed_ids
-import json
+from interface import ItemRecommendationRequest
 
 
-@lambda_wrapper(required_params=["id", "category"])
-def lambda_handler(event, context):
-    user_id = event.get("user_id")
-    user_history = get_user_history(user_id)
+@lambda_wrapper(model=ItemRecommendationRequest)
+def lambda_handler(request: ItemRecommendationRequest, context):
+
+    user_history = get_user_history(request.user_id)
     consumed_ids = get_user_consumed_ids(user_history)
-    params = event.get("queryStringParameters", {}) or {}
-    source_id = params.get("id")
-    source_category = params.get("category")
-    target_category = params.get("target_category")
+
+    source_id = request.id
+    source_category = request.category
+    target_category = request.target_category
 
     consumed_ids.append(int(source_id))
     recomendations = get_item_recommendation(

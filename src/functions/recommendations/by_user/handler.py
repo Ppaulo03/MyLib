@@ -6,15 +6,12 @@ from common.supabase_funcs import (
 )
 from common.responses import success
 from utils import get_user_history, get_user_top_genres
+from interface import UserRecommendationRequest
 
 
-@lambda_wrapper()
-def lambda_handler(event, context):
-    params = event.get("queryStringParameters", {}) or {}
-    target_category = params.get("target_category")
-
-    user_id = event.get("user_id")
-    user_history = get_user_history(user_id)
+@lambda_wrapper(model=UserRecommendationRequest)
+def lambda_handler(request: UserRecommendationRequest, context):
+    user_history = get_user_history(request.user_id)
     liked_items = [
         item for item in user_history if float(item.get("rating", 0) or 0) >= 4.0
     ]
@@ -83,8 +80,8 @@ def lambda_handler(event, context):
 
         grouped_recs[cat].append(item)
 
-    if target_category:
-        grouped_recs = {target_category: grouped_recs[target_category]}
+    if request.target_category:
+        grouped_recs = {request.target_category: grouped_recs[request.target_category]}
 
     LIMIT_PER_CATEGORY = 24
     fallback = None

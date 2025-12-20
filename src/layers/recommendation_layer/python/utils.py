@@ -1,6 +1,6 @@
 from common.dynamo_client import DynamoClient
-from collections import defaultdict
 from common.supabase_funcs import get_bulk_midia_info
+from collections import defaultdict
 
 
 def get_user_history(user_id):
