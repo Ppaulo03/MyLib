@@ -25,7 +25,7 @@ def fetch_library_data(
             user_id=user_id,
             sk_prefix="can_6_star",
         )
-        return future_items.result(), future_6star.result()
+        return future_items.result(), future_6star.result().get("items", [])
 
 
 def enrich_and_group_items(
@@ -37,17 +37,14 @@ def enrich_and_group_items(
     if not raw_items:
         return {} if group_by_category else []
 
-    # 1. Bulk Fetch Metadata
     ids = [it["sk"].split("#")[-1] for it in raw_items]
     metadata_map = get_bulk_midia_info(ids)
 
-    # 2. Case A: Flat List (e.g. Filtered View)
     if not group_by_category:
         return [
             item | metadata_map.get(item["sk"].split("#")[-1], {}) for item in raw_items
         ]
 
-    # 3. Case B: Grouped Dictionary (e.g. Dashboard View)
     grouped = defaultdict(list)
     for item in raw_items:
         parts = item["sk"].split("#")
