@@ -25,7 +25,7 @@ def fetch_library_data(
             user_id=user_id,
             sk_prefix="can_6_star",
         )
-        return future_items.result(), future_6star.result().get("items", [])
+        return future_items.result(), future_6star.result().get("items", [{}])[0]
 
 
 def enrich_and_group_items(

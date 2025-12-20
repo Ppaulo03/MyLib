@@ -5,6 +5,14 @@ from common.dynamo_client import db_client
 from utils import get_6_star_dict
 
 
+def get_6_star_dict(user_id):
+    items = db_client.query_items(
+        user_id=user_id,
+        sk_prefix="can_6_star",
+    )
+    return items.get("items", [{}])[0]
+
+
 @lambda_wrapper(required_fields=["id", "category", "title"])
 def lambda_handler(event, context):
     body = event["parsed_body"]
@@ -17,8 +25,8 @@ def lambda_handler(event, context):
     rating = float(rating) if rating else None
 
     if rating and rating > 5:
-        can_6_star_dict = get_6_star_dict(user_id).model_dump()
-        if not can_6_star_dict.get(category):
+        can_6_star_dict = get_6_star_dict(user_id)
+        if not can_6_star_dict.get(category, True):
             return not_acceptable("Não foi possivel usar superlike")
 
     item = {
