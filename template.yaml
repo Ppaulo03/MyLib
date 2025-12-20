@@ -138,8 +138,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub "mylib-${Env}-search"
-      CodeUri: src/functions/system
-      Handler: search.lambda_handler
+      CodeUri: src/functions/system/search
+      Handler: handler.lambda_handler
       Layers:
         - !Ref CommonLayer
       Events:
