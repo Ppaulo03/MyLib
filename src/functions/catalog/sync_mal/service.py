@@ -1,8 +1,15 @@
 from common.dynamo_client import db_client
+from tenacity import (
+    retry,
+    stop_after_attempt,
+    wait_exponential,
+    retry_if_exception_type,
+    before_sleep_log,
+)
 from common.supabase_funcs import build_media_map
 from datetime import datetime, timezone
+from requests.exceptions import RequestException
 from loguru import logger
-
 import requests
 import time
 import html
@@ -18,6 +25,23 @@ status_list = {
     "plan_to_watch": "planned",
     "plan_to_read": "planned",
 }
+
+
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=10),
+    retry=retry_if_exception_type(RequestException),
+    before_sleep=before_sleep_log(logger, "WARNING"),
+)
+def safe_mal_request(url, headers, params):
+    """
+    Faz o pedido à API de forma segura.
+    Lança uma exceção se falhar após 3 tentativas.
+    """
+    response = requests.get(url, headers=headers, params=params, timeout=10)
+    response.raise_for_status()
+
+    return response.json()
 
 
 def my_anime_list_getter(username, list_type):
@@ -40,12 +64,14 @@ def my_anime_list_getter(username, list_type):
 
     all_items = []
     while True:
-        response = requests.get(url, headers=headers, params=params)
-        if response.status_code != 200:
-            print(f"Erro: {response.status_code} - {response.text}")
+        try:
+            data = safe_mal_request(url, headers, params)
+        except Exception as e:
+            logger.error(
+                f"Falha crítica ao obter dados do MAL após várias tentativas: {e}"
+            )
             break
 
-        data = response.json()
         for node in data.get("data", []):
             raw_comment = node["list_status"].get("comments", "")
             clean_comment = html.unescape(raw_comment) if raw_comment else ""
