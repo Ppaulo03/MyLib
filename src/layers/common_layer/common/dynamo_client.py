@@ -3,15 +3,19 @@ import json
 import base64
 import boto3
 from boto3.dynamodb.conditions import Key
+from boto3.dynamodb.types import TypeSerializer
+from botocore.exceptions import ClientError
 from decimal import Decimal
 from datetime import datetime, timezone
 
 
 class DynamoClient:
     def __init__(self):
-        table_name = os.environ.get("TABLE_NAME", "TabelaDados")
+        self.table_name = os.environ.get("TABLE_NAME", "TabelaDados")
         self.dynamodb = boto3.resource("dynamodb")
-        self.table = self.dynamodb.Table(table_name)
+        self.client = boto3.client("dynamodb")
+        self.table = self.dynamodb.Table(self.table_name)
+        self.serializer = TypeSerializer()
 
     def _replace_decimals(self, obj):
         if isinstance(obj, (list, set)):
@@ -39,18 +43,34 @@ class DynamoClient:
         except Exception:
             return None
 
-    def _convert_float_to_decimal(self, obj):
+    def _sanitize_data(self, obj):
+        if isinstance(obj, (int, bool)):
+            return obj
+
         if isinstance(obj, float):
             return Decimal(str(obj))
+
+        elif isinstance(obj, str):
+            return obj if obj else None
+
         elif isinstance(obj, dict):
-            return {k: self._convert_float_to_decimal(v) for k, v in obj.items()}
+            return {k: self._sanitize_data(v) for k, v in obj.items()}
+
         elif isinstance(obj, list):
-            return [self._convert_float_to_decimal(i) for i in obj]
-        return obj
+            return [self._sanitize_data(i) for i in obj]
+
+        elif obj is None:
+            return None
+
+        return str(obj)
+
+    def to_dynamo_json(self, data):
+        clean_data = self._sanitize_data(data)
+        return self.serializer.serialize(clean_data)["M"]
 
     def put_item(self, item):
         try:
-            clean_item = self._convert_float_to_decimal(item)
+            clean_item = self._sanitize_data(item)
             self.table.put_item(Item=clean_item)
             return True
         except Exception as e:
@@ -105,7 +125,7 @@ class DynamoClient:
 
             if not data:
                 return False
-            data = self._convert_float_to_decimal(data)
+            data = self._sanitize_data(data)
             data["updated_at"] = datetime.now(timezone.utc).isoformat()
 
             update_expr = []
@@ -131,6 +151,19 @@ class DynamoClient:
             return True
         except Exception as e:
             print(f"Erro ao atualizar no DynamoDB: {str(e)}")
+            raise e
+
+    def execute_transaction(self, transact_items):
+        """
+        Executa uma lista de operações de forma atômica (TransactWriteItems).
+        Se uma falhar, todas falham.
+
+        :param transact_items: Lista de dicionários no formato Client (Put, Update, etc)
+        """
+        try:
+            self.client.transact_write_items(TransactItems=transact_items)
+            return True
+        except ClientError as e:
             raise e
 
 

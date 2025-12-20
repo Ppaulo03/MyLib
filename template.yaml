@@ -170,8 +170,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub "mylib-${Env}-add-item-catalog"
-      CodeUri: src/functions/catalog/
-      Handler: add_item.lambda_handler
+      CodeUri: src/functions/catalog/add_item/
+      Handler: handler.lambda_handler
       Layers:
         - !Ref CommonLayer
       Policies:
@@ -208,8 +208,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub "mylib-${Env}-delete-catalog-item"
-      CodeUri: src/functions/catalog/
-      Handler: delete_item.lambda_handler
+      CodeUri: src/functions/catalog/delete_item/
+      Handler: handler.lambda_handler
       Layers:
         - !Ref CommonLayer
       Policies:
@@ -227,8 +227,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub "mylib-${Env}-update-catalog-item"
-      CodeUri: src/functions/catalog/
-      Handler: update_item.lambda_handler
+      CodeUri: src/functions/catalog/update_item/
+      Handler: handler.lambda_handler
       Layers:
         - !Ref CommonLayer
       Policies:
@@ -246,8 +246,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub "mylib-${Env}-sync-mal"  
-      CodeUri: src/functions/catalog/
-      Handler: sync_mal.lambda_handler
+      CodeUri: src/functions/catalog/sync_mal/
+      Handler: handler.lambda_handler
       Layers:
         - !Ref CommonLayer
       Policies:
