@@ -1,46 +1,46 @@
 from common.decorators import lambda_wrapper
-from common.dynamo_client import db_client
-from common.responses import success, not_acceptable
-from utils import get_6_star_dict
+from common.dynamo_client import ClientError
+from common.responses import not_found, success, not_acceptable
+from interface import UpdateItemRequest
+from service import update_item
+from loguru import logger
+import json
 
 
-@lambda_wrapper(required_fields=["id", "category"])
-def lambda_handler(event, context):
-    user_id = event.get("user_id")
-    body = event["parsed_body"]
+@lambda_wrapper(model=UpdateItemRequest)
+def lambda_handler(request: UpdateItemRequest, context):
 
-    media_id = str(body["id"])
-    category = body["category"]
-    sk_value = f"item#{category.lower()}#{media_id}"
-
-    rating = body.get("rating", None)
-    rating = float(rating) if rating else None
-
-    old_item = db_client.query_items(user_id, sk_value)
-    old_rating = None
-    if old_item["items"]:
-        old_rating = old_item["items"][0].get("rating", 0)
-        old_rating = float(old_rating) if old_rating else None
-
-    if rating:
-        if rating > 5 and (old_rating <= 5 or not rating):
-            can_6_star_dict = get_6_star_dict(user_id).model_dump()
-            if not can_6_star_dict.get(category):
-                return not_acceptable("Não foi possivel usar superlike")
-
-    db_client.update_item(user_id, sk_value, body)
-    old_rating = old_rating or 0
-    if rating:
-        if rating > 5 and old_rating <= 5:
-            db_client.put_item(
-                {"user_id": user_id, "sk": "can_6_star", category: False}
-            )
-        elif rating <= 5 and old_rating > 5:
-            db_client.put_item({"user_id": user_id, "sk": "can_6_star", category: True})
-
-    return success(
-        {
-            "message": "Item atualizado com sucesso",
-            "updated_fields": list(body.keys()),
-        }
+    update_data = request.model_dump(
+        exclude_unset=True, exclude={"user_id", "category", "id"}
     )
+
+    if not update_data:
+        return success({"message": "Nenhum dado novo para atualizar."})
+
+    try:
+        updated_fields = update_item(
+            user_id=request.user_id,
+            category=request.category,
+            item_id=request.id,
+            update_data=update_data,
+        )
+
+        return success(
+            {
+                "message": "Atualizado com sucesso",
+                "updated_fields": updated_fields,
+            }
+        )
+
+    except FileNotFoundError:
+        return not_found("Item não encontrado.")
+
+    except ClientError as e:
+        error_code = e.response["Error"]["Code"]
+        if error_code == "TransactionCanceledException":
+            if "ConditionalCheckFailed" in e.response["Error"]["Message"]:
+                return not_acceptable(
+                    f"Você não tem um Superlike disponível para {request.category}."
+                )
+        logger.error(json.dumps(e.response, default=str))
+        raise e
