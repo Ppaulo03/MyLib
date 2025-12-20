@@ -1,6 +1,7 @@
 from supabase import Client, create_client
 from pydantic import BaseModel, Field, field_validator
 from typing import Optional
+from loguru import logger
 import os, ast, json
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
@@ -154,7 +155,7 @@ def get_bulk_midia_info(media_ids, batch_size=200):
                 processed_item = json_encode_item(ListItemsItem(**db_item))
                 midia_dict[processed_item["id"]] = processed_item
         except Exception as e:
-            print(f"Erro ao processar lote: {e}")
+            logger.error(f"Erro ao processar lote: {e}")
     return midia_dict
 
 
@@ -224,3 +225,40 @@ def get_item_recommendation(source_id, source_category, target_category=None):
             recommendations[cat] = []
         recommendations[cat].append(midia)
     return recommendations
+
+
+def build_media_map(
+    items, category, item_id_key, item_title_key, supabase_id_key, chunk_size=30
+):
+
+    media_map = {}
+    title_to_id = {item[item_title_key]: str(item[item_id_key]) for item in items}
+    all_titles = list(title_to_id.keys())
+
+    for i in range(0, len(all_titles), chunk_size):
+        chunk_titles = all_titles[i : i + chunk_size]
+
+        try:
+            response = (
+                supabase.table("midia")
+                .select("id, titulo, metadata")
+                .eq("categoria", category)
+                .in_("titulo", chunk_titles)
+                .execute()
+            )
+            print(response.data)
+
+            for db_item in response.data:
+                db_title = db_item.get("titulo")
+                db_metadata = db_item.get("metadata") or {}
+                db_id = str(db_metadata.get(supabase_id_key) or "")
+                expected_id = title_to_id.get(db_title)
+
+                if expected_id and db_id == expected_id:
+                    media_map[expected_id] = db_item["id"]
+
+        except Exception as e:
+            logger.error(f"Error searching batch {i}: {e}")
+            continue
+
+    return media_map

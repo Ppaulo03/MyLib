@@ -133,22 +133,6 @@ Resources:
       RetentionPolicy: Retain
     Metadata:
       BuildMethod: makefile
-
-  HeartbeatFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: !Sub "mylib-${Env}-heartbeat"
-      CodeUri: src/functions/system
-      Handler: heartbeat.lambda_handler
-      Events:
-        RootRoute:
-          Type: HttpApi
-          Properties:
-            ApiId: !Ref MyHttpApi
-            Path: /
-            Method: GET
-            Auth:
-              Authorizer: NONE
   
   SearchFunction:
     Type: AWS::Serverless::Function

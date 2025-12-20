@@ -67,7 +67,6 @@ class DynamoClient:
 
     def put_item(self, item: dict) -> bool:
         try:
-            # DynamoDB requires Floats to be Decimals
             clean_item = self._sanitize_float(item)
             self.table.put_item(Item=clean_item)
             return True
@@ -108,21 +107,15 @@ class DynamoClient:
             raise
 
     def update_item(self, user_id, sk, update_data: dict) -> bool:
-        # Filter out keys that cannot be updated (Keys)
         data = {
             k: v for k, v in update_data.items() if k not in ["user_id", "sk", "id"]
         }
 
         if not data:
             return False
-
-        # Add metadata
         data["updated_at"] = datetime.now(timezone.utc).isoformat()
-
-        # Sanitize inputs (Float -> Decimal)
         data = self._sanitize_float(data)
 
-        # Build UpdateExpression dynamically
         update_parts = []
         attr_names = {}
         attr_values = {}
