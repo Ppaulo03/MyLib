@@ -105,10 +105,6 @@ def _extracted_and_deploy(env_vars, target_env, stack_name):
         f"MyAppClientId={env_vars['MY_APP_CLIENT_ID']}",
         f"SupabaseUrl={env_vars['SUPABASE_URL']}",
         f"SupabaseKey={env_vars['SUPABASE_KEY']}",
-        f"TmdbApiKey={env_vars['TMDB_API_KEY']}",
-        f"SteamgriddbApiKey={env_vars['STEAMGRIDDB_API_KEY']}",
-        f"MALClientId={env_vars['MAL_CLIENT_ID']}",
-        f"MALClientSecret={env_vars['MAL_CLIENT_SECRET']}",
     ]
 
     overrides_str = " ".join(overrides)

@@ -30,27 +30,6 @@ Parameters:
     Description: Chave de API do Supabase (Anon ou Service)
     NoEcho: true
 
-  TmdbApiKey:
-    Type: String
-    Description: Chave de API do TMDB
-    NoEcho: true
-
-  SteamgriddbApiKey:
-    Type: String
-    Description: Chave de API do SteamGridDB
-    NoEcho: true
-  
-  MALClientId:
-    Type: String
-    Description: ClientID do MyAnimeList
-    NoEcho: true
-  
-  MALClientSecret:
-    Type: String
-    Description: Client Secret do MyAnimeList
-    NoEcho: true
-  
-
 Globals:
   Function:
     Timeout: 180
@@ -63,10 +42,6 @@ Globals:
         SUPABASE_URL: !Ref SupabaseUrl
         SUPABASE_KEY: !Ref SupabaseKey
         TABLE_NAME: !Ref TabelaDados
-        TMDB_API_KEY: !Ref TmdbApiKey
-        STEAMGRIDDB_API_KEY: !Ref SteamgriddbApiKey
-        MAL_CLIENT_ID: !Ref MALClientId
-        MAL_CLIENT_SECRET: !Ref MALClientSecret
 
 Resources:
   TabelaDados:

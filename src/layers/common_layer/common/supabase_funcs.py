@@ -1,5 +1,6 @@
 from supabase import Client, create_client
 from pydantic import BaseModel, Field, field_validator
+from common.configs import CATEGORIES_AVAILABLE
 from typing import Optional
 from loguru import logger
 import os, ast, json
@@ -211,14 +212,7 @@ def get_item_recommendation(source_id, source_category, target_category=None):
         target_ids.append(item["alvo_id"])
 
     all_media_records = get_bulk_midia_info(target_ids)
-    recommendations = {
-        "anime": [],
-        "filme": [],
-        "jogo": [],
-        "livro": [],
-        "serie": [],
-        "manga": [],
-    }
+    recommendations = {c: [] for c in CATEGORIES_AVAILABLE}
     for midia in all_media_records.values():
         cat = midia.get("categoria")
         if cat not in recommendations:

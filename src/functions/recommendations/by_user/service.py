@@ -1,5 +1,6 @@
 from typing import Dict, List, Any, Optional, Set
 from collections import defaultdict
+from common.configs import CATEGORIES_AVAILABLE
 from common.supabase_funcs import (
     supabase,
     get_bulk_midia_info,
@@ -55,14 +56,7 @@ def process_user_recommendations(
         entry["id"] = t_id
         entry["cat"] = t_type
 
-    grouped_recs: Dict[str, List[Dict]] = {
-        "anime": [],
-        "filme": [],
-        "jogo": [],
-        "livro": [],
-        "serie": [],
-        "manga": [],
-    }
+    grouped_recs: Dict[str, List[Dict]] = {c: [] for c in CATEGORIES_AVAILABLE}
 
     for item in candidates.values():
         cat = item["cat"]
