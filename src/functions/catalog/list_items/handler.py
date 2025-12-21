@@ -6,7 +6,7 @@ from service import fetch_library_data, enrich_and_group_items
 
 @lambda_wrapper(model=GetLibraryRequest)
 def lambda_handler(request: GetLibraryRequest, context):
-    prefix = f"item#{request.categoria.lower()}#" if request.categoria else "item#"
+    prefix = f"item#{request.category.lower()}#" if request.category else "item#"
     items_data, six_star_data = fetch_library_data(
         user_id=request.user_id,
         prefix=prefix,
@@ -16,7 +16,7 @@ def lambda_handler(request: GetLibraryRequest, context):
 
     final_items = enrich_and_group_items(
         raw_items=items_data.get("items", []),
-        group_by_category=not bool(request.categoria),
+        group_by_category=not bool(request.category),
     )
 
     return success(
