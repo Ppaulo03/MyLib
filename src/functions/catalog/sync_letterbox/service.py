@@ -1,14 +1,16 @@
+from common.dynamo_client import db_client
 import requests
+from datetime import datetime, timezone
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from bs4 import BeautifulSoup
+from loguru import logger
+from supabase import create_client, Client
+from dotenv import load_dotenv
 import time
 import random
 import re
 import os
-from supabase import create_client, Client
-from dotenv import load_dotenv
-
 
 load_dotenv(override=True)
 
@@ -45,14 +47,12 @@ def get_letterboxd_films(username):
             resp = session.get(url, headers=headers, timeout=15)
 
             if resp.status_code != 200:
-                print(f"Stopping: Status code {resp.status_code}")
                 break
 
             soup = BeautifulSoup(resp.text, "html.parser")
             items = soup.find_all("li", class_="griditem")
 
             if not items:
-                print("No films found on this page. Finished.")
                 break
 
             for item in items:
@@ -102,14 +102,12 @@ def get_letterboxd_films(username):
 
             next_button = soup.select_one(".paginate-nextprev a.next")
             if not next_button:
-                print("Last page reached.")
                 break
 
             page += 1
             time.sleep(random.uniform(1.5, 3.0))
 
         except Exception as e:
-            print(f"Error on page {page}: {e}")
             break
 
     return films
@@ -128,7 +126,6 @@ def match_movies_rpc(letterboxd_films):
     batch_size = 20
     matched_films = []
 
-    print(f"Processando {len(payload)} filmes via RPC...")
     for i in range(0, len(payload), batch_size):
         batch = payload[i : i + batch_size]
 
@@ -137,7 +134,7 @@ def match_movies_rpc(letterboxd_films):
                 "match_filmes_inteligente",
                 {
                     "filmes_json": batch,
-                    "match_minimo": 0.0,  # Pode ajustar a rigidez aqui
+                    "match_minimo": 0.7,
                 },
             ).execute()
 
@@ -146,50 +143,53 @@ def match_movies_rpc(letterboxd_films):
                 if movie_data and movie_data.get("supabase_id"):
                     matched_films.append(movie_data)
 
-            print(f"Lote {i}: Processado.")
-
         except Exception as e:
-            print(f"Erro no lote {i}: {e}")
+            logger.exception(f"Erro no lote {i}: {e}")
 
     return matched_films
 
 
-def get_full_review_text(review_url):
-    """
-    Entra no link da review e extrai o texto completo.
-    Retorna None se falhar ou se não houver texto.
-    """
-    if not review_url:
-        return None
+def sync_database(items, user_id, override=False):
+    sk_prefix = f"item#filme#"
+    existing_response = db_client.query_items(user_id, sk_prefix)
+    next_token = existing_response.get("next_token", None)
+    while next_token:
+        more_response = db_client.query_items(user_id, sk_prefix, next_token=next_token)
+        existing_response["items"].extend(more_response.get("items", []))
+        next_token = more_response.get("next_token", None)
 
-    try:
-        print(f"--> Baixando review: {review_url}")
-        resp = session.get(review_url, timeout=10)
+    existing_items_map = {}
+    for db_item in existing_response.get("items", []):
+        internal_id = db_item["sk"].split("#")[-1]
+        existing_items_map[internal_id] = db_item
 
-        if resp.status_code == 429:
-            print("BLOCK 429 Detectado! Pausando por 60s...")
-            time.sleep(60)
-            return get_full_review_text(session, review_url)  # Tenta de novo
+    for item in items:
 
-        if resp.status_code != 200:
-            return None
+        internal_id = str(item["supabase_id"])
+        sk_value = f"item#filme#{internal_id}"
+        rating = item.get("rating", None)
+        new_item_data = {
+            "status": "watched",
+            "rating": rating,
+            "progress": 100,
+            "review": "",
+        }
+        old_item = existing_items_map.get(str(internal_id))
 
-        soup = BeautifulSoup(resp.text, "html.parser")
-        body_div = soup.select_one("div.body-text")
+        if old_item:
+            if override:
+                db_client.update_item(user_id, sk_value, new_item_data)
+                old_rating = old_item.get("rating")
+                if old_rating is not None and rating is not None:
+                    old_rating = float(old_rating)
 
-        if body_div:
-            return body_div.get_text(separator="\n", strip=True)
-
-    except Exception as e:
-        print(f"Erro ao baixar review: {e}")
-
-    return None
-
-
-if __name__ == "__main__":
-
-    username = "Hepamynondas"
-    data = get_letterboxd_films(username)
-    print(f"\nTotal films scraped: {len(data)}")
-    matches = match_movies_rpc(data)
-    print(matches[0])
+                    if old_rating > 5:
+                        db_client.update_item(user_id, "can_6_star", {"filme": True})
+        else:
+            full_item = new_item_data | {
+                "user_id": user_id,
+                "sk": sk_value,
+                "created_at": datetime.now(timezone.utc).isoformat(),
+                "updated_at": datetime.now(timezone.utc).isoformat(),
+            }
+            db_client.put_item(full_item)

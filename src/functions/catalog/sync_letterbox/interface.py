@@ -1,0 +1,21 @@
+from common.decorators import AuthRequest
+from pydantic import Field, field_validator
+from typing import Optional
+
+
+class SyncLetterboxRequest(AuthRequest):
+    username: str = Field(
+        ...,
+        description="The username of the MyAnimeList account to sync with.",
+    )
+    override: Optional[bool] = Field(
+        False,
+        description="Whether to override existing entries in the database.",
+    )
+
+    @field_validator("username")
+    @classmethod
+    def validate_username(cls, v: Optional[str]) -> Optional[str]:
+        if v is not None and not v.strip():
+            raise ValueError("mal_username cannot be an empty string.")
+        return v
