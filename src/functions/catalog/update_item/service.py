@@ -31,7 +31,7 @@ def update_item(user_id: str, category: str, item_id: str, update_data: dict) ->
                 db_client.build_update_tx(
                     key={"user_id": user_id, "sk": config_sk},
                     data={category: False},
-                    condition_expr=f"#{category} = :trueVal",
+                    condition_expr=f"attribute_not_exists(#{category}) OR #{category} = :trueVal",
                     condition_values={":trueVal": True},
                 )
             )
