@@ -121,7 +121,7 @@ async def process_batch(ids_batch, df_original):
     df_batch_original = df_original[df_original["id"].isin(ids_batch)].copy()
 
     if not df_results.empty:
-        cols_to_merge = ["id", "titulo"]
+        cols_to_merge = ["id", "titulo", "ano_lancamento"]
         existing_cols = [c for c in cols_to_merge if c in df_batch_original.columns]
 
         df_final = pd.merge(
