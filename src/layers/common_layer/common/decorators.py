@@ -75,6 +75,44 @@ def _merge_request_data(event: JsonDict, body: Dict, auth_data: Dict) -> Dict[st
     return {**qs, **path, **body, **auth_data}
 
 
+def _is_sqs_event(event: JsonDict) -> bool:
+    """Detecta se o evento é do SQS verificando a presença de 'Records' e 'eventSource'."""
+    if "Records" in event and isinstance(event["Records"], list):
+        if (
+            len(event["Records"]) > 0
+            and event["Records"][0].get("eventSource") == "aws:sqs"
+        ):
+            return True
+    return False
+
+
+def _process_sqs_record(record: JsonDict, model: Type[T]) -> T:
+    try:
+        raw_body = record.get("body", "{}")
+        body_data = json.loads(raw_body)
+        if not isinstance(body_data, dict):
+            body_data = {}
+    except json.JSONDecodeError:
+        logger.error(f"Invalid JSON in SQS Record: {record.get('messageId')}")
+        raise ValueError("Invalid JSON body in SQS message")
+
+    user_id = None
+    msg_attrs = record.get("messageAttributes", {})
+    if "UserId" in msg_attrs and "stringValue" in msg_attrs["UserId"]:
+        user_id = msg_attrs["UserId"]["stringValue"]
+
+    if user_id:
+        body_data["user_id"] = user_id
+
+    try:
+        return model(**body_data)
+    except ValidationError as e:
+        logger.error(
+            f"Validation failed for SQS message {record.get('messageId')}: {e.json()}"
+        )
+        raise ValueError(f"Schema Validation Error: {e.json()}")
+
+
 def lambda_wrapper(
     model: Type[T],
     require_auth: bool = True,
@@ -91,6 +129,21 @@ def lambda_wrapper(
         @functools.wraps(func)
         def wrapper(event: Optional[JsonDict], context: Any) -> Any:
             event = event or {}
+
+            if _is_sqs_event(event):
+                results = []
+                for record in event["Records"]:
+                    try:
+                        request_model = _process_sqs_record(record, model)
+                        result = func(request_model, context)
+                        results.append(result)
+
+                    except Exception as e:
+                        logger.exception(
+                            f"Error processing SQS record {record.get('messageId')}"
+                        )
+                        raise e
+                return results[0] if len(results) == 1 else results
 
             try:
 

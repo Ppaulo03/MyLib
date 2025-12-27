@@ -15,7 +15,7 @@ class SyncLetterboxRequest(AuthRequest):
 
     @field_validator("username")
     @classmethod
-    def validate_username(cls, v: Optional[str]) -> Optional[str]:
-        if v is not None and not v.strip():
-            raise ValueError("mal_username cannot be an empty string.")
-        return v
+    def validate_username(cls, v: str) -> str:
+        if not v or not v.strip():
+            raise ValueError("letterbox_username cannot be an empty string.")
+        return v.strip()

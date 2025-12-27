@@ -20,7 +20,7 @@ supabase_client: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 session = requests.Session()
 retry_strategy = Retry(
     total=5,
-    backoff_factor=2,  # Wait 1s, 2s, 4s, 8s...
+    backoff_factor=2,
     status_forcelist=[429, 500, 502, 503, 504],
     allowed_methods=["GET"],
 )

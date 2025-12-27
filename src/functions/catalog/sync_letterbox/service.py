@@ -1,22 +1,24 @@
-from common.dynamo_client import db_client
-import requests
-from datetime import datetime, timezone
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
-from bs4 import BeautifulSoup
-from loguru import logger
-from supabase import create_client, Client
-from dotenv import load_dotenv
+import json
+import os
+import re
 import time
 import random
-import re
-import os
+from datetime import datetime, timezone
 
-load_dotenv(override=True)
+import boto3
+import requests
+from bs4 import BeautifulSoup
+from loguru import logger
+from requests.adapters import HTTPAdapter
+from supabase import create_client, Client
+from urllib3.util.retry import Retry
+from common.dynamo_client import db_client
+
 
 # --- Configurações ---
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+REVIEWS_QUEUE_URL = os.getenv("REVIEWS_QUEUE_URL")
 
 supabase_client: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 session = requests.Session()
@@ -29,6 +31,7 @@ retry_strategy = Retry(
 adapter = HTTPAdapter(max_retries=retry_strategy)
 session.mount("https://", adapter)
 session.mount("http://", adapter)
+sqs_client = boto3.client("sqs")
 
 
 def get_letterboxd_films(username):
@@ -149,6 +152,25 @@ def match_movies_rpc(letterboxd_films):
     return matched_films
 
 
+def add_review_queue(
+    sqs_client, REVIEWS_QUEUE_URL, user_id, sk_value, review_link, override
+):
+    try:
+        sqs_client.send_message(
+            QueueUrl=REVIEWS_QUEUE_URL,
+            MessageBody=json.dumps(
+                {
+                    "user_id": user_id,
+                    "sk": sk_value,
+                    "review_link": review_link,
+                    "override": override,
+                }
+            ),
+        )
+    except Exception as e:
+        logger.error(f"Falha ao enviar review para fila: {e}")
+
+
 def sync_database(items, user_id, override=False):
     sk_prefix = f"item#filme#"
     existing_response = db_client.query_items(user_id, sk_prefix)
@@ -167,7 +189,9 @@ def sync_database(items, user_id, override=False):
 
         internal_id = str(item["supabase_id"])
         sk_value = f"item#filme#{internal_id}"
-        rating = item.get("rating", None)
+        rating = item.get("rating")
+        review_link = item.get("review_link")
+
         new_item_data = {
             "status": "watched",
             "rating": rating,
@@ -185,6 +209,16 @@ def sync_database(items, user_id, override=False):
 
                     if old_rating > 5:
                         db_client.update_item(user_id, "can_6_star", {"filme": True})
+
+                if review_link:
+                    add_review_queue(
+                        sqs_client,
+                        REVIEWS_QUEUE_URL,
+                        user_id,
+                        sk_value,
+                        review_link,
+                        override,
+                    )
         else:
             full_item = new_item_data | {
                 "user_id": user_id,
@@ -193,3 +227,13 @@ def sync_database(items, user_id, override=False):
                 "updated_at": datetime.now(timezone.utc).isoformat(),
             }
             db_client.put_item(full_item)
+
+            if review_link:
+                add_review_queue(
+                    sqs_client,
+                    REVIEWS_QUEUE_URL,
+                    user_id,
+                    sk_value,
+                    review_link,
+                    override,
+                )

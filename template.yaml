@@ -83,21 +83,68 @@ Resources:
       Value: !Ref TabelaDados
       Description: "Nome dinâmico da tabela gerado pelo CloudFormation"
 
+  ApiGatewaySQSRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+            Action: sts:AssumeRole
+
+  ApiGatewaySQSPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Sub "mylib-${Env}-gateway-sqs-policy"
+      Roles:
+        - !Ref ApiGatewaySQSRole # <--- Conecta na Role aqui
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: sqs:SendMessage
+            Resource:
+              - !GetAtt MalSyncQueue.Arn
+              - !GetAtt LetterboxdSyncQueue.Arn
+              - !GetAtt LetterboxdReviewsQueue.Arn
+
+  MalSyncQueue:
+    Type: AWS::SQS::Queue
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      QueueName: !Sub "mylib-${Env}-mal-sync-queue"
+      VisibilityTimeout: 900
+      MessageRetentionPeriod: 86400
+
+  LetterboxdSyncQueue:
+    Type: AWS::SQS::Queue
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      QueueName: !Sub "mylib-${Env}-letterboxd-sync-queue"
+      VisibilityTimeout: 900
+      MessageRetentionPeriod: 86400
+
+  LetterboxdReviewsQueue:
+    Type: AWS::SQS::Queue
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      QueueName: !Sub "mylib-${Env}-letterboxd-reviews-queue"
+      VisibilityTimeout: 300
+      MessageRetentionPeriod: 86400
+
   MyHttpApi:
     Type: AWS::Serverless::HttpApi
     Properties:
       StageName: !Sub "${Env}"
       CorsConfiguration:
-        AllowMethods:
-          - GET
-          - POST
-          - PUT
-          - DELETE
-          - PATCH
-        AllowHeaders:
-          - "*"
-        AllowOrigins:
-          - "*"
+        AllowMethods: [GET, POST, PUT, DELETE, PATCH]
+        AllowHeaders: ["*"]
+        AllowOrigins: ["*"]
       
       Auth:
         Authorizers:
@@ -109,6 +156,49 @@ Resources:
                 - !Ref MyAppClientId
         DefaultAuthorizer: CognitoAuthorizer
   
+  MalIngestorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "mylib-${Env}-ingest-mal"
+      CodeUri: src/functions/system/sqs_ingestor/
+      Handler: handler.lambda_handler
+      Layers: [!Ref CommonLayer]
+      Environment:
+        Variables:
+          TARGET_QUEUE_URL: !Ref MalSyncQueue
+      Policies:
+        - SQSSendMessagePolicy:
+            QueueName: !GetAtt MalSyncQueue.QueueName
+      Events:
+        ApiRoute:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref MyHttpApi
+            Path: /catalog/sync-mal
+            Method: POST
+  
+  LetterboxdIngestorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "mylib-${Env}-ingest-letterboxd"
+      CodeUri: src/functions/system/sqs_ingestor/
+      Handler: handler.lambda_handler
+      Layers: [!Ref CommonLayer]
+      Environment:
+        Variables:
+          TARGET_QUEUE_URL: !Ref LetterboxdSyncQueue
+      Policies:
+        - SQSSendMessagePolicy:
+            QueueName: !GetAtt LetterboxdSyncQueue.QueueName
+      Events:
+        ApiRoute:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref MyHttpApi
+            Path: /catalog/sync-letterbox
+            Method: POST
+  
+
   CommonLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
@@ -137,8 +227,7 @@ Resources:
       FunctionName: !Sub "mylib-${Env}-search"
       CodeUri: src/functions/system/search
       Handler: handler.lambda_handler
-      Layers:
-        - !Ref CommonLayer
+      Layers: [!Ref CommonLayer]
       Events:
         RootRoute:
           Type: HttpApi
@@ -153,8 +242,7 @@ Resources:
       FunctionName: !Sub "mylib-${Env}-add-item-catalog"
       CodeUri: src/functions/catalog/add_item/
       Handler: handler.lambda_handler
-      Layers:
-        - !Ref CommonLayer
+      Layers: [!Ref CommonLayer]
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref TabelaDados
@@ -172,8 +260,7 @@ Resources:
       FunctionName: !Sub "mylib-${Env}-list-catalog-items"
       CodeUri: src/functions/catalog/list_items
       Handler: handler.lambda_handler
-      Layers:
-        - !Ref CommonLayer
+      Layers: [!Ref CommonLayer]
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref TabelaDados
@@ -191,8 +278,7 @@ Resources:
       FunctionName: !Sub "mylib-${Env}-delete-catalog-item"
       CodeUri: src/functions/catalog/delete_item/
       Handler: handler.lambda_handler
-      Layers:
-        - !Ref CommonLayer
+      Layers: [!Ref CommonLayer]
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref TabelaDados
@@ -210,8 +296,7 @@ Resources:
       FunctionName: !Sub "mylib-${Env}-update-catalog-item"
       CodeUri: src/functions/catalog/update_item/
       Handler: handler.lambda_handler
-      Layers:
-        - !Ref CommonLayer
+      Layers: [!Ref CommonLayer]
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref TabelaDados
@@ -229,18 +314,19 @@ Resources:
       FunctionName: !Sub "mylib-${Env}-sync-mal"  
       CodeUri: src/functions/catalog/sync_mal/
       Handler: handler.lambda_handler
-      Layers:
-        - !Ref CommonLayer
+      #ReservedConcurrentExecutions: 1
+      Layers: [!Ref CommonLayer]
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref TabelaDados
+        - SQSPollerPolicy:
+            QueueName: !GetAtt MalSyncQueue.QueueName
       Events:
-        RootRoute:
-          Type: HttpApi
+        SQSTrigger:
+          Type: SQS
           Properties:
-            ApiId: !Ref MyHttpApi
-            Path: /catalog/sync-mal
-            Method: POST
+            Queue: !GetAtt MalSyncQueue.Arn
+            BatchSize: 1
 
   CatalogSyncLetterboxFunction:
     Type: AWS::Serverless::Function
@@ -248,18 +334,44 @@ Resources:
       FunctionName: !Sub "mylib-${Env}-sync-letterbox"  
       CodeUri: src/functions/catalog/sync_letterbox/
       Handler: handler.lambda_handler
-      Layers:
-        - !Ref CommonLayer
+      #ReservedConcurrentExecutions: 1
+      Layers: [!Ref CommonLayer]
+      Environment:
+        Variables:
+          REVIEWS_QUEUE_URL: !Ref LetterboxdReviewsQueue
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref TabelaDados
+        - SQSPollerPolicy:
+            QueueName: !GetAtt LetterboxdSyncQueue.QueueName
+        - SQSSendMessagePolicy: 
+            QueueName: !GetAtt LetterboxdReviewsQueue.QueueName
       Events:
-        RootRoute:
-          Type: HttpApi
+        SQSTrigger:
+          Type: SQS
           Properties:
-            ApiId: !Ref MyHttpApi
-            Path: /catalog/sync-letterbox
-            Method: POST
+            Queue: !GetAtt LetterboxdSyncQueue.Arn
+            BatchSize: 1
+
+  CatalogSyncLetterboxReviewsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "mylib-${Env}-sync-letterbox-reviews"
+      CodeUri: src/functions/catalog/sync_letterbox_reviews/
+      Handler: handler.lambda_handler
+      #ReservedConcurrentExecutions: 1
+      Layers: [!Ref CommonLayer]
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TabelaDados
+        - SQSPollerPolicy:
+            QueueName: !GetAtt LetterboxdReviewsQueue.QueueName
+      Events:
+        SQSTrigger:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt LetterboxdReviewsQueue.Arn
+            BatchSize: 1
 
   RecommendationsGetItemFunction:
     Type: AWS::Serverless::Function
@@ -267,9 +379,7 @@ Resources:
       FunctionName: !Sub "mylib-${Env}-get-item-recommendations"
       CodeUri: src/functions/recommendations/by_item/
       Handler: handler.lambda_handler
-      Layers:
-        - !Ref CommonLayer
-        - !Ref RecommendationLayer
+      Layers: [!Ref CommonLayer, !Ref RecommendationLayer]
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref TabelaDados
@@ -287,9 +397,7 @@ Resources:
       FunctionName: !Sub "mylib-${Env}-get-user-recommendations"
       CodeUri: src/functions/recommendations/by_user/
       Handler: handler.lambda_handler
-      Layers:
-        - !Ref CommonLayer
-        - !Ref RecommendationLayer
+      Layers: [!Ref CommonLayer, !Ref RecommendationLayer]
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref TabelaDados

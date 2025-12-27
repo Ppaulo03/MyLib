@@ -19,7 +19,7 @@ class SyncMALRequest(AuthRequest):
 
     @field_validator("username")
     @classmethod
-    def validate_username(cls, v: Optional[str]) -> Optional[str]:
-        if v is not None and not v.strip():
+    def validate_username(cls, v: str) -> str:
+        if not v or not v.strip():
             raise ValueError("mal_username cannot be an empty string.")
-        return v
+        return v.strip()
