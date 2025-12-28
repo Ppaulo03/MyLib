@@ -99,7 +99,7 @@ Resources:
     Properties:
       PolicyName: !Sub "mylib-${Env}-gateway-sqs-policy"
       Roles:
-        - !Ref ApiGatewaySQSRole # <--- Conecta na Role aqui
+        - !Ref ApiGatewaySQSRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -314,7 +314,7 @@ Resources:
       FunctionName: !Sub "mylib-${Env}-sync-mal"  
       CodeUri: src/functions/catalog/sync_mal/
       Handler: handler.lambda_handler
-      #ReservedConcurrentExecutions: 1
+      ReservedConcurrentExecutions: 1
       Layers: [!Ref CommonLayer]
       Policies:
         - DynamoDBCrudPolicy:
@@ -334,7 +334,7 @@ Resources:
       FunctionName: !Sub "mylib-${Env}-sync-letterbox"  
       CodeUri: src/functions/catalog/sync_letterbox/
       Handler: handler.lambda_handler
-      #ReservedConcurrentExecutions: 1
+      ReservedConcurrentExecutions: 1
       Layers: [!Ref CommonLayer]
       Environment:
         Variables:
@@ -359,7 +359,7 @@ Resources:
       FunctionName: !Sub "mylib-${Env}-sync-letterbox-reviews"
       CodeUri: src/functions/catalog/sync_letterbox_reviews/
       Handler: handler.lambda_handler
-      #ReservedConcurrentExecutions: 1
+      ReservedConcurrentExecutions: 1
       Layers: [!Ref CommonLayer]
       Policies:
         - DynamoDBCrudPolicy:
