@@ -3,9 +3,9 @@ import boto3
 from boto3.dynamodb.conditions import Key
 from supabase import create_client, Client
 from sklearn.metrics.pairwise import cosine_similarity
-from common.configs import CATEGORIES_AVAILABLE
 import pandas as pd
 
+CATEGORIES_AVAILABLE = ["anime", "filme", "jogo", "livro", "manga", "serie"]
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
